@@ -1,32 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { firestore, auth } from './firebaseConfig';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, onSnapshot } from 'firebase/firestore';
 import './userProfile.css';
 
 const UserProfile = () => {
   const [userProfile, setUserProfile] = useState(null);
   const navigate = useNavigate();
-  const user = auth.currentUser; 
+  const user = auth.currentUser;
 
   useEffect(() => {
-    const fetchUserProfile = async () => {
-      if (user) {
-        const userRef = doc(firestore, 'users', user.uid);
-        const docSnap = await getDoc(userRef);
+    if (user) {
+      const userRef = doc(firestore, 'users', user.uid);
+      const unsubscribe = onSnapshot(userRef, (docSnap) => {
         if (docSnap.exists()) {
           setUserProfile(docSnap.data());
         } else {
           console.log('No such user document!');
         }
-      }
-    };
-    fetchUserProfile();
+      });
+
+      return () => unsubscribe(); // Cleanup the listener on component unmount
+    }
   }, [user]);
 
-  
   const handleEditProfile = () => {
-    navigate('/editprofile');
+    navigate('/UserEditProfile');
   };
 
   return (
@@ -46,10 +45,10 @@ const UserProfile = () => {
               <p><strong>First Name:</strong> {userProfile.firstName}</p>
               <p><strong>Last Name:</strong> {userProfile.lastName}</p>
               <p><strong>Email:</strong> {userProfile.email}</p>
-              <p><strong>Phone Number:</strong> {userProfile.mobilenumber}</p>
+              <p><strong>Phone Number:</strong> {userProfile.phoneNumber}</p>
               <p><strong>Gender:</strong> {userProfile.gender}</p>
               <p><strong>Role:</strong> {userProfile.role}</p>
-              <p><strong>Date of Birth:</strong> {userProfile.dateofbirth}</p>
+              <p><strong>Date of Birth:</strong> {userProfile.dateOfBirth}</p>
               <p><strong>Address:</strong> {userProfile.address}</p>
               <p><strong>Country:</strong> {userProfile.country}</p>
               <p><strong>Province:</strong> {userProfile.province}</p>

@@ -63,7 +63,7 @@ html, body {
   
   
   .home-content {
-    padding-top: 80%;  
+    padding-top: 3000px;  
     flex-grow: 1;  
     padding-bottom: 50px; 
     text-align: center;
@@ -129,6 +129,7 @@ html, body {
   }
   
   .like-btn, .unlike-btn, .report-btn {
+    background-color: #2196F3;
     padding: 12px 18px;
     border: none;
     border-radius: 5px;
@@ -137,18 +138,10 @@ html, body {
     font-weight: bold;
   }
   
-  .like-btn {
-    background-color: #4CAF50;
+  .like-btn:hover {
+    background-color: green;
   }
-  
-  .unlike-btn {
-    background-color: #f44336;
-  }
-  
-  .report-btn {
-    background-color: #2196F3;
-  }
- 
+
   .comments-section {
     margin-top: 20px;
   }
@@ -193,7 +186,10 @@ html, body {
     background-color: #218838;
   }
   
- 
+  .report-comment-btn:hover {
+    background-color: red;
+  }
+
   .footer {
     background-color: #333;
     color: #ddd;

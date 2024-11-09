@@ -62,19 +62,6 @@ const LoginPage = () => {
   const closeModel = () => setIsModelOpen(false);
 
   return (
-    <div>
-        <nav className="navbar">
-                <div className="navbar-brand" onClick={() => navigate('/')}>
-                    Eventopia
-                </div>
-                <ul className="nav-links">
-                    <li className="nav-item" onClick={() => navigate('/services')}>Services</li>
-                    
-                    <li className="nav-item" onClick={() => navigate('/myevents')}>Call us @ +1 123 456 789</li>
-                </ul>
-               
-            </nav>
-   
     <div className="login-container">
       <div className="form-wrapper">
         <h1 className="text-center">Login</h1>
@@ -104,7 +91,6 @@ const LoginPage = () => {
           <div className="button-group">
             <button className="btn btn-primary login-btn" type="submit">Login</button>
             <button className="btn btn-link" type="button" onClick={openModel}>Forgot Password?</button>
-            <button className="btn btn-link" type="submit" onClick={() => navigate('/')}>New here?</button>
           </div>
         </form>
       </div>
@@ -128,8 +114,6 @@ const LoginPage = () => {
           <button className=" reset-btn" type="submit">Send Reset Email</button>
         </form>
       </Model>
-    </div>
-
     </div>
   );
 };

@@ -325,7 +325,7 @@ const SignupPage = () => {
                         <label>Profile Picture</label>
                         <input
                             type="file"
-                            name="profilePicture"
+                            name="profilepicture"
                             onChange={handleProfilePictureChange}
                         />
                     </div>
