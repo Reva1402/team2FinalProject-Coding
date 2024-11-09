@@ -194,7 +194,7 @@ const HomePage = () => {
                         <>
                             <li onClick={() => navigate('/userProfile')}>Profile</li>
                             <li onClick={() => navigate('/createevent')}>Create An Event</li>
-                            <li onClick={() => navigate('/events')}>My Events</li>
+                            <li onClick={() => navigate('/myevents')}>My Events</li>
                             <li onClick={() => navigate('/notifications')}>Notifications</li>
                             <li onClick={() => navigate('/followers')}>Followers</li>
                         </>
