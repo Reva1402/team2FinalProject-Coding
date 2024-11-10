@@ -1,0 +1,18 @@
+.event-card {
+    border: 1px solid #ddd;
+    padding: 16px;
+    margin: 16px 0;
+    border-radius: 8px;
+  }
+  
+  .event-card h3 {
+    margin: 0;
+    font-size: 18px;
+  }
+  
+  .event-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
