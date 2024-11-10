@@ -1,0 +1,98 @@
+/* Styles for the container */
+.profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    background-color: #f9f9f9; /* Light background */
+  }
+  
+  /* Styles for the profile card */
+  .profile-card {
+    background-color: white;
+    padding: 30px;
+    width: 400px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    border: 1px solid #ddd;
+  }
+  
+  /* Styles for the profile picture */
+  .profile-picture {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 4px solid #800000; /* Dark red border */
+    margin-bottom: 20px;
+    object-fit: cover;
+  }
+  
+  /* Styles for profile information */
+  .profile-info p {
+    font-size: 16px;
+    color: #333;
+    margin: 8px 0;
+    line-height: 1.5;
+    font-weight: bold;
+  }
+  
+  .profile-info p strong {
+    color: #000;
+    font-weight: 600;
+    margin-right: 5px;
+  }
+  
+  /* Styles for action buttons */
+  .profile-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .edit-btn,
+  .delete-btn {
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .edit-btn {
+    background-color: #808080; /* Gray */
+    color: white;
+  }
+  
+  .edit-btn:hover {
+    background-color: #666666;
+  }
+  
+  .delete-btn {
+    background-color: #c0392b; /* Red */
+    color: white;
+  }
+  
+  .delete-btn:hover {
+    background-color: #a5281f;
+  }
+  .toggle-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #4caf50; /* Green */
+    color: white;
+    transition: background-color 0.3s ease;
+    margin-top: 15px;
+  }
+  
+  .toggle-btn:hover {
+    background-color: #45a049;
+  }
+  
+  

@@ -1,0 +1,67 @@
+/* Basic Header Styling */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #333;
+    color: #ffffff;
+}
+
+/* Title Styling */
+.navbar h1 {
+    font-size: 24px;
+}
+
+/* Navigation Links */
+.navbar nav {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Search Bar Styling */
+.header-search {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.search-input {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+}
+
+.search-button {
+    padding: 8px 12px;
+    font-size: 14px;
+    color: #ffffff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.search-button:hover {
+    background-color: #0056b3;
+}
+
+/* Logout Button Styling */
+.logout-btn {
+    padding: 8px 12px;
+    font-size: 14px;
+    color: #ffffff;
+    background-color: #d9534f;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.logout-btn:hover {
+    background-color: #c9302c;
+}
