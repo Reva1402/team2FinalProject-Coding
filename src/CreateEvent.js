@@ -1,185 +1,188 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { auth, firestore } from "./firebaseConfig";
-import { addDoc, collection } from "firebase/firestore";
-import "./Styling.css";
+import React, { useState } from 'react';
+import { firestore, auth } from './firebaseConfig';
+import { useNavigate } from 'react-router-dom';
+import { collection, addDoc } from 'firebase/firestore';
+import { signOut } from 'firebase/auth';
 
 const CreateEvent = () => {
-  const [eventName, setEventName] = useState("");
-  const [eventDate, setEventDate] = useState("");
-  const [eventTime, setEventTime] = useState("");
-  const [eventLocation, setEventLocation] = useState("");
-  const [eventDescription, setEventDescription] = useState("");
-  const [ticketPrice, setTicketPrice] = useState("");
-  const [eventImages, setEventImages] = useState([]);
-  const [error, setError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
+  const user = auth.currentUser;
 
- 
-  const handleImageChange = (e) => {
-    setEventImages(Array.from(e.target.files)); 
+  const [formData, setFormData] = useState({
+    eventName: '',
+    eventDate: '',
+    eventLocation: '',
+    eventDescription: '',
+    eventTime: '',
+    ticketPrice: '',
+    eventImages: [],
+  });
+
+  const [error, setError] = useState('');
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('');
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  
-  const convertToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result); 
-      reader.onerror = reject; 
-      reader.readAsDataURL(file); 
-    });
+  const handleEventImageChange = (e) => {
+    const files = e.target.files;
+    if (files.length > 0) {
+      const imageFiles = Array.from(files).map((file) => {
+        const reader = new FileReader();
+        return new Promise((resolve) => {
+          reader.onload = () => resolve(reader.result);
+          reader.readAsDataURL(file);
+        });
+      });
+
+      Promise.all(imageFiles).then((images) => {
+        setFormData((prevData) => ({ ...prevData, eventImages: images }));
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!eventName || !eventDate || !eventTime || !eventLocation || ticketPrice === "") {
-      setError("Please fill in all required fields.");
-      return;
-    }
+    setError('');
+
     try {
-      const imageBase64List = [];
+      if (user) {
+        const eventsRef = collection(firestore, 'events');
+        await addDoc(eventsRef, {
+          ...formData,
+          createdBy: user.uid,
+          createdAt: new Date(),
+        });
 
-      console.log("Converting images to base64...");
-      for (const image of eventImages) {
-        
-        const base64String = await convertToBase64(image);
-        imageBase64List.push(base64String); 
+        setPopupMessage('Event created successfully!');
+        setIsPopupVisible(true);
+        setTimeout(() => {
+          setIsPopupVisible(false);
+          navigate('/myevents');
+        }, 3000);
+      } else {
+        setError('User is not authenticated.');
       }
-      console.log("All images converted to base64:", imageBase64List);
+    } catch (err) {
+      setError('Failed to create event: ' + (err.message || 'Unknown error'));
+    }
+  };
 
-      const newEvent = {
-        name: eventName,
-        date: eventDate,
-        time: eventTime,
-        location: eventLocation,
-        description: eventDescription,
-        ticketPrice: parseFloat(ticketPrice),
-        createdBy: auth.currentUser.uid, 
-        images: imageBase64List, 
-      };
-
-      console.log("Creating event with base64 images:", imageBase64List);
-      await addDoc(collection(firestore, "events"), newEvent); 
-
-     
-      setEventName("");
-      setEventDate("");
-      setEventTime("");
-      setEventLocation("");
-      setEventDescription("");
-      setTicketPrice("");
-      setEventImages([]);
-      setSuccessMessage("Event created successfully!");
-
-     
-      setTimeout(() => {
-        setSuccessMessage("");
-        navigate("/userhomepage");
-      }, 2000);
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      navigate('/login');
     } catch (error) {
-     
-      console.error("Error creating event:", error);
-      setError("Failed to create event. Please try again.");
+      setError('Failed to log out. Please try again.');
     }
   };
 
   return (
-    <div className="container mt-5">
-      <h1>Create Event</h1>
-      {error && <div className="alert alert-danger">{error}</div>}
-      {successMessage && <div className="alert alert-success">{successMessage}</div>}
+    <div className="create-event">
+      <nav className="navbar">
+        <div className="navbar-brand" onClick={() => navigate('/userhomepage')}>Hi, {user?.displayName || 'User'}</div>
+        <ul className="nav-links">
+        <li className="nav-item" onClick={() => navigate('/viewProfile')}>Profile</li>
+                    <li className="nav-item" onClick={() => navigate('/createevent')}>Post An Event</li>
+                    <li className="nav-item" onClick={() => navigate('/myevents')}>My Events</li>
+                    <li className="nav-item" onClick={() => navigate('/notifications')}>Notifications</li>
+                    <li className="nav-item" onClick={() => navigate('/followers')}>Followers</li>
+        </ul>
+        <button className="logout-btn" onClick={handleLogout}>Logout</button>
+      </nav>
+
+      <h2>Create Event</h2>
+      {error && <p className="error">{error}</p>}
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="eventName">Event Name</label>
+      
+        <div>
+          <label>Event Name:</label>
           <input
             type="text"
-            className="form-control"
-            id="eventName"
-            placeholder="Enter event name"
-            value={eventName}
-            onChange={(e) => setEventName(e.target.value)}
+            name="eventName"
+            value={formData.eventName}
+            onChange={handleInputChange}
             required
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="eventDate">Event Date</label>
+        <div>
+          <label>Event Date:</label>
           <input
             type="date"
-            className="form-control"
-            id="eventDate"
-            value={eventDate}
-            onChange={(e) => setEventDate(e.target.value)}
+            name="eventDate"
+            value={formData.eventDate}
+            onChange={handleInputChange}
             required
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="eventTime">Event Time</label>
+        <div>
+          <label>Event Time:</label>
           <input
             type="time"
-            className="form-control"
-            id="eventTime"
-            value={eventTime}
-            onChange={(e) => setEventTime(e.target.value)}
+            name="eventTime"
+            value={formData.eventTime}
+            onChange={handleInputChange}
             required
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="eventLocation">Event Location</label>
+        <div>
+          <label>Location:</label>
           <input
             type="text"
-            className="form-control"
-            id="eventLocation"
-            placeholder="Enter event location"
-            value={eventLocation}
-            onChange={(e) => setEventLocation(e.target.value)}
+            name="eventLocation"
+            value={formData.eventLocation}
+            onChange={handleInputChange}
             required
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="eventDescription">Event Description</label>
+        <div>
+          <label>Description:</label>
           <textarea
-            className="form-control"
-            id="eventDescription"
-            rows="4"
-            placeholder="Enter event description"
-            value={eventDescription}
-            onChange={(e) => setEventDescription(e.target.value)}
-          ></textarea>
+            name="eventDescription"
+            value={formData.eventDescription}
+            onChange={handleInputChange}
+            required
+          />
         </div>
-        <div className="form-group">
-          <label htmlFor="ticketPrice">Ticket Price ($)</label>
+        <div>
+          <label>Ticket Price:</label>
           <input
             type="number"
-            className="form-control"
-            id="ticketPrice"
-            placeholder="Enter ticket price"
-            value={ticketPrice}
-            onChange={(e) => setTicketPrice(e.target.value)}
+            name="ticketPrice"
+            value={formData.ticketPrice}
+            onChange={handleInputChange}
             required
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="eventImages">Event Images</label>
+        <div>
+          <label>Event Images:</label>
           <input
             type="file"
-            className="form-control"
-            id="eventImages"
+            onChange={handleEventImageChange}
             multiple
-            onChange={handleImageChange} 
+            accept="image/*"
           />
-          {eventImages.length > 0 && (
-            <ul>
-              {Array.from(eventImages).map((file, index) => (
-                <li key={index}>{file.name}</li>
-              ))}
-            </ul>
-          )}
         </div>
-        <button type="submit" className="btn btn-primary">
-          Create Event
-        </button>
+        <button type="submit">Create Event</button>
       </form>
+
+      {isPopupVisible && (
+        <div className="popup">
+          <p>{popupMessage}</p>
+        </div>
+      )}
+
+<footer className="footer">
+                <ul className="footer-links">
+                    <li onClick={() => navigate('/about')}>About</li>
+                    <li onClick={() => navigate('/privacypolicy')}>Privacy Policy</li>
+                    <li onClick={() => navigate('/termsandconditions')}>Terms and Conditions</li>
+                    <li onClick={() => navigate('/contactus')}>Contact Us</li>
+                </ul>
+            </footer>
     </div>
   );
 };
