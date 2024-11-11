@@ -85,7 +85,7 @@ const CreateEvent = () => {
       <nav className="navbar">
         <div className="navbar-brand" onClick={() => navigate('/userhomepage')}>Hi, {user?.displayName || 'User'}</div>
         <ul className="nav-links">
-        <li className="nav-item" onClick={() => navigate('/viewProfile')}>Profile</li>
+        <li className="nav-item" onClick={() => navigate('/UserProfile')}>Profile</li>
                     <li className="nav-item" onClick={() => navigate('/createevent')}>Post An Event</li>
                     <li className="nav-item" onClick={() => navigate('/myevents')}>My Events</li>
                     <li className="nav-item" onClick={() => navigate('/notifications')}>Notifications</li>

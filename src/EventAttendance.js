@@ -10,7 +10,7 @@ const EventAttendance = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [attendanceStatus, setAttendanceStatus] = useState(null);
   const [userEvents, setUserEvents] = useState([]);
-  const [attendeesCount, setAttendeesCount] = useState(0);  // State to hold the number of attendees
+  const [attendeesCount, setAttendeesCount] = useState(0); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,12 +21,12 @@ const EventAttendance = () => {
         const eventData = eventDoc.data();
         setEvent(eventData);
 
-       
+        
         if (eventData.attendees) {
           setAttendeesCount(eventData.attendees.length);
         }
 
-       
+        
         const user = auth.currentUser;
         if (user) {
           if (eventData.attendees?.includes(user.uid)) {
@@ -96,7 +96,7 @@ const EventAttendance = () => {
       const eventRef = doc(firestore, 'events', eventId);
 
       try {
-       
+        
         if (isAttending) {
           await updateDoc(eventRef, {
             attendees: arrayUnion(user.uid),
@@ -109,7 +109,7 @@ const EventAttendance = () => {
           });
         }
         
-       
+        
         const updatedEventDoc = await getDoc(eventRef);
         if (updatedEventDoc.exists()) {
           const updatedEventData = updatedEventDoc.data();
@@ -117,7 +117,6 @@ const EventAttendance = () => {
         }
 
         console.log(isAttending ? 'Attendance updated successfully!' : 'Non-attendance updated successfully!');
-        
       } catch (error) {
         console.error('Error updating attendance:', error);
       }
@@ -128,14 +127,6 @@ const EventAttendance = () => {
 
   return (
     <div className="event-attendance-page">
-      <ul className="nav-links">
-                <li className="nav-item" onClick={() => navigate('/viewProfile')}>Profile</li>
-                    <li className="nav-item" onClick={() => navigate('/createevent')}>Post An Event</li>
-                    <li className="nav-item" onClick={() => navigate('/myevents')}>My Events</li>
-                    <li className="nav-item" onClick={() => navigate('/notifications')}>Notifications</li>
-                    <li className="nav-item" onClick={() => navigate('/followers')}>Followers</li>
-                </ul>
-      
         
         {event.images && event.images.length > 0 && (
             <div className="event-image-carousel">
@@ -165,11 +156,11 @@ const EventAttendance = () => {
         <p><strong>Location:</strong> {event.location}</p>
         <p><strong>Description:</strong> {event.description}</p>
 
-   
+        {/* Display the number of attendees */}
         <p><strong>Number of Attendees:</strong> {attendeesCount}</p>
         
         <div className="attendance-question">
-            <p >Do you want to attend this event?</p>
+            <p>Do you want to attend this event?</p>
             <label>
                 <input
                     type="radio"
@@ -177,7 +168,6 @@ const EventAttendance = () => {
                     value="yes"
                     checked={attendanceStatus === 'attending'}
                     onChange={handleCheckboxChange}
-                    
                 />
                 Yes
             </label>

@@ -189,12 +189,16 @@ const HomePage = () => {
                     }}
                     className="search-bar"
                 />
-               <ul className="nav-links">
-                    <li className="nav-item" onClick={() => navigate('/viewProfile')}>Profile</li>
-                    <li className="nav-item" onClick={() => navigate('/createevent')}>Post An Event</li>
-                    <li className="nav-item" onClick={() => navigate('/myevents')}>My Events</li>
-                    <li className="nav-item" onClick={() => navigate('/notifications')}>Notifications</li>
-                    <li className="nav-item" onClick={() => navigate('/followers')}>Followers</li>
+                <ul className="nav-links">
+                    {userName !== 'Guest' && (
+                        <>
+                            <li onClick={() => navigate('/UserProfile')}>Profile</li>
+                            <li onClick={() => navigate('/createevent')}>Create An Event</li>
+                            <li onClick={() => navigate('/MyEvents')}>My Events</li>
+                            <li onClick={() => navigate('/notifications')}>Notifications</li>
+                            <li onClick={() => navigate('/followers')}>Followers</li>
+                        </>
+                    )}
                 </ul>
                 {userName !== 'Guest' && (
                     <button className="logout-btn" onClick={handleLogout}>Logout</button>

@@ -19,10 +19,10 @@ const ModeratorHomePage = () => {
                 return;
             }
 
-            
+            // Verify if the user is a moderator
             try {
                 const userDoc = await getDoc(doc(firestore, 'users', currentUser.uid));
-               
+                // Will add logic where we check if the user is a moderator
                 if (!userDoc.exists()) {
                     navigate('/moderatorlogin');
                     return;
@@ -34,7 +34,7 @@ const ModeratorHomePage = () => {
                 return;
             }
 
-         
+            // Fetch events
             fetchEvents();
         });
 
@@ -154,7 +154,7 @@ const ModeratorHomePage = () => {
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="search-input"
                     />
-                    <button className="profile-btn" onClick={() => navigate('/moderator/profile')}>
+                    <button className="profile-btn" onClick={() => navigate('/ModeratorProfile')}>
                         Profile
                     </button>
                     <button className="logout-btn" onClick={handleLogout}>

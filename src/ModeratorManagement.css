@@ -1,0 +1,116 @@
+
+.moderator-management-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.moderator-management-title {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+
+.moderator-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.moderator-table th, .moderator-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.moderator-table th {
+    background-color: #555;
+    color: white;
+}
+
+.moderator-table td {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+
+.action-buttons button {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+    transition: background-color 0.3s, opacity 0.3s;
+}
+
+
+.view-button {
+    background-color: #5bc0de; 
+}
+
+.edit-button {
+    background-color: #f0ad4e; 
+}
+
+.demote-button {
+    background-color: #5cb85c; 
+}
+
+.suspend-button {
+    background-color: #d9534f;
+}
+
+.delete-button {
+    background-color: #292b2c; 
+}
+
+
+.view-button:hover {
+    background-color: #31b0d5;
+}
+
+.edit-button:hover {
+    background-color: #ec971f;
+}
+
+.demote-button:hover {
+    background-color: #4cae4c;
+}
+
+.suspend-button:hover {
+    background-color: #c9302c;
+}
+
+.delete-button:hover {
+    background-color: #1d1f1f;
+}
+
+.action-buttons button:hover {
+    opacity: 0.85;
+}
+
+
+.add-moderator-link {
+    display: inline-block;
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.add-moderator-link:hover {
+    text-decoration: underline;
+}
