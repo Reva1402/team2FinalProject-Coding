@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { firestore, auth } from './firebaseConfig';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc , deleteDoc} from 'firebase/firestore';
 import './userProfile.css';
 import { signOut } from 'firebase/auth';
 
@@ -9,6 +9,8 @@ const UserProfile = () => {
   const [userProfile, setUserProfile] = useState(null);
   const navigate = useNavigate();
   const user = auth.currentUser; 
+  
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -27,18 +29,36 @@ const UserProfile = () => {
 
   const handleLogout = async () => {
     try {
-        await signOut(auth);
-        navigate('/login'); 
+      await signOut(auth);
+      setUserProfile(null); 
+      navigate('/login');
     } catch (error) {
-        console.error('Error logging out:', error);
-        alert('Failed to log out. Please try again.');
+      console.error('Error logging out:', error);
+      alert('Failed to log out. Please try again.');
     }
-};
+  };
+  
 
   const handleEditProfile = () => {
     navigate('/editprofile');
   };
 
+  const handleDeleteEvent = async (id) => {
+    try {
+      const isConfirmed = window.confirm('Are you sure you want to delete this profile?');
+      if (isConfirmed) {
+        const userRef = doc(firestore, 'users', id);
+        await deleteDoc(userRef);
+        alert('Profile deleted successfully!');
+        await signOut(auth); 
+        navigate('/'); 
+      }
+    } catch (err) {
+      console.error('Error deleting profile:', err);
+      setError('Failed to delete profile. Please try again later.');
+    }
+  };
+  
   return (
     <div>
        <nav className="navbar">
@@ -83,6 +103,8 @@ const UserProfile = () => {
           <button className="edit-profile-btn" onClick={handleEditProfile}>
             Edit Profile
           </button>
+          <button onClick={() => handleDeleteEvent(user.uid)}>Delete</button>
+
         </div>
       ) : (
         <p>Loading profile...</p>

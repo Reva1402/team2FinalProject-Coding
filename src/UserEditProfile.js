@@ -3,6 +3,8 @@ import { auth, firestore } from './firebaseConfig';
 import { useNavigate } from 'react-router-dom';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { signOut } from 'firebase/auth';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { getMessaging, getToken, onMessage } from 'firebase/messaging';
 import './UserEditProfile.css';
 
 const UserEditProfile = () => {
@@ -19,10 +21,13 @@ const UserEditProfile = () => {
     const [dateOfBirth, setDateOfBirth] = useState('');
     const [country, setCountry] = useState('');
     const [province, setProvince] = useState('');
-    const [profilePicture, setProfilePicture] = useState('');
+    const [profilepicture, setProfilePicture] = useState('');
     const [error, setError] = useState('');
     const [popupMessage, setPopupMessage] = useState('');
     const [isPopupVisible, setIsPopupVisible] = useState(false);
+
+
+    const [pushNotificationMessage, setPushNotificationMessage] = useState('');
 
     useEffect(() => {
         if (user) {
@@ -42,7 +47,7 @@ const UserEditProfile = () => {
                         setDateOfBirth(data.dateOfBirth || '');
                         setCountry(data.country || '');
                         setProvince(data.province || '');
-                        setProfilePicture(data.profilePicture || 'default-profile.png');
+                        setProfilePicture(data.profilepicture || ''); 
                     } else {
                         setError('User profile not found. Please check your account.');
                     }
@@ -56,6 +61,27 @@ const UserEditProfile = () => {
             navigate('/login');
         }
     }, [user, navigate]);
+
+    const handleProfilePictureUpload = async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            try {
+                const storage = getStorage();
+                const storageRef = ref(storage, `profile_pictures/${user.uid}`);
+                await uploadBytes(storageRef, file);
+                const url = await getDownloadURL(storageRef);
+
+                setProfilePicture(url); 
+
+                const userDocRef = doc(firestore, 'users', user.uid);
+                await setDoc(userDocRef, {
+                    profilepicture: url,
+                }, { merge: true });
+            } catch (error) {
+                console.error('Error uploading profile picture:', error);
+            }
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -75,7 +101,7 @@ const UserEditProfile = () => {
                     dateOfBirth,
                     country,
                     province,
-                    profilePicture,
+                    profilepicture: profilepicture, 
                 }, { merge: true });
 
                 setPopupMessage('Profile updated successfully!');
@@ -83,7 +109,7 @@ const UserEditProfile = () => {
 
                 setTimeout(() => {
                     setIsPopupVisible(false);
-                    navigate('/viewProfile');
+                    navigate('/UserProfile');
                 }, 3000);
             } else {
                 setError('User is not authenticated.');
@@ -94,35 +120,55 @@ const UserEditProfile = () => {
         }
     };
 
-    const handleProfilePictureChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                setProfilePicture(reader.result); 
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-
     const handleLogout = async () => {
         try {
             await signOut(auth);
-            navigate('/login'); 
+            navigate('/login');
         } catch (error) {
             console.error('Error logging out:', error);
             alert('Failed to log out. Please try again.');
         }
     };
 
+    
+    const sendPushNotification = async () => {
+        try {
+            const messaging = getMessaging();
+            const token = await getToken(messaging, { vapidKey: 'YOUR_VAPID_KEY_HERE' });
+
+
+            if (token) {
+                const notificationData = {
+                    to: 'DEVICE_TOKEN_OF_TARGET_USER', 
+                    notification: {
+                        title: 'Profile Update',
+                        body: pushNotificationMessage,
+                    },
+                    data: {
+                        click_action: 'YOUR_CLICK_ACTION_URL',
+                    },
+                };
+
+                
+                console.log('Push notification data:', notificationData);
+
+               
+            } else {
+                console.error('No FCM token available.');
+            }
+        } catch (error) {
+            console.error('Error sending push notification:', error);
+        }
+    };
+
     return (
         <div className="edit-profile">
             <nav className="navbar">
-                <div className="navbar-brand" onClick={() => navigate('/userhomepage')}>
+            <div className="navbar-brand" onClick={() => navigate('/UserHomePage')}>
                     Hi, {firstName || 'User'}
                 </div>
                 <ul className="nav-links">
-                <li className="nav-item" onClick={() => navigate('/viewProfile')}>Profile</li>
+                    <li className="nav-item" onClick={() => navigate('/viewProfile')}>Profile</li>
                     <li className="nav-item" onClick={() => navigate('/createevent')}>Post An Event</li>
                     <li className="nav-item" onClick={() => navigate('/myevents')}>My Events</li>
                     <li className="nav-item" onClick={() => navigate('/notifications')}>Notifications</li>
@@ -133,6 +179,7 @@ const UserEditProfile = () => {
 
             <h2>Edit Profile</h2>
             {error && <p className="error">{error}</p>}
+
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="firstName">First Name:</label>
@@ -162,7 +209,7 @@ const UserEditProfile = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
-                        disabled 
+                        disabled
                     />
                 </div>
                 <div>
@@ -229,15 +276,37 @@ const UserEditProfile = () => {
                     />
                 </div>
                 <div>
-                    <label htmlFor="profilePicture">Profile Picture:</label>
+                    <label htmlFor="profilepicture">Profile Picture:</label>
+                    <div className="profile-picture-container">
+                        <img
+                            src={profilepicture || 'default-profile.png'}
+                            alt="Profile"
+                            className="profile-picture"
+                            style={{ width: '100px', height: '100px', borderRadius: '50%' }}
+                        />
+                    </div>
                     <input
                         type="file"
-                        id="profilePicture"
-                        onChange={handleProfilePictureChange}
+                        accept="image/*"
+                        onChange={handleProfilePictureUpload}
                     />
                 </div>
+
                 <button type="submit">Update Profile</button>
             </form>
+
+
+            <div>
+                <label htmlFor="pushNotificationMessage">Push Notification Message:</label>
+                <textarea
+                    id="pushNotificationMessage"
+                    value={pushNotificationMessage}
+                    onChange={(e) => setPushNotificationMessage(e.target.value)}
+                ></textarea>
+                <button type="button" onClick={sendPushNotification}>
+                    Send Notification
+                </button>
+            </div>
 
             {isPopupVisible && (
                 <div className="popup">
@@ -245,14 +314,14 @@ const UserEditProfile = () => {
                 </div>
             )}
 
-            <footer className="footer">
-                <ul className="footer-links">
-                    <li onClick={() => navigate('/about')}>About</li>
-                    <li onClick={() => navigate('/privacypolicy')}>Privacy Policy</li>
-                    <li onClick={() => navigate('/termsandconditions')}>Terms and Conditions</li>
-                    <li onClick={() => navigate('/contactus')}>Contact Us</li>
-                </ul>
-            </footer>
+       <footer className="footer">
+        <ul className="footer-links">
+          <li onClick={() => navigate('/about')}>About</li>
+          <li onClick={() => navigate('/privacypolicy')}>Privacy Policy</li>
+          <li onClick={() => navigate('/termsandconditions')}>Terms and Conditions</li>
+          <li onClick={() => navigate('/contactus')}>Contact Us</li>
+        </ul>
+      </footer>
         </div>
     );
 };

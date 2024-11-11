@@ -51,7 +51,7 @@ const MyEvents = () => {
     };
 
     const handleViewEvent = (id) => {
-        navigate(`/event/${id}`);
+        navigate(`/eventdetail/${id}`); 
     };
 
     const handleDeleteEvent = async (id) => {
