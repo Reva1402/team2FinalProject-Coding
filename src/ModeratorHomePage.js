@@ -19,7 +19,6 @@ const ModeratorHomePage = () => {
                 return;
             }
 
-            // Verify if the user is a moderator
             try {
                 const userDoc = await getDoc(doc(firestore, 'users', currentUser.uid));
                 // Will add logic where we check if the user is a moderator
@@ -157,7 +156,7 @@ const ModeratorHomePage = () => {
                     <button className="profile-btn" onClick={() => navigate('/ModeratorProfile')}>
                         Profile
                     </button>
-                    <button className="logout-btn" onClick={handleLogout}>
+                    <button className="logout-btn" onClick={() => navigate('/login')}>
                         Log Out
                     </button>
                 </div>
