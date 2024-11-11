@@ -35,6 +35,7 @@ function App() {
       <Route path="myevents" element = {<MyEvents />} />
       <Route path="moderatorhomepage" element={<ModeratorHomePage />} />
       <Route path="/moderator/profile" element={<ModeratorProfile />} />
+      
       </Routes>
       </Router>
     </div>
