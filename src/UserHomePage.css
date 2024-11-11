@@ -17,7 +17,6 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #5c6bc0;
     color: white;
     padding: 15px 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -63,7 +62,7 @@ html, body {
   
   
   .home-content {
-    padding-top: 3000px;  
+    padding-top: 7000px;  
     flex-grow: 1;  
     padding-bottom: 50px; 
     text-align: center;
@@ -191,17 +190,17 @@ html, body {
   }
 
   .footer {
+    position: fixed;
     background-color: #333;
     color: #ddd;
-    padding: 20px 0;
     text-align: center;
-    margin-top: 50px;
+    width: 100%;
   }
   
   .footer-links {
     list-style: none;
     display: flex;
-    gap: 30px;
+    gap: 300px;
     justify-content: center;
     padding: 0;
   }

@@ -21,12 +21,12 @@ const UserEditProfile = () => {
     const [dateOfBirth, setDateOfBirth] = useState('');
     const [country, setCountry] = useState('');
     const [province, setProvince] = useState('');
-    const [profilePicture, setProfilePicture] = useState('');
+    const [profilepicture, setProfilePicture] = useState('');
     const [error, setError] = useState('');
     const [popupMessage, setPopupMessage] = useState('');
     const [isPopupVisible, setIsPopupVisible] = useState(false);
 
-    // Add state for push notification
+
     const [pushNotificationMessage, setPushNotificationMessage] = useState('');
 
     useEffect(() => {
@@ -47,7 +47,7 @@ const UserEditProfile = () => {
                         setDateOfBirth(data.dateOfBirth || '');
                         setCountry(data.country || '');
                         setProvince(data.province || '');
-                        setProfilePicture(data.profilepicture || ''); // Set profile picture URL
+                        setProfilePicture(data.profilepicture || ''); 
                     } else {
                         setError('User profile not found. Please check your account.');
                     }
@@ -71,11 +71,11 @@ const UserEditProfile = () => {
                 await uploadBytes(storageRef, file);
                 const url = await getDownloadURL(storageRef);
 
-                setProfilePicture(url); // Update the state with the new profile picture URL
+                setProfilePicture(url); 
 
                 const userDocRef = doc(firestore, 'users', user.uid);
                 await setDoc(userDocRef, {
-                    profilepicture: url, // Save the URL to Firestore
+                    profilepicture: url,
                 }, { merge: true });
             } catch (error) {
                 console.error('Error uploading profile picture:', error);
@@ -101,7 +101,7 @@ const UserEditProfile = () => {
                     dateOfBirth,
                     country,
                     province,
-                    profilepicture: profilePicture, // Save profile picture URL if changed
+                    profilepicture: profilepicture, 
                 }, { merge: true });
 
                 setPopupMessage('Profile updated successfully!');
@@ -109,7 +109,7 @@ const UserEditProfile = () => {
 
                 setTimeout(() => {
                     setIsPopupVisible(false);
-                    navigate('/userProfile');
+                    navigate('/UserProfile');
                 }, 3000);
             } else {
                 setError('User is not authenticated.');
@@ -130,18 +130,16 @@ const UserEditProfile = () => {
         }
     };
 
-    // Function to handle sending push notification
+    
     const sendPushNotification = async () => {
         try {
             const messaging = getMessaging();
-            // Get FCM token for the current user
             const token = await getToken(messaging, { vapidKey: 'YOUR_VAPID_KEY_HERE' });
 
-            // Check if the token is available
+
             if (token) {
-                // Send a notification to another user (or multiple users)
                 const notificationData = {
-                    to: 'DEVICE_TOKEN_OF_TARGET_USER', // The recipient's device token
+                    to: 'DEVICE_TOKEN_OF_TARGET_USER', 
                     notification: {
                         title: 'Profile Update',
                         body: pushNotificationMessage,
@@ -151,11 +149,10 @@ const UserEditProfile = () => {
                     },
                 };
 
-                // Send notification to Firebase Cloud Messaging (FCM)
-                // This requires a server-side implementation of FCM to send the push notification
+                
                 console.log('Push notification data:', notificationData);
 
-                // Normally, you would send this data to your backend server to handle the notification sending.
+               
             } else {
                 console.error('No FCM token available.');
             }
@@ -167,13 +164,13 @@ const UserEditProfile = () => {
     return (
         <div className="edit-profile">
             <nav className="navbar">
-                <div className="navbar-brand" onClick={() => navigate('/profile')}>
+            <div className="navbar-brand" onClick={() => navigate('/UserHomePage')}>
                     Hi, {firstName || 'User'}
                 </div>
                 <ul className="nav-links">
-                    <li className="nav-item" onClick={() => navigate('/userProfile')}>Profile</li>
+                    <li className="nav-item" onClick={() => navigate('/UserProfile')}>Profile</li>
                     <li className="nav-item" onClick={() => navigate('/events')}>My Events</li>
-                    <li className="nav-item" onClick={() => navigate('/postanevent')}>Post An Event</li>
+                    <li className="nav-item" onClick={() => navigate('/CreateEvent')}>Post An Event</li>
                     <li className="nav-item" onClick={() => navigate('/notifications')}>Notifications</li>
                     <li className="nav-item" onClick={() => navigate('/followers')}>Followers</li>
                 </ul>
@@ -278,13 +275,11 @@ const UserEditProfile = () => {
                         onChange={(e) => setProvince(e.target.value)}
                     />
                 </div>
-
-                {/* Profile Picture Upload */}
                 <div>
                     <label htmlFor="profilepicture">Profile Picture:</label>
                     <div className="profile-picture-container">
                         <img
-                            src={profilePicture || 'default-profile.png'}
+                            src={profilepicture || 'default-profile.png'}
                             alt="Profile"
                             className="profile-picture"
                             style={{ width: '100px', height: '100px', borderRadius: '50%' }}
@@ -300,7 +295,7 @@ const UserEditProfile = () => {
                 <button type="submit">Update Profile</button>
             </form>
 
-            {/* Push Notification Section */}
+
             <div>
                 <label htmlFor="pushNotificationMessage">Push Notification Message:</label>
                 <textarea
@@ -319,13 +314,14 @@ const UserEditProfile = () => {
                 </div>
             )}
 
-            <footer className="footer">
-                <ul className="footer-links">
-                    <li onClick={() => navigate('/about')}>About</li>
-                    <li onClick={() => navigate('/privacypolicy')}>Privacy Policy</li>
-                    <li onClick={() => navigate('/terms')}>Terms of Use</li>
-                </ul>
-            </footer>
+       <footer className="footer">
+        <ul className="footer-links">
+          <li onClick={() => navigate('/about')}>About</li>
+          <li onClick={() => navigate('/privacypolicy')}>Privacy Policy</li>
+          <li onClick={() => navigate('/termsandconditions')}>Terms and Conditions</li>
+          <li onClick={() => navigate('/contactus')}>Contact Us</li>
+        </ul>
+      </footer>
         </div>
     );
 };

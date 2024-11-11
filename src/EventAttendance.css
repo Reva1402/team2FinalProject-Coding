@@ -1,4 +1,4 @@
-/* EventAttendance.css */
+
 .event-attendance-page {
     padding: 20px;
     text-align: center;
@@ -35,13 +35,13 @@
     margin: 10px;
     cursor: pointer;
     border: none;
-    background-color: #4CAF50; /* Green for "Attending" */
+    background-color: #4CAF50; 
     color: white;
     border-radius: 5px;
   }
   
   .not-attend-btn {
-    background-color: #f44336; /* Red for "Not Attending" */
+    background-color: #f44336;
   }
   
   .attend-btn:hover, .not-attend-btn:hover {

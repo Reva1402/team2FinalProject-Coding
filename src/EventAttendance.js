@@ -10,7 +10,7 @@ const EventAttendance = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [attendanceStatus, setAttendanceStatus] = useState(null);
   const [userEvents, setUserEvents] = useState([]);
-  const [attendeesCount, setAttendeesCount] = useState(0);  // State to hold the number of attendees
+  const [attendeesCount, setAttendeesCount] = useState(0); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,12 +21,12 @@ const EventAttendance = () => {
         const eventData = eventDoc.data();
         setEvent(eventData);
 
-        // Set attendees count
+        
         if (eventData.attendees) {
           setAttendeesCount(eventData.attendees.length);
         }
 
-        // Check if the user is already in the attendees or nonAttendees list
+        
         const user = auth.currentUser;
         if (user) {
           if (eventData.attendees?.includes(user.uid)) {
@@ -96,7 +96,7 @@ const EventAttendance = () => {
       const eventRef = doc(firestore, 'events', eventId);
 
       try {
-        // Update the attendees and nonAttendees lists accordingly
+        
         if (isAttending) {
           await updateDoc(eventRef, {
             attendees: arrayUnion(user.uid),
@@ -109,7 +109,7 @@ const EventAttendance = () => {
           });
         }
         
-        // After updating, fetch the event data again to update the attendee count
+        
         const updatedEventDoc = await getDoc(eventRef);
         if (updatedEventDoc.exists()) {
           const updatedEventData = updatedEventDoc.data();

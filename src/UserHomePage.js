@@ -16,8 +16,8 @@ const HomePage = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [users, setUsers] = useState([]);
     const [searchResults, setSearchResults] = useState([]);
-    const [reportedComments, setReportedComments] = useState({}); // Track reported comments
-    const [reportedEvents, setReportedEvents] = useState({}); // Track reported events
+    const [reportedComments, setReportedComments] = useState({}); 
+    const [reportedEvents, setReportedEvents] = useState({});
 
     useEffect(() => {
         const fetchEvents = async () => {
@@ -162,14 +162,14 @@ const HomePage = () => {
     const handleReport = (eventId) => {
         setReportedEvents(prevReportedEvents => ({
             ...prevReportedEvents,
-            [eventId]: true // Mark the event as reported
+            [eventId]: true 
         }));
     };
 
     const handleReportComment = (eventId, commentIndex) => {
         setReportedComments(prevReportedComments => ({
             ...prevReportedComments,
-            [`${eventId}-${commentIndex}`]: true // Mark the comment as reported
+            [`${eventId}-${commentIndex}`]: true 
         }));
     };
 
@@ -192,9 +192,9 @@ const HomePage = () => {
                 <ul className="nav-links">
                     {userName !== 'Guest' && (
                         <>
-                            <li onClick={() => navigate('/userProfile')}>Profile</li>
+                            <li onClick={() => navigate('/UserProfile')}>Profile</li>
                             <li onClick={() => navigate('/createevent')}>Create An Event</li>
-                            <li onClick={() => navigate('/myevents')}>My Events</li>
+                            <li onClick={() => navigate('/MyEvents')}>My Events</li>
                             <li onClick={() => navigate('/notifications')}>Notifications</li>
                             <li onClick={() => navigate('/followers')}>Followers</li>
                         </>
@@ -215,7 +215,7 @@ const HomePage = () => {
                         <div key={event.id} className="event-card">
                             <h3>{event.name}</h3>
                             <p><strong>Date:</strong> {event.date}</p>
-                            <p><strong>Time:</strong> {event.time}</p> {/* Display event time */}
+                            <p><strong>Time:</strong> {event.time}</p>
                             <p><strong>Location:</strong> {event.location}</p>
                             <p>{event.description}</p>
 
@@ -243,7 +243,7 @@ const HomePage = () => {
 
                             <div className="action-buttons">
                                 <button
-                                    onClick={() => navigate(`/event/${event.id}`)} // Navigate to the EventAttendance page
+                                    onClick={() => navigate(`/event/${event.id}`)} 
                                     className="attend-btn"
                                 >
                                     Give Attendance
@@ -265,7 +265,7 @@ const HomePage = () => {
                                 <button
                                     onClick={() => handleReport(event.id)}
                                     className="report-btn"
-                                    disabled={reportedEvents[event.id]} // Disable if reported
+                                    disabled={reportedEvents[event.id]}
                                 >
                                     {reportedEvents[event.id] ? 'Reported' : 'Report this Event'}
                                 </button>
@@ -280,7 +280,7 @@ const HomePage = () => {
                                             <button
                                                 onClick={() => handleReportComment(event.id, index)}
                                                 className="report-comment-btn"
-                                                disabled={reportedComments[`${event.id}-${index}`]} // Disable if reported
+                                                disabled={reportedComments[`${event.id}-${index}`]} 
                                             >
                                                 {reportedComments[`${event.id}-${index}`] ? 'Reported' : 'Report'}
                                             </button>
@@ -317,7 +317,17 @@ const HomePage = () => {
                     </div>
                 )}
             </div>
+        <footer className="footer">
+        <ul className="footer-links">
+          <li onClick={() => navigate('/about')}>About</li>
+          <li onClick={() => navigate('/privacypolicy')}>Privacy Policy</li>
+          <li onClick={() => navigate('/termsandconditions')}>Terms and Conditions</li>
+          <li onClick={() => navigate('/contactus')}>Contact Us</li>
+        </ul>
+      </footer>          
         </div>
+
+        
     );
 };
 
