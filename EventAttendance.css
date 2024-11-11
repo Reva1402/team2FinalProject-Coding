@@ -1,0 +1,55 @@
+
+.event-attendance-page {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .event-image-carousel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .carousel-btn {
+    background: none;
+    border: none;
+    font-size: 2em;
+    cursor: pointer;
+    padding: 10px;
+  }
+  
+  .event-image {
+    max-width: 100%;
+    height: auto;
+    margin: 0 20px;
+  }
+  
+  .attendance-buttons {
+    margin-top: 20px;
+  }
+  
+  .attend-btn, .not-attend-btn {
+    font-size: 1.2em;
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+    border: none;
+    background-color: #4CAF50; 
+    color: white;
+    border-radius: 5px;
+  }
+  
+  .not-attend-btn {
+    background-color: #f44336;
+  }
+  
+  .attend-btn:hover, .not-attend-btn:hover {
+    opacity: 0.8;
+  }
+  
+  p {
+    font-size: 1.1em;
+    margin-top: 10px;
+  }
+  
