@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { db, auth } from "./firebaseConfig";
+import { firestore, auth } from "./firebaseConfig";
 import { Link, useNavigate } from "react-router-dom";
 import { collection, onSnapshot } from "firebase/firestore";
 import { signOut } from "firebase/auth";
@@ -13,21 +13,21 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const userListener = onSnapshot(collection(db, "users"), snapshot => {
+    const userListener = onSnapshot(collection(firestore, "users"), snapshot => {
       const total = snapshot.size;
       const active = snapshot.docs.filter(doc => doc.data().status === "active").length;
       const inactive = total - active;
       setUserCounts({ total, active, inactive });
     });
 
-    const moderatorListener = onSnapshot(collection(db, "moderators"), snapshot => {
+    const moderatorListener = onSnapshot(collection(firestore, "moderators"), snapshot => {
       const total = snapshot.size;
       const active = snapshot.docs.filter(doc => doc.data().status === "active").length;
       const inactive = total - active;
       setModeratorCounts({ total, active, inactive });
     });
 
-    const eventListener = onSnapshot(collection(db, "events"), snapshot => {
+    const eventListener = onSnapshot(collection(firestore, "events"), snapshot => {
       const total = snapshot.size;
       const active = snapshot.docs.filter(doc => doc.data().status === "active").length;
       const inactive = total - active;
