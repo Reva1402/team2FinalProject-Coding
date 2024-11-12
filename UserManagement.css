@@ -1,0 +1,37 @@
+/* src/UserManagement.css */
+.admin-container {
+  width: 80%;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.user-table th, .user-table td {
+  padding: 15px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.user-table th {
+  background-color: #f2f2f2;
+}
+
+.action-button {
+  padding: 8px 12px;
+  margin: 2px;
+  cursor: pointer;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+}
+
+.view-button { background-color: #007bff; }
+.edit-button { background-color: #28a745; }
+.promote-button { background-color: #ffc107; }
+.suspend-button { background-color: #6c757d; }
+.delete-button { background-color: #dc3545; }
