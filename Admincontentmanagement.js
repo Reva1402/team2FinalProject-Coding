@@ -196,8 +196,8 @@ const Admincontentmanagement = () => {
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="search-input"
                     />
-                    <button className="profile-btn" onClick={() => navigate('/ModeratorProfile')}>
-                        Profile
+                    <button className="profile-btn" onClick={() => navigate('/AdminProfile')}>
+                            Profile
                     </button>
                     <button className="logout-btn" onClick={() => navigate('/login')}>
                         Log Out
