@@ -19,7 +19,6 @@ const ModeratorHomePage = () => {
                 return;
             }
 
-            // Verify if the user is a moderator
             try {
                 const userDoc = await getDoc(doc(firestore, 'users', currentUser.uid));
                 // Will add logic where we check if the user is a moderator
@@ -72,6 +71,12 @@ const ModeratorHomePage = () => {
         );
     };
 
+    
+    const suspendEvent = async (id) =>{
+        const updatedList = events.filter((event) => event.id !== id);
+        setEvents(updatedList);
+    }
+
     const renderEventManagementTable = () => {
         return (
             <div className="event-management-table">
@@ -88,10 +93,10 @@ const ModeratorHomePage = () => {
                             <tr key={event.id}>
                                 <td>{event.name}</td>
                                 <td className="action-buttons">
-                                    <button className="view-btn">View</button>
+                                    <button className="view-btn" onClick={()=>navigate(`/event/${event.id}`)}>View</button>
                                     <button className="warning-btn">Warning</button>
-                                    <button className="suspend-btn">Suspend</button>
-                                    <button className="remove-btn">Remove</button>
+                                    <button className="suspend-btn" onClick={()=>suspendEvent(`${event.id}`)}>Suspend</button>
+                                    <button className="warning-btn">Remove</button>
                                 </td>
                             </tr>
                         ))}
@@ -154,10 +159,10 @@ const ModeratorHomePage = () => {
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="search-input"
                     />
-                    <button className="profile-btn" onClick={() => navigate('/moderator/profile')}>
+                    <button className="profile-btn" onClick={() => navigate('/ModeratorProfile')}>
                         Profile
                     </button>
-                    <button className="logout-btn" onClick={handleLogout}>
+                    <button className="logout-btn" onClick={() => navigate('/login')}>
                         Log Out
                     </button>
                 </div>
