@@ -1,0 +1,194 @@
+/* Overall container */
+.edit-profile-container {
+    font-family: Arial, sans-serif;
+    margin-top: 70px; /* Adjusted for navbar */
+    padding-bottom: 70px; /* Adjusted for footer */
+}
+
+/* Navbar styling */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    z-index: 1000;
+    width: 100%;
+}
+
+.navbar .header-left h1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.navbar .header-right button {
+    background-color: #e63946;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.navbar .header-right button:hover {
+    background-color: #d62828;
+}
+
+/* Profile Edit Form Container */
+.form-container {
+    max-width: 600px;
+    margin: 80px auto; /* Ensures form is centered with top space for navbar */
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Form fields */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.form-group input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Checkbox styling */
+.form-group input[type="checkbox"] {
+    margin-top: 5px;
+}
+
+/* Save and Delete buttons */
+.save-button, .delete-button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.save-button {
+    background-color: #4CAF50;  /* Green for save */
+    color: white;
+}
+
+.save-button:hover {
+    background-color: #45a049;
+}
+
+.delete-button {
+    background-color: #ff4d4d;  /* Red for delete */
+    color: white;
+}
+
+.delete-button:hover {
+    background-color: #e60000;
+}
+
+/* Footer Styling */
+.footer {
+    background-color: #333;
+    color: #ddd;
+    padding: 10px 20px;
+    text-align: center;
+    width: 100%;
+    position: relative;
+}
+
+.footer-links {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    padding: 0;
+}
+
+.footer-links li {
+    cursor: pointer;
+    color: #ddd;
+    transition: color 0.3s;
+}
+
+.footer-links li:hover {
+    color: #fff;
+}
+
+/* Media query for mobile */
+@media (max-width: 600px) {
+    .form-container {
+        padding: 15px;
+    }
+
+    .form-container h2 {
+        font-size: 1.5em;
+    }
+
+    .save-button, .delete-button {
+        font-size: 14px;
+    }
+}
+
+/* Error message styling */
+.error {
+    color: #ff4d4d;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+/* Additional button styles */
+.logout-btn {
+    background-color: #e63946;
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.logout-btn:hover {
+    background-color: #d62828;
+}
+
+.edit-profile-btn {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.edit-profile-btn:hover {
+    background-color: #0056b3;
+}
