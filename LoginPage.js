@@ -28,7 +28,7 @@ const LoginPage = () => {
         const userRole = snapshot.data().role;
 
       if (userRole === 'admin') {
-        navigate('/admin');
+        navigate('/AdminDashboard');
         console.log('User role:', userRole);
       } else if (userRole === 'standarduser') {
         navigate('/userhomepage');
@@ -38,10 +38,13 @@ const LoginPage = () => {
 
       } else {
         console.log('No such document!');
+        alert('User role not found.');
+        navigate('/');
       }
     } catch (error) {
       console.error('Error during login:', error);
       alert('Login failed. Please try again.');
+      navigate('/');
     }
     
   };
@@ -63,6 +66,14 @@ const LoginPage = () => {
 
   return (
     <div className="login-container">
+      <nav className="navbar">
+        <div className="navbar-brand" onClick={() => navigate('/')}>Eventopia</div>
+        <ul className="nav-links">
+                    <li className="nav-item" onClick={() => navigate('/services')}>Services</li>
+                    <li className="nav-item" onClick={() => navigate('/myevents')}>Call us @ +1 123 456 789</li>
+                    <button className="logout-btn" onClick={() => navigate('/')}>Signup</button>
+                </ul>
+      </nav>
       <div className="form-wrapper">
         <h1 className="text-center">Login</h1>
         <form onSubmit={handleLogin}>
@@ -114,6 +125,14 @@ const LoginPage = () => {
           <button className=" reset-btn" type="submit">Send Reset Email</button>
         </form>
       </Model>
+      <footer className="footer">
+                <ul className="footer-links">
+                    <li onClick={() => navigate('/about')}>About</li>
+                    <li onClick={() => navigate('/privacypolicy')}>Privacy Policy</li>
+                    <li onClick={() => navigate('/termsandconditions')}>Terms and Conditions</li>
+                    <li onClick={() => navigate('/contactus')}>Contact Us</li>
+                </ul>
+            </footer>
     </div>
   );
 };
