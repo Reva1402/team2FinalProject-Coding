@@ -85,10 +85,32 @@ const UserManagement = () => {
             alert("You are not authorized to suspend users.");
             return;
         }
-        await updateDoc(doc(firestore, "users", userId), { status: "suspended" });
-        alert("User suspended successfully!");
+    
+        try {
+            // Update the user's status to suspended in Firestore
+            await updateDoc(doc(firestore, "users", userId), { status: "suspended" });
+            alert("User suspended successfully!");
+        } catch (error) {
+            console.error("Error suspending user:", error);
+            alert("Failed to suspend the user. Please try again.");
+        }
     };
 
+    const activateUser = async (userId) => {
+        if (!checkIfAdmin()) {
+            alert("You are not authorized to activate users.");
+            return;
+        }
+    
+        try {
+            // Update the user's status to active in Firestore
+            await updateDoc(doc(firestore, "users", userId), { status: "active" });
+            alert("User activated successfully!");
+        } catch (error) {
+            console.error("Error activating user:", error);
+            alert("Failed to activate the user. Please try again.");
+        }
+    };
 
 
 const deleteUser = async (userId) => {
@@ -142,16 +164,20 @@ const deleteUser = async (userId) => {
     };
 
     
-    const filteredUsers = users.filter(user => {
-        const username = user.username || ""; 
-        const email = user.email || ""; 
-        const query = searchQuery.toLowerCase().trim();
-        
-        return (
-            username.toLowerCase().includes(query) ||
-            email.toLowerCase().includes(query)
-        );
-    });
+// Filter users for User Management view
+const filteredUsers = users.filter(user => {
+    const username = user.username || "";
+    const email = user.email || "";
+    const query = searchQuery.toLowerCase().trim();
+
+    // Exclude users with the role of "moderator"
+    return (
+        user.role !== "moderator" &&  // Exclude moderators
+        (username.toLowerCase().includes(query) ||
+        email.toLowerCase().includes(query))
+    );
+});
+
 
     return (
         <div className="admin-dashboard">
@@ -194,7 +220,11 @@ const deleteUser = async (userId) => {
                                 <td>{user.status}</td>
                                 <td>
                                     <button onClick={() => changeUserRoleToModerator(user.id)}>Change Role to Moderator</button>
-                                    <button onClick={() => suspendUser(user.id)}>Suspend</button>
+                                    {user.status !== "suspended" ? (
+    <button onClick={() => suspendUser(user.id)}>Suspend</button>
+) : (
+    <button onClick={() => activateUser(user.id)}>Activate User</button> // Change suspend to activate when suspended
+)}
                                     <button onClick={() => deleteUser(user.id)}>Delete</button>
                                 </td>
                             </tr>

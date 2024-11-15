@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth, firestore } from './firebaseConfig';
-import { collection, doc, getDocs, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { collection, doc, getDocs, getDoc, updateDoc } from 'firebase/firestore';
 import './Admincontentmanagement.css';
 import {
     getModerators,
@@ -93,26 +93,21 @@ const Admincontentmanagement = () => {
         fetchModerators(); 
     }, []);
 
-    const removeEvent = async (id) => {
-        if (window.confirm('Are you sure you want to remove this event?')) {
-            try {
-                await deleteDoc(doc(firestore, 'events', id));
-            } catch (error) {
-                console.error("Error removing event:", error);
-            }
-        }
+    
+    const handleSuspend = async (id) => {
+        await suspendModerator(id);
+        fetchModerators(); 
     };
 
-    const suspendEvent = async (id) => {
-        try {
-            const eventRef = doc(firestore, 'events', id);
-            await updateDoc(eventRef, {
-                suspended: true
-            });
-        } catch (error) {
-            console.error("Error suspending event:", error);
-        }
+    const handleDelete = async (id) => {
+        await deleteModerator(id);
+        fetchModerators(); 
     };
+
+    const suspendEvent = async (id) =>{
+        const updatedList = events.filter((event) => event.id !== id);
+        setEvents(updatedList);
+    }
 
     const renderEventManagementTable = () => {
         return (
@@ -165,7 +160,7 @@ const Admincontentmanagement = () => {
                                 <td className="action-buttons">
                                     <button className="view-btn" onClick={()=>navigate(`/event/${event.id}`)}>View</button>
                                     <button className="suspend-btn" onClick={()=>suspendEvent(`${event.id}`)}>Suspend</button>
-                                    <button className="remove-btn" onClick={()=>removeEvent(`${event.id}`)}>Delete</button>
+                                    <button className="remove-btn" onClick={()=>handleDelete(`${event.id}`)}>Delete</button>
                                 </td>
                             </tr>
                         ))}
@@ -213,7 +208,6 @@ const Admincontentmanagement = () => {
             <div className="moderator-content">
                 <aside className="sidebar">
                     <ul>
-                        <li onClick={() => navigate('/Admin')}>Dashboard</li>
                         <li onClick={() => setActiveView('usermanagement')}>User Management</li>
                         <li onClick={() => setActiveView('moderator-management')}>Moderator Management</li>
                         <li onClick={() => setActiveView('suspended-resources')}>Suspended Resource</li>
