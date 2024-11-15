@@ -190,8 +190,8 @@ const UserEditProfile = () => {
                 </div>
                 <ul className="nav-links">
                     <li className="nav-item" onClick={() => navigate('/UserProfile')}>Profile</li>
-                    <li className="nav-item" onClick={() => navigate('/events')}>My Events</li>
                     <li className="nav-item" onClick={() => navigate('/CreateEvent')}>Post An Event</li>
+                    <li className="nav-item" onClick={() => navigate('/events')}>My Events</li>
                     <li className="nav-item" onClick={() => navigate('/notifications')}>Notifications</li>
                     <li className="nav-item" onClick={() => navigate('/followers')}>Followers</li>
                 </ul>
