@@ -18,9 +18,33 @@ const EditEvent = () => {
         ticketPrice: '',
         eventImages: [],
     });
+    const [userName, setUserName] = useState('');
     const [error, setError] = useState(''); 
     const [isPopupVisible, setIsPopupVisible] = useState(false);
     const [popupMessage, setPopupMessage] = useState(''); 
+
+   
+    const fetchUserData = async (userId) => {
+        try {
+            const userDoc = await getDoc(doc(firestore, 'users', userId));
+            if (userDoc.exists()) {
+                setUserName(userDoc.data().firstName || "User");
+            } else {
+                setUserName("User");
+            }
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+            setUserName("User");
+        }
+    };
+
+    useEffect(() => {
+        if (user) {
+            fetchUserData(user.uid);
+        } else {
+            setUserName("Guest");
+        }
+    }, [user]);
 
     useEffect(() => {
         const fetchEventDetails = async () => {
@@ -30,16 +54,29 @@ const EditEvent = () => {
                     const docSnap = await getDoc(docRef);
                     if (docSnap.exists()) {
                         const data = docSnap.data();
+                        console.log('Fetched event data:', data); 
+
                         if (data.createdBy !== user.uid) {
                             setError('You do not have permission to edit this event.');
                             return;
                         }
+
+                        
                         setEvent(data);
-                        setFormData({ ...data });
+                        setFormData({
+                            eventName: data.eventName || '',
+                            eventDate: data.eventDate ? new Date(data.eventDate).toISOString().split('T')[0] : '',
+                            eventLocation: data.eventLocation || '',
+                            eventDescription: data.eventDescription || '',
+                            eventTime: data.eventTime || '',
+                            ticketPrice: data.ticketPrice || '',
+                            eventImages: data.eventImages || [],
+                        });
                     } else {
                         setError('Event not found. Please check the event ID.');
                     }
                 } catch (error) {
+                    console.error('Error fetching event details:', error);
                     setError('Failed to fetch event details. Please try again later.');
                 }
             } else {
@@ -74,7 +111,7 @@ const EditEvent = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError('');
+        setError(''); // Reset error message on submit
 
         try {
             if (user) {
@@ -91,6 +128,7 @@ const EditEvent = () => {
                 setError('User is not authenticated.');
             }
         } catch (err) {
+            console.error('Error updating event:', err);
             setError('Failed to update event: ' + (err.message || 'Unknown error'));
         }
     };
@@ -107,9 +145,11 @@ const EditEvent = () => {
     return (
         <div className="edit-event">
             <nav className="navbar">
-                <div className="navbar-brand" onClick={() => navigate('/userhomepage')}>Hi, {user?.displayName || 'User'}</div>
+                <div className="navbar-brand" onClick={() => navigate('/userhomepage')}>
+                    Hi, {userName || 'User'}
+                </div>
                 <ul className="nav-links">
-                <li className="nav-item" onClick={() => navigate('/viewProfile')}>Profile</li>
+                    <li className="nav-item" onClick={() => navigate('/UserProfile')}>Profile</li>
                     <li className="nav-item" onClick={() => navigate('/createevent')}>Post An Event</li>
                     <li className="nav-item" onClick={() => navigate('/myevents')}>My Events</li>
                     <li className="nav-item" onClick={() => navigate('/notifications')}>Notifications</li>
@@ -121,13 +161,12 @@ const EditEvent = () => {
             <h2>Edit Event</h2>
             {error && <p className="error">{error}</p>}
             <form onSubmit={handleSubmit}>
-              
                 <div>
                     <label>Event Name:</label>
                     <input
                         type="text"
                         name="eventName"
-                        value={formData.eventName}
+                        value={formData.eventName || ''}
                         onChange={handleInputChange}
                         required
                     />
@@ -137,7 +176,7 @@ const EditEvent = () => {
                     <input
                         type="date"
                         name="eventDate"
-                        value={formData.eventDate}
+                        value={formData.eventDate || ''}
                         onChange={handleInputChange}
                         required
                     />
@@ -147,7 +186,7 @@ const EditEvent = () => {
                     <input
                         type="time"
                         name="eventTime"
-                        value={formData.eventTime}
+                        value={formData.eventTime || ''}
                         onChange={handleInputChange}
                         required
                     />
@@ -157,7 +196,7 @@ const EditEvent = () => {
                     <input
                         type="text"
                         name="eventLocation"
-                        value={formData.eventLocation}
+                        value={formData.eventLocation || ''}
                         onChange={handleInputChange}
                         required
                     />
@@ -166,7 +205,7 @@ const EditEvent = () => {
                     <label>Description:</label>
                     <textarea
                         name="eventDescription"
-                        value={formData.eventDescription}
+                        value={formData.eventDescription || ''}
                         onChange={handleInputChange}
                         required
                     />
@@ -176,7 +215,7 @@ const EditEvent = () => {
                     <input
                         type="number"
                         name="ticketPrice"
-                        value={formData.ticketPrice}
+                        value={formData.ticketPrice || ''}
                         onChange={handleInputChange}
                         required
                     />
