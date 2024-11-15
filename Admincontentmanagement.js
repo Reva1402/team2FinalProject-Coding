@@ -11,7 +11,7 @@ import {
     demoteModerator,
     suspendModerator,
     deleteModerator,
-} from './moderatorService'; 
+} from './ModeratorService'; 
 import './ModeratorManagement.css'; 
 
 const Admincontentmanagement = () => {
