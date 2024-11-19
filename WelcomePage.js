@@ -56,7 +56,7 @@ const SignupPage = () => {
 
     const validateMobileNumber = (mobilenumber) => {
         const mobilePattern = /^[1-9][0-9]{9}$/;  
-        // 10 digits, starting with 1-9
+        
 
         return mobilePattern.test(mobilenumber);
     };
@@ -64,7 +64,6 @@ const SignupPage = () => {
     const handleSignup = async (e) => {
         e.preventDefault();
     
-        // Check if any required field is empty
         if (!formData.firstName || !formData.lastName || !formData.email || !formData.password || !formData.mobilenumber
             || !formData.gender || !formData.role || !formData.address || !formData.country || !formData.province
             || !formData.dateofbirth) {
@@ -72,14 +71,12 @@ const SignupPage = () => {
             return;
         }
     
-        // Validate email format
         const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
         if (!emailPattern.test(formData.email)) {
             setError('Please enter a valid email address.');
             return;
         }
     
-        // Validate mobile number
         if (!validateMobileNumber(formData.mobilenumber)) {
             setError('Mobile number must be 10 digits and should not start with 0.');
             alert('Not a valid mobile number.');
@@ -101,21 +98,18 @@ const SignupPage = () => {
             return;
         }
     
-        // Password validation
         if (!isPasswordValid(formData.password)) {
             setError('Password must be at least 8 characters long, contain a digit, and a special character.');
             alert('Password must be at least 8 characters long, contain a digit, and a special character.');
             return;
         }
     
-        // Check if the passwords match
         if (formData.password !== formData.confirmPassword) {
             setError('Passwords do not match.');
             alert('Passwords do not match, Signup failed.');
             return;
         }
     
-        // Age validation (must be between 18 and 80 years old)
         const today = new Date();
         const birthDate = new Date(formData.dateofbirth);
         const age = today.getFullYear() - birthDate.getFullYear();
@@ -130,7 +124,7 @@ const SignupPage = () => {
             return;
         }
     
-        setError('');  // Clear any previous errors
+        setError('');  
     
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
