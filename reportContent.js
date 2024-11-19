@@ -8,7 +8,6 @@ const ReportContent = () => {
     const { reporterId, eventId, commentId, commenterId } = useParams();
     const currentUser = auth.currentUser;
     const navigate = useNavigate();
-
     const [eventName, setEventName] = useState('');
     const [eventCreator, setEventCreator] = useState('');
     const [creatorName, setCreatorName] = useState('');
@@ -24,7 +23,7 @@ const ReportContent = () => {
         try {
             const userDoc = await getDoc(doc(firestore, 'users', userId));
             if (userDoc.exists()) {
-                return userDoc.data().displayName || 'Unknown User';
+                return userDoc.data().firstName || 'Unknown User';
             } else {
                 return 'Unknown User';
             }
@@ -56,6 +55,8 @@ const ReportContent = () => {
                 }
             }
         };
+
+        fetchEventDetails();
 
         const fetchCommentDetails = async () => {
             if (commentId) {
@@ -118,7 +119,7 @@ const ReportContent = () => {
             await setDoc(doc(reportsRef, reportId), reportData);
 
             alert('Thank you for reporting.');
-            navigate('/userhomepage');
+        
         } catch (error) {
             console.error('Error reporting the content:', error);
             alert('Failed to report. Please try again later.');
@@ -150,7 +151,7 @@ const ReportContent = () => {
                 <button className="logout-btn" onClick={handleLogout}>Logout</button>
             </nav>
 
-            <h1>Reported by: {currentUser?.displayName || 'User'}</h1>
+            <h1>Reported by: {currentUser?.firstName || 'User'}</h1>
             <h2>Report Content</h2>
 
            
