@@ -4,7 +4,10 @@ import { signOut } from 'firebase/auth';
 import { auth, firestore } from './firebaseConfig';
 import { collection, doc, getDocs, getDoc, updateDoc, arrayUnion, onSnapshot, arrayRemove } from 'firebase/firestore';
 import './UserHomePage.css';
+import './Header.css';
+import './Footer.css';
 import { increment } from 'firebase/firestore';
+
 
 const HomePage = () => {
     const navigate = useNavigate();
@@ -15,8 +18,12 @@ const HomePage = () => {
     const [updatedComments, setUpdatedComments] = useState({});
     const [userName, setUserName] = useState('');
     const [reportedEvents, setReportedEvents] = useState({});
-    const [attendance, setAttendance] = useState({});  // Add this state for tracking attendance
+    const [attendance, setAttendance] = useState({});
+    const [searchQuery, setSearchQuery] = useState('');
+    const [users, setUsers] = useState([]);
     const user = auth.currentUser;
+    const [filteredEvents, setFilteredEvents] = useState([]);
+    const [filteredUsers, setFilteredUsers] = useState([]);
 
     useEffect(() => {
         const fetchEvents = async () => {
@@ -26,16 +33,15 @@ const HomePage = () => {
             setEvents(eventList);
 
             const userLikes = {};
-        if (user) {
-            eventList.forEach(event => {
-                if (event.likes && event.likes.includes(user.uid)) {
-                    userLikes[event.id] = true;
-                }
-            });
-        }
-        setLikes(userLikes);
+            if (user) {
+                eventList.forEach(event => {
+                    if (event.likes && event.likes.includes(user.uid)) {
+                        userLikes[event.id] = true;
+                    }
+                });
+            }
+            setLikes(userLikes);
 
-            // Set up real-time listeners for each event's comments
             const unsubscribeList = eventList.map(event => {
                 const eventRef = doc(firestore, 'events', event.id);
                 return onSnapshot(eventRef, (eventDoc) => {
@@ -49,24 +55,32 @@ const HomePage = () => {
                 });
             });
 
-            return unsubscribeList;  // Return the unsubscribe functions
+            return unsubscribeList;
         };
 
-        // Fetch events and set up real-time listeners
         const fetchEventsAndListeners = async () => {
             const unsubscribeList = await fetchEvents();
             return unsubscribeList;
         };
 
-        // Execute the function and store the unsubscribe functions
         fetchEventsAndListeners().then(unsubscribeList => {
             return () => {
-                // Cleanup: unsubscribe from all real-time listeners when the component unmounts
                 unsubscribeList.forEach(unsubscribe => unsubscribe());
             };
         });
 
-        // Fetch user data (on mount) or when auth state changes
+        const fetchAllUsers = async () => {
+            await fetchUsers();
+        };
+
+        fetchAllUsers(); 
+
+        const fetchAllEvents = async () => {
+            await fetchEvents();
+        };
+
+        fetchAllEvents();
+
         const unsubscribeAuth = auth.onAuthStateChanged(currentUser => {
             if (currentUser) {
                 fetchUserData(currentUser.uid);
@@ -76,10 +90,15 @@ const HomePage = () => {
         });
 
         return () => {
-            // Cleanup auth listener on component unmount
             unsubscribeAuth();
         };
-    }, []); 
+    }, []);
+
+    const fetchUsers = async () => {
+        const usersSnapshot = await getDocs(collection(firestore, 'users'));
+        const userList = usersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setUsers(userList);
+    };
 
     const fetchUserData = async (userId) => {
         try {
@@ -95,61 +114,48 @@ const HomePage = () => {
         }
     };
 
-
-
     const handleLike = async (eventId) => {
         if (!user) return;
-    
+
         const eventRef = doc(firestore, 'events', eventId);
-    
+
         try {
-            // Fetch event data to check if the user has already liked
             const eventDoc = await getDoc(eventRef);
             const eventData = eventDoc.data();
-    
-            // Check if the user has already liked this event
+
             if (eventData.likes && eventData.likes.includes(user.uid)) {
                 console.log("Already liked");
-                setLikes(prevLikes => ({ ...prevLikes, [eventId]: true })); // Update local state
-                return; // Prevent re-liking
+                setLikes(prevLikes => ({ ...prevLikes, [eventId]: true }));
+                return;
             }
-    
-            // Add user ID to likes array and increment likes count in Firestore
+
             await updateDoc(eventRef, {
-                likes: arrayUnion(user.uid), // Add userId to likes array
-                likesCount: increment(1)     // Increment the like count
+                likes: arrayUnion(user.uid),
+                likesCount: increment(1)
             });
-    
-            // Update local state to reflect the like
+
             setLikes(prevLikes => ({ ...prevLikes, [eventId]: true }));
         } catch (error) {
             console.error('Error liking event:', error);
         }
     };
-    
-    
+
     const handleUnlike = async (eventId) => {
         if (!user) return;
-    
+
         const eventRef = doc(firestore, 'events', eventId);
-    
+
         try {
-            // Remove user ID from likes array and decrement likes count in Firestore
             await updateDoc(eventRef, {
-                likes: arrayRemove(user.uid),   // Remove userId from likes array
-                likesCount: increment(-1)       // Decrement the like count
+                likes: arrayRemove(user.uid),
+                likesCount: increment(-1)
             });
-    
-            // Update local state to reflect the unlike (disables the unlike button)
+
             setLikes(prevLikes => ({ ...prevLikes, [eventId]: false }));
-    
         } catch (error) {
             console.error('Error unliking event:', error);
         }
     };
-    
-
-
 
     const handleReportEvent = (eventId) => {
         const reporterId = auth.currentUser?.uid;
@@ -169,14 +175,6 @@ const HomePage = () => {
         }
     };
 
-    const handleAttendance = (eventId) => {
-        setAttendance(prevAttendance => ({
-            ...prevAttendance,
-            [eventId]: !prevAttendance[eventId]  // Toggle attendance status
-        }));
-    };
-
-    // Fix: Use `userName` for the comment name display
     const handleCommentSubmit = async (eventId, eventData) => {
         eventData.preventDefault();
 
@@ -188,37 +186,33 @@ const HomePage = () => {
 
         const userId = user.uid;
         const commentText = newComments[eventId]?.trim();
-        const userNameBy = userName || 'Anonymous';  // Use `userName` from state
+        const userNameBy = userName || 'Anonymous';
 
         if (commentText) {
             const newComment = {
                 text: commentText,
                 userId: userId,
-                userNameBy: userNameBy,  // Correctly use `userNameBy` here
+                userNameBy: userNameBy,
                 eventId: eventId,
                 createdAt: new Date()
             };
 
-            // Temporarily update state (optimistic UI update)
             setComments(prevComments => ({
                 ...prevComments,
                 [eventId]: [...(prevComments[eventId] || []), newComment]
             }));
 
-            // Clear the input field after submission
             setNewComments(prevNewComments => ({ ...prevNewComments, [eventId]: '' }));
 
             try {
                 const eventRef = doc(firestore, 'events', eventId);
-
-                // Update the Firestore document with the new comment
                 await updateDoc(eventRef, {
                     comments: arrayUnion(newComment)
                 });
             } catch (error) {
                 console.error("Error adding comment to Firestore:", error);
                 alert("Failed to post the comment. Please try again.");
-                // Rollback the optimistic UI update
+
                 setComments(prevComments => {
                     const updatedComments = { ...prevComments };
                     updatedComments[eventId] = updatedComments[eventId]?.filter(comment => comment !== newComment);
@@ -228,10 +222,54 @@ const HomePage = () => {
         }
     };
 
+    const handleSearch = () => {
+        console.log("Search Query:", searchQuery);
+        if (searchQuery.trim() === '') {
+            console.log("Search query is empty");
+            return;
+        }
+
+      
+        const eventsResult = events.filter(event =>
+            event?.name?.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+
+        const usersResult = users.filter(user =>
+            (user?.firstName?.toLowerCase().includes(searchQuery.toLowerCase())) ||
+            (user?.lastName?.toLowerCase().includes(searchQuery.toLowerCase()))
+        );
+
+        console.log("Filtered Events:", eventsResult);
+        console.log("Filtered Users:", usersResult);
+
+        setFilteredEvents(eventsResult);
+        setFilteredUsers(usersResult);
+    };
+
+    const handleEventClick = (eventId) => {
+        navigate(`/adminModeratorEventView/${eventId}`);
+    };
+
+    const handleUserClick = (userId) => {
+        navigate(`/adminModeratorUserProfile/${userId}`);
+    };
+
     return (
+        <div className="unique-page-wrapper">
         <div className="home-page">
             <nav className="navbar">
-                <span>Hi, {userName}</span>
+            <div className="navbar-brand" onClick={() => navigate('/userhomepage')}>
+          Hi, {userName || 'User'}
+        </div>
+                <input
+                    type="text"
+                    className="search-input"
+                    placeholder="Search..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <button className="search-btn" onClick={handleSearch} >Search</button>
+
                 <ul className="nav-links">
                     {userName !== 'Guest' && (
                         <>
@@ -248,95 +286,140 @@ const HomePage = () => {
                 )}
             </nav>
 
-            <div className="home-content">
-                <h2>Welcome to Eventopia</h2>
-                <p>Explore events, interact with the community, and stay connected!</p>
-
-                {events.length > 0 ? (
-                    events.map(event => (
-                        <div key={event.id} className="event-card">
-                            <h3>{event.name}</h3>
-                            <p>{event.description}</p>
-                            <p>Date: {event.date}</p>
-                            <p>Location: {event.location}</p>
-
-                            {/* Images Section */}
-                            {event.images && event.images.length > 0 && (
-                                <div className="event-images">
-                                    {event.images.map((image, index) => (
-                                        <img
-                                            key={index}
-                                            src={image}
-                                            alt={`Event ${event.name} - Image ${index + 1}`}
-                                            className="event-image"
-                                        />
-                                    ))}
+            {searchQuery && (filteredEvents.length > 0 || filteredUsers.length > 0) && (
+                <div className="search-results">
+                    <h2>Search Results</h2>
+                    {filteredEvents.length > 0 && (
+                        <div>
+                            <h3>Events:</h3>
+                            {filteredEvents.map((event) => (
+                                <div key={event.id} className="event-card" onClick={() => handleEventClick(event.id)}>
+                                    <h4>{event.eventName}</h4>
                                 </div>
-                            )}
-
-<button 
-    onClick={() => handleLike(event.id)} 
-    disabled={likes[event.id]}
->
-    {likes[event.id] ? 'Liked' : 'Like'}
-</button>
-                            <button onClick={() => handleUnlike(event.id)} disabled={!likes[event.id]}>
-                                Unlike
-                            </button>
-
-
-
-
-                            <button onClick={() => handleReportEvent(event.id)} disabled={reportedEvents[event.id]}>
-                                {reportedEvents[event.id] ? 'Reported' : 'Report Event'}
-                            </button>
-
-                            <button onClick={() => navigate(`/attendevent/${event.id}`)}>
-                                Attend Event
-                            </button>
-
-                            <div className="comments-section">
-                                <h4>Comments</h4>
-                                <ul className="comments-list">
-                                    {(comments[event.id] || []).map((comment, index) => (
-                                        <li key={index}>
-                                            <span
-                                                onClick={() => navigate(`/userProfile/${comment.userId}`)}
-                                                className="comment-user"
-                                                style={{ cursor: 'pointer', color: 'blue' }}
-                                            >
-                                                {comment.userNameBy}
-                                            </span>
-                                            : {comment.text}
-                                            <span>
-                                                <button
-                                                    onClick={() => handleReportComment(event.id, comment.id, comment.userId)}
-                                                    disabled={reportedEvents[comment.id]}
-                                                >
-                                                    {reportedEvents[comment.id] ? 'Reported' : 'Report Comment'}
-                                                </button>
-                                            </span>
-                                        </li>
-                                    ))}
-                                </ul>
-                                <form onSubmit={(e) => handleCommentSubmit(event.id, e)} className="comment-form">
-                                    <input
-                                        type="text"
-                                        value={newComments[event.id] || ''}
-                                        onChange={(e) => setNewComments(prev => ({ ...prev, [event.id]: e.target.value }))}
-                                        placeholder="Add a comment..."
-                                    />
-                                    <button type="submit">Post Comment</button>
-                                </form>
-                            </div>
+                            ))}
                         </div>
-                    ))
-                ) : (
-                    <p>No events found.</p>
-                )}
-            </div>
+                    )}
+                    {filteredUsers.length > 0 && (
+                        <div>
+                            <h3>Users:</h3>
+                            {filteredUsers.map((user) => (
+                                <div key={user.id} className="user-card" onClick={() => handleUserClick(user.id)}>
+                                    <h4>{user.firstName} {user.lastName}</h4>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            )}
 
+            {!searchQuery && (
+                <div className="eventfeedContent">
+                    <h2>Welcome to Eventopia</h2>
+                    <p>Explore events, interact with the community, and stay connected!</p>
+
+                    {events.length > 0 ? (
+                        events.map(event => (
+                            <div key={event.id} className="event-card">
+                                <h3>{event.name}</h3>
+                                <p>{event.description}</p>
+                                <p>Date: {event.date}</p>
+                                <p>Location: {event.location}</p>
+                                <h4>Likes: {event.likesCount}</h4>
+
+                                {event.images && event.images.length > 0 && (
+                                    <div className="event-images">
+                                        {event.images.map((image, index) => (
+                                            <img
+                                                key={index}
+                                                src={image}
+                                                alt={`Event ${event.name} - Image ${index + 1}`}
+                                                className="event-image"
+                                            />
+                                        ))}
+                                    </div>
+                                )}
+                                
+
+                                <button
+                                className="like-btn"
+                                    onClick={() => handleLike(event.id)}
+                                    disabled={likes[event.id]}
+                                >
+                                    {likes[event.id] ? 'Liked' : 'Like'}
+                                </button>
+
+                                <button
+                                 className="unlike-btn"
+                                    onClick={() => handleUnlike(event.id)} disabled={!likes[event.id]}>
+                                    Unlike
+                                </button>
+
+                                <button 
+                                className="report-btn"
+                                    onClick={() => handleReportEvent(event.id)} disabled={reportedEvents[event.id]}>
+                                    {reportedEvents[event.id] ? 'Reported' : 'Report Event'}
+                                </button>
+
+                                <button 
+                                className="attend-btn"
+                                onClick={() => navigate(`/attendevent/${event.id}`)}>
+                                    Attend Event
+                                </button>
+
+                                <div className="comments-section">
+                                    <h4>Comments</h4>
+                                    <ul className="comments-list">
+                                        {(comments[event.id] || []).map((comment, index) => (
+                                            <li key={index}>
+                                                <span
+                                                    onClick={() => navigate(`/userProfile/${comment.userId}`)}
+                                                    className="comment-user"
+                                                    style={{ cursor: 'pointer', color: 'blue' }}
+                                                >
+                                                    {comment.userNameBy}
+                                                </span>
+                                                : {comment.text}
+                                                <span>
+                                                    <button
+                                                    className="report-comment"
+                                                        onClick={() => handleReportComment(event.id, comment.id, comment.userId)}
+                                                        disabled={reportedEvents[comment.id]}
+                                                    >
+                                                        
+                                                        {reportedEvents[comment.id] ? 'Reported' : 'Report Comment'}
+                                                    </button>
+                                                </span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                    <form onSubmit={(e) => handleCommentSubmit(event.id, e)} className="comment-form">
+                                        <input
+                                            type="text"
+                                            value={newComments[event.id] || ''}
+                                            onChange={(e) => setNewComments(prev => ({ ...prev, [event.id]: e.target.value }))}
+                                            placeholder="Add a comment..."
+                                        />
+                                        <button type="submit">Post Comment</button>
+                                    </form>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <p>No events found.</p>
+                    )}
+                </div>
+            )}
+
+            <footer className="footer">
+                <ul className="footer-links">
+                    <li onClick={() => navigate('/about')}>About</li>
+                    <li onClick={() => navigate('/privacypolicy')}>Privacy Policy</li>
+                    <li onClick={() => navigate('/termsandconditions')}>Terms and Conditions</li>
+                    <li onClick={() => navigate('/contactus')}>Contact Us</li>
+                </ul>
+            </footer>
         </div>
+</div>
     );
 };
 
