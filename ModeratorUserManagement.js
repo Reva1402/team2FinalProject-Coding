@@ -1,161 +1,187 @@
 import React, { useState, useEffect } from 'react';
-import { firestore, auth } from './firebaseConfig';  // Import both firestore and auth
-import { collection, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore';
-import { Link } from 'react-router-dom';
+import { firestore, auth } from './firebaseConfig';
+import { collection, getDocs, doc, updateDoc, getDoc, setDoc, increment, serverTimestamp } from 'firebase/firestore';
+import { Link, useNavigate } from 'react-router-dom';
+import { signOut } from 'firebase/auth';
+import './ModeratorUserManagement.css';
 
 const ModeratorUserManagement = () => {
-    const [reportedUsers, setReportedUsers] = useState([]);
-    const [usersData, setUsersData] = useState({}); // Store user data (firstName)
+  const [reportedUsers, setReportedUsers] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        fetchReportedUsers();
-    }, []);
+  useEffect(() => {
+    fetchReportedUsers();
+  }, []);
 
-    // Fetch reported users from both events and comments
-    const fetchReportedUsers = async () => {
-        try {
-            const eventReportsRef = collection(firestore, 'reports');
-            const eventSnapshot = await getDocs(eventReportsRef);
-            const eventReports = eventSnapshot.docs
-                .map(doc => doc.data())
-                .filter(report => report.eventCreator)  // Filter for event reports only
-                .map(report => report.eventCreator);  // Extract event creator IDs
 
-            const commentReportsRef = collection(firestore, 'reports');
-            const commentSnapshot = await getDocs(commentReportsRef);
-            const commentReports = commentSnapshot.docs
-                .map(doc => doc.data())
-                .filter(report => report.commenterId)  // Filter for comment reports only
-                .map(report => report.commenterId);  // Extract commenter IDs
+  const fetchReportedUsers = async () => {
+    try {
+      const reportsRef = collection(firestore, 'reports');
+      const reportsSnapshot = await getDocs(reportsRef);
 
-            // Combine both event creator and commenter IDs
-            const allReportedUsers = [...new Set([...eventReports, ...commentReports])];
-            fetchUserNames(allReportedUsers);  // Now fetch user names for these IDs
-        } catch (error) {
-            console.error('Error fetching reported users:', error);
+      const reportedUserIds = reportsSnapshot.docs
+        .map(doc => doc.data())
+        .reduce((acc, report) => {
+
+          if (report.eventCreator) acc.push(report.eventCreator);
+
+          if (report.commenterId) acc.push(report.commenterId);
+          return acc;
+        }, []);
+
+
+      const uniqueReportedUserIds = [...new Set(reportedUserIds)];
+      fetchUserNames(uniqueReportedUserIds);
+    } catch (error) {
+      console.error('Error fetching reported users:', error);
+    }
+  };
+
+
+  const fetchUserNames = async (userIds) => {
+    try {
+      const usersRef = collection(firestore, 'users');
+      const usersSnapshot = await getDocs(usersRef);
+
+      const usersData = usersSnapshot.docs.reduce((acc, doc) => {
+        const userData = doc.data();
+        acc[doc.id] = {
+          firstName: userData.firstName || 'Unknown',
+          status: userData.status || 'active',
+        };
+        return acc;
+      }, {});
+
+
+      const updatedReportedUsers = userIds.map(userId => ({
+        userId,
+        firstName: usersData[userId]?.firstName || 'Unknown',
+        status: usersData[userId]?.status || 'active',
+      }));
+
+      setReportedUsers(updatedReportedUsers);
+    } catch (error) {
+      console.error('Error fetching user names:', error);
+    }
+  };
+
+
+  const suspendUser = async (userId) => {
+    try {
+      await updateDoc(doc(firestore, "users", userId), { status: "suspended" });
+      alert("User suspended successfully!");
+      window.location.reload();
+    } catch (error) {
+      console.error("Error suspending user:", error);
+      alert("Failed to suspend the user. Please try again.");
+    }
+  };
+
+
+  const activateUser = async (userId) => {
+    try {
+      await updateDoc(doc(firestore, "users", userId), { status: "active" });
+      await updateDoc(doc(firestore, "warnings", userId), { warnings: 0 });
+      alert("User activated successfully!");
+      window.location.reload();
+    } catch (error) {
+      console.error("Error activating user:", error);
+      alert("Failed to activate the user. Please try again.");
+    }
+  };
+
+  const viewUser = (userId) => {
+    navigate(`/AdminModeratorUserProfile/${userId}`);
+  };
+
+
+
+
+  const issueWarning = async (userId) => {
+    try {
+
+      const warningRef = doc(firestore, 'warnings', userId);
+
+
+      const warningSnapshot = await getDoc(warningRef);
+
+      if (warningSnapshot.exists()) {
+
+        const currentWarnings = warningSnapshot.data().warnings || 0;
+
+
+        if (currentWarnings >= 3) {
+          await suspendUser(userId);
+          return;
         }
-    };
 
-    // Fetch users data (firstName) based on reported user IDs
-    const fetchUserNames = async (userIds) => {
-        const usersRef = collection(firestore, 'users');
-        const usersSnapshot = await getDocs(usersRef);
-        
-        // Create a map of userId to firstName
-        const users = usersSnapshot.docs.reduce((acc, doc) => {
-            const userData = doc.data();
-            acc[doc.id] = userData.firstName || 'Unknown'; // Default to 'Unknown' if firstName is missing
-            return acc;
-        }, {});
 
-        // Update reported users with their firstName
-        const updatedReportedUsers = userIds.map(userId => ({
-            userId,
-            firstName: users[userId] || 'Unknown', // Display first name
-        }));
+        await updateDoc(warningRef, { warnings: increment(1), timestamp: serverTimestamp() });
 
-        setReportedUsers(updatedReportedUsers);  // Update state with the user data
-    };
+      } else {
 
-    // Check if the current user is a moderator
-    const checkIfModerator = () => {
-        const user = auth.currentUser;  // Get the current user
-        return user && user.role === 'moderator'; 
-    };
+        await setDoc(warningRef, { warnings: 1 });
+      }
 
-    const suspendUser = async (userId) => {
-        if (!checkIfModerator()) {
-            alert("You are not authorized to suspend users.");
-            return;
-        }
-    
-        try {
-           
-            await updateDoc(doc(firestore, "users", userId), { status: "suspended" });
-            alert("User suspended successfully!");
-        } catch (error) {
-            console.error("Error suspending user:", error);
-            alert("Failed to suspend the user. Please try again.");
-        }
-    };
+      alert('Warning has been issued to the user.');
+    } catch (error) {
+      console.error('Error issuing warning:', error);
+    }
+  };
 
-    const activateUser = async (userId) => {
-        if (!checkIfModerator()) {
-            alert("You are not authorized to activate users.");
-            console.log("You are not authorized to activate users.", "Your role is ", auth.currentUser.role);
-            return;
-        }
-    
-        try {
-          
-            await updateDoc(doc(firestore, "users", userId), { status: "active" });
-            alert("User activated successfully!");
-        } catch (error) {
-            console.error("Error activating user:", error);
-            alert("Failed to activate the user. Please try again.");
-        }
-    };
 
-    const issueWarning = async (userId) => {
-        try {
-            const userRef = doc(firestore, 'users', userId);
-            await updateDoc(userRef, { warnings: firestore.FieldValue.increment(1) }); // Increment warning count
-            alert('Warning has been issued to the user.');
-        } catch (error) {
-            console.error('Error issuing warning:', error);
-        }
-    };
+  return (
+    <div className="moderator-management-container">
+      <h2>Reported Users</h2>
+      <nav className="moderator-navbar">
+        <h2>Welcome</h2>
+        <input
+          type="text"
+          placeholder="Search users..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <button onClick={() => navigate('/ModeratorProfile')}>Profile</button>
+        <button onClick={() => signOut(auth).then(() => navigate('/login'))}>Logout</button>
+      </nav>
 
-    const deleteUser = async (userId) => {
-        const confirmation = window.confirm('Are you sure you want to delete this user?');
-        if (confirmation) {
-            try {
-                const userRef = doc(firestore, 'users', userId);
-                await deleteDoc(userRef);  // Delete the user document from Firestore
-                alert('User has been deleted.');
-            } catch (error) {
-                console.error('Error deleting user:', error);
-            }
-        }
-    };
+      <div>
+        <aside className="sidebar">
+          <Link to="/moderatordashboard">Dashboard</Link>
+          <Link to="/ModeratorHomePage">Feed</Link>
+          <Link to="/ModeratorUserManagement">User Management</Link>
+          <Link to="/ModeratorEventManagement">Event Management</Link>
+          <Link to="/ModeratorCommentManagement">Comment Management</Link>
+        </aside>
+      </div>
 
-    return (
-        <div className="moderator-management-container">
-            <h2>Reported Users</h2>
-            <div>
-                <aside className="sidebar">
-                    <Link to="/moderatordashboard">Dashboard</Link>
-                    <Link to="/ModeratorUserManagement">User Management</Link>
-                    <Link to="/ModeratorEventManagement">Event Management</Link>
-                    <Link to="/ModeratorCommentManagement">Comment Management</Link>
-                </aside>
-            </div>
-            <table className="moderator-table">
-                <thead>
-                    <tr>
-                        <th>User Name</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {reportedUsers.map((user, index) => (
-                        <tr key={index}>
-                            <td>{user.firstName}</td> {/* Display the first name */}
-                            <td className="action-buttons">
-                                <button className="view-button">View</button>
-                                {user.status !== "suspended" ? (
-                                    <button onClick={() => suspendUser(user.userId)}>Suspend</button>
-                                ) : (
-                                    <button onClick={() => activateUser(user.userId)}>Activate User</button> // Change suspend to activate when suspended
-                                )}
-                                <button className="warning-button" onClick={() => issueWarning(user.userId)}>Issue Warning</button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-    );
+      <table className="moderator-table">
+        <thead>
+          <tr>
+            <th>User Name</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {reportedUsers.map((user, index) => (
+            <tr key={index}>
+              <td>{user.firstName}</td>
+              <td className="action-buttons">
+                <button className="view-button" onClick={() => viewUser(user.userId)}>View</button>
+                {user.status !== "suspended" ? (
+                  <button onClick={() => suspendUser(user.userId)}>Suspend</button>
+                ) : (
+                  <button onClick={() => activateUser(user.userId)}>Activate User</button>
+                )}
+                <button className="warning-button" onClick={() => issueWarning(user.userId)}>Issue Warning</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 };
 
 export default ModeratorUserManagement;

@@ -1,197 +1,233 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { signOut } from 'firebase/auth';
+import { useNavigate, Link } from 'react-router-dom';
 import { auth, firestore } from './firebaseConfig';
-import { collection, doc, getDocs, getDoc, updateDoc } from 'firebase/firestore';
+import {
+    collection,
+    doc,
+    getDocs,
+    getDoc,
+    updateDoc,
+    arrayUnion,
+    arrayRemove,
+    onSnapshot,
+    increment
+} from 'firebase/firestore';
+import { signOut } from 'firebase/auth';
 import './ModeratorHomePage.css';
 
 const ModeratorHomePage = () => {
     const navigate = useNavigate();
     const [events, setEvents] = useState([]);
-    const [searchQuery, setSearchQuery] = useState('');
+    const [likes, setLikes] = useState({});
+    const [comments, setComments] = useState({});
+    const [newComments, setNewComments] = useState({});
     const [userName, setUserName] = useState('');
-    const [activeView, setActiveView] = useState('dashboard');
+    const [searchQuery, setSearchQuery] = useState('');
+    const [loading, setLoading] = useState(true);  
+    const [isSubmitting, setIsSubmitting] = useState({}); 
 
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged(async (currentUser) => {
-            if (!currentUser) {
-                navigate('/moderatorlogin');
-                return;
-            }
-
-            try {
+        const fetchUserData = async () => {
+            const currentUser = auth.currentUser;
+            if (currentUser) {
                 const userDoc = await getDoc(doc(firestore, 'users', currentUser.uid));
-                // Will add logic where we check if the user is a moderator
-                if (!userDoc.exists()) {
-                    navigate('/moderatorlogin');
-                    return;
+                if (userDoc.exists()) {
+                    setUserName(userDoc.data().firstName || 'Moderator');
+                    setLoading(false);  
                 }
-                setUserName(userDoc.data().firstName || "Moderator");
-            } catch (error) {
-                console.error("Error verifying moderator status:", error);
-                navigate('/moderatorlogin');
-                return;
+            } else {
+                navigate('/login');
             }
+        };
 
-            // Fetch events
-            fetchEvents();
-        });
-
-        return () => unsubscribe();
-    }, [navigate]);
-
-    const fetchEvents = async () => {
-        try {
+        const fetchEvents = async () => {
             const eventsRef = collection(firestore, 'events');
             const eventSnapshot = await getDocs(eventsRef);
-            const eventList = eventSnapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            }));
+            const eventList = eventSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             setEvents(eventList);
-        } catch (error) {
-            console.error("Error fetching events:", error);
+
+         
+            eventList.forEach(event => {
+                const eventRef = doc(firestore, 'events', event.id);
+                onSnapshot(eventRef, (eventDoc) => {
+                    if (eventDoc.exists()) {
+                        const eventCommentsData = eventDoc.data().comments || [];
+                        setComments(prevComments => ( {
+                            ...prevComments,
+                            [event.id]: eventCommentsData
+                        }));
+                    }
+                });
+            });
+        };
+
+        fetchUserData();
+        fetchEvents();
+    }, [navigate]);
+
+    const handleLike = async (eventId) => {
+        if (!auth.currentUser) return;
+        const eventRef = doc(firestore, 'events', eventId);
+        await updateDoc(eventRef, {
+            likes: arrayUnion(auth.currentUser.uid),
+            likesCount: increment(1)
+        });
+        setLikes(prevLikes => ({ ...prevLikes, [eventId]: true }));
+        console.log('Liked event with ID:', eventId);
+    };
+
+    const handleUnlike = async (eventId) => {
+        if (!auth.currentUser) return;
+        const eventRef = doc(firestore, 'events', eventId);
+        await updateDoc(eventRef, {
+            likes: arrayRemove(auth.currentUser.uid),
+            likesCount: increment(-1)
+        });
+        setLikes(prevLikes => ({ ...prevLikes, [eventId]: false }));
+        console.log('Unliked event with ID:', eventId);
+    };
+
+    const handleReportEvent = (eventId) => {
+        const reporterId = auth.currentUser?.uid;
+        if (reporterId) {
+            navigate(`/reportContent/${reporterId}/${eventId}`);
+        } else {
+            alert('Please log in to report.');
         }
     };
 
-    const handleLogout = async () => {
-        try {
-            await signOut(auth);
-            navigate('/moderatorlogin');
-        } catch (error) {
-            console.error('Error logging out:', error);
-        }
+    const handleCommentSubmit = async (eventId, e) => {
+        e.preventDefault();
+
+       
+        if (isSubmitting[eventId]) return;
+
+        setIsSubmitting(prev => ({ ...prev, [eventId]: true })); 
+
+        if (!auth.currentUser) return;
+
+        const commentText = newComments[eventId]?.trim();
+        if (!commentText) return;
+
+        const newComment = {
+            text: commentText,
+            userId: auth.currentUser.uid,
+            userNameBy: userName,
+            createdAt: new Date().toISOString(), 
+        };
+
+        const eventRef = doc(firestore, 'events', eventId);
+        await updateDoc(eventRef, {
+            comments: arrayUnion(newComment),
+        });
+
+       
+        setComments(prevComments => ({
+            ...prevComments,
+            [eventId]: [...(prevComments[eventId] || []), newComment],
+        }));
+
+        setNewComments(prevNewComments => ({ ...prevNewComments, [eventId]: '' }));
+
+        setIsSubmitting(prev => ({ ...prev, [eventId]: false })); 
     };
 
-    const filterEvents = () => {
-        if (!searchQuery.trim()) return events;
-        return events.filter(event =>
-            event.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            event.description?.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-    };
+    const filteredEvents = events.filter(event =>
+        event.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
-    
-    const suspendEvent = async (id) =>{
-        const updatedList = events.filter((event) => event.id !== id);
-        setEvents(updatedList);
+    if (loading) {
+        return <div>Loading...</div>; 
     }
-
-    const renderEventManagementTable = () => {
-        return (
-            <div className="event-management-table">
-                <h2>Events</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Event Name</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filterEvents().map(event => (
-                            <tr key={event.id}>
-                                <td>{event.name}</td>
-                                <td className="action-buttons">
-                                    <button className="view-btn" onClick={()=>navigate(`/event/${event.id}`)}>View</button>
-                                    <button className="warning-btn">Warning</button>
-                                    <button className="suspend-btn" onClick={()=>suspendEvent(`${event.id}`)}>Suspend</button>
-                                    <button className="warning-btn">Remove</button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-        );
-    };
-
-    const renderDashboard = () => {
-        return filterEvents().map(event => (
-            <div key={event.id} className="event-post">
-                <h2 className="event-title">{event.name} - {event.createdBy}</h2>
-                
-                <div className="event-images-grid">
-                    {event.images?.map((image, index) => (
-                        <img 
-                            key={index} 
-                            src={image} 
-                            alt={`${event.name} - ${index + 1}`}
-                            className="event-image"
-                        />
-                    ))}
-                </div>
-
-                <div className="event-interactions">
-                    <div className="interaction-buttons">
-                        <button className="like-btn">
-                            <span className="thumb-icon">👍</span>
-                        </button>
-                        <button className="dislike-btn">
-                            <span className="thumb-icon">👎</span>
-                        </button>
-                    </div>
-                    <a href="#" className="report-link">Report this event</a>
-                </div>
-
-                <div className="comment-section">
-                    <input 
-                        type="text" 
-                        placeholder="Leave a comment" 
-                        className="comment-input"
-                    />
-                </div>
-            </div>
-        ));
-    };
 
     return (
         <div className="moderator-page">
+         
             <nav className="moderator-navbar">
-                <div className="nav-left">
-                    <h1>Welcome {userName}</h1>
-                </div>
-                <div className="nav-right">
-                    <input
-                        type="text"
-                        placeholder="Search"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="search-input"
-                    />
-                    <button className="profile-btn" onClick={() => navigate('/ModeratorProfile')}>
-                        Profile
-                    </button>
-                    <button className="logout-btn" onClick={() => navigate('/login')}>
-                        Log Out
-                    </button>
-                </div>
+                <h2>Welcome, {userName}</h2>
+                <input
+                    type="text"
+                    placeholder="Search events..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <button onClick={() => navigate('/ModeratorProfile')}>Profile</button>
+                <button onClick={() => signOut(auth).then(() => navigate('/login'))}>Logout</button>
             </nav>
 
+        
             <div className="moderator-content">
                 <aside className="sidebar">
-                    <ul>
-                        <li onClick={() => setActiveView('dashboard')}>Dashboard</li>
-                        <li onClick={() => setActiveView('users')}>User Management</li>
-                        <li onClick={() => setActiveView('events')}>Event Management</li>
-                        <li onClick={() => setActiveView('comments')}>Comment Management</li>
-                    </ul>
+                    <Link to="/moderatordashboard">Dashboard</Link>
+                    <Link to="/ModeratorHomePage">Feed</Link>
+                    <Link to="/ModeratorUserManagement">User Management</Link>
+                    <Link to="/ModeratorEventManagement">Event Management</Link>
+                    <Link to="/ModeratorCommentManagement">Comment Management</Link>
                 </aside>
 
-                <main className="main-content">
-                    {activeView === 'dashboard' && renderDashboard()}
-                    {activeView === 'events' && renderEventManagementTable()}
-                </main>
+                <div className="event-feed">
+                    {filteredEvents.map(event => (
+                        <div key={event.id} className="event-card">
+                            <h3>{event.name}</h3>
+                            <p>{event.description}</p>
+                            <h4>Likes: {event.likesCount}</h4>
+                          
+                            {event.images && event.images.length > 0 && (
+                                <div className="event-images">
+                                    {event.images.map((img, idx) => (
+                                        <img key={idx} src={img} alt={`Event ${idx + 1}`} />
+                                    ))}
+                                </div>
+                            )}
+                            <button onClick={() => handleLike(event.id)} disabled={likes[event.id]}>
+                                {likes[event.id] ? 'Liked' : 'Like'}
+                            </button>
+                            <button onClick={() => handleUnlike(event.id)} disabled={likes[event.id]}>
+                                Unlike
+                            </button>
+                            <button onClick={() => handleReportEvent(event.id)}>
+                                Report Event
+                            </button>
+
+                          
+                            <div className="comments-section">
+                                <h4>Comments</h4>
+                                <ul>
+                                    {(comments[event.id] || []).map((comment, idx) => (
+                                        <li key={comment.createdAt}> 
+                                            <strong>{comment.userNameBy}</strong>: {comment.text}
+                                        </li>
+                                    ))}
+                                </ul>
+                                <form onSubmit={(e) => handleCommentSubmit(event.id, e)}>
+                                    <input
+                                        type="text"
+                                        placeholder="Add a comment..."
+                                        value={newComments[event.id] || ''}
+                                        onChange={(e) => setNewComments(prev => ({
+                                            ...prev,
+                                            [event.id]: e.target.value
+                                        }))}
+                                    />
+                                    <button type="submit" disabled={isSubmitting[event.id]}>
+                                        {isSubmitting[event.id] ? 'Submitting...' : 'Post'}
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
 
+          
             <footer className="moderator-footer">
-                <p>About</p>
-                <p>Privacy Policy</p>
-                <p>Terms and Conditions</p>
-                <p>Contact Us</p>
+                <Link to="/about">About</Link>
+                <Link to="/privacy">Privacy Policy</Link>
+                <Link to="/terms">Terms & Conditions</Link>
+                <Link to="/contactus">Contact Us</Link>
             </footer>
         </div>
     );
 };
 
-export default ModeratorHomePage; 
+export default ModeratorHomePage;
