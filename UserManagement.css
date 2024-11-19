@@ -1,0 +1,63 @@
+
+
+/* Sidebar Styling */
+.user-management-sidebar {
+  background-color: #f9f9f9;
+  width: 240px;
+  height: calc(100vh - 60px);
+  position: fixed;
+  top: 60px;
+  left: 0;
+  padding: 20px;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.user-management-sidebar a {
+  color: #333;
+  text-decoration: none;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  display: block;
+  transition: all 0.3s ease;
+  font-size: 16px;
+}
+
+.user-management-sidebar a:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.user-management-sidebar a.active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* Main Content Styling */
+.user-management {
+  margin-left: 260px;
+  padding: 80px 20px;
+  width: calc(100% - 260px);
+  overflow-y: auto;
+}
+
+.user-management table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.user-management th,
+.user-management td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+
+.user-management th {
+  background: #f2f2f2;
+  font-weight: bold;
+}

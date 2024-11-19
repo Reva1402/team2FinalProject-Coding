@@ -1,0 +1,513 @@
+/* /* 
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f7fc;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+
+.login-container {
+  width: 100%;
+  max-width: 450px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+
+.form-wrapper {
+  margin-top: 20px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  font-size: 1rem;
+  color: #333;
+  font-weight: 500;
+  margin-bottom: 5px;
+  display: block;
+}
+
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  margin-top: 5px;
+  box-sizing: border-box;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+  border-color: #5c6bc0;
+  outline: none;
+}
+
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.login-btn {
+  background-color: #5c6bc0;
+  color: #fff;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: #3e4a89;
+}
+
+.btn-link {
+  background: none;
+  color: #5c6bc0;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 0.9rem;
+}
+
+.btn-link:hover {
+  color: #3e4a89;
+}
+
+
+.model-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.model-content {
+  background-color: #fff;
+  padding: 20px;
+  width: 90%;
+  max-width: 400px;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.reset-btn {
+  width: 100%;
+  background-color: #5c6bc0;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.reset-btn:hover {
+  background-color: #3e4a89;
+}
+
+
+@media (max-width: 600px) {
+  .login-container {
+    width: 90%;
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+} */
+
+/* Basic reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Header */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f1f1f1;
+  padding: 10px 20px;
+  border-bottom: 1px solid #ccc;
+}
+
+.navbar h1 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.search-bar {
+  padding: 5px;
+  margin-right: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.profile-link {
+  margin-right: 15px;
+  text-decoration: none;
+  color: #333;
+}
+
+.logout-btn {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.logout-btn:hover {
+  background-color: #c0392b;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 200px;
+  background-color: #f8f8f8;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+  border-right: 1px solid #ccc;
+  margin-top: 11%;
+}
+
+.sidebar a {
+  display: block;
+  padding: 10px;
+  margin-bottom: 5px;
+  color: #333;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.sidebar a:hover {
+  background-color: #ddd;
+}
+
+/* Main content */
+.content {
+  display: flex;
+  justify-content: center; /* Center the content horizontally */
+  padding: 20px;
+  width: 100%;
+  margin-top: 10%;
+}
+
+/* Center the dashboard content and sidebar */
+.dashboard-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align the sidebar and dashboard content to the top */
+  width: 100%;
+  max-width: 1200px; /* Set a max width for the dashboard to avoid stretching */
+}
+
+/* Sidebar styling */
+.sidebar {
+  width: 200px;
+  background-color: #f8f8f8;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+}
+
+/* Centering dashboard-content */
+.dashboard-content {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+/* Management sections (Total, Active, Inactive) */
+.management-section {
+  text-align: center;
+  padding: 15px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.management-section h2 {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.count-box {
+  font-size: 16px;
+  color: white;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 8px;
+  margin: 5px 0;
+}
+
+.total {
+  background-color: #3498db;
+}
+
+.active {
+  background-color: #2ecc71;
+}
+
+.inactive {
+  background-color: #e74c3c;
+}
+
+/* Footer */
+.footer {
+  background-color: #f1f1f1;
+  padding: 10px 20px;
+  text-align: center;
+  border-top: 1px solid #ccc;
+  margin-top: 20px;
+}
+
+.footer-links a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #333;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+} */
+
+
+/* Global styles */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f7fc;
+  margin: 0;
+  padding: 0;
+}
+
+.admin-dashboard {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Navbar styling */
+.navbar {
+  background-color: #3e4a89;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  box-sizing: border-box;
+}
+
+.navbar h1 {
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.search-bar {
+  padding: 5px;
+  margin-right: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.profile-link {
+  color: #ffffff;
+  text-decoration: none;
+  margin-right: 15px;
+}
+
+.logout-btn {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Sidebar styling */
+.sidebar {
+  background-color: #f1f1f1;
+  padding: 20px;
+  width: 200px;
+  position: fixed;
+  top: 60px; /* Adjust for navbar height */
+  bottom: 0;
+  left: 0;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.sidebar a {
+  display: block;
+  color: #3e4a89;
+  font-weight: bold;
+  text-decoration: none;
+  margin: 10px 0;
+}
+
+.sidebar a:hover {
+  text-decoration: underline;
+}
+
+/* Main content styling */
+.content {
+  display: flex;
+  margin-left: 220px; /* Adjust for sidebar width */
+  padding-top: 80px; /* Adjust for navbar height */
+  width: calc(100% - 220px); /* To fit the content area */
+  box-sizing: border-box;
+}
+
+.dashboard-content {
+  flex: 1;
+  padding: 20px;
+}
+
+.management-section {
+  margin-bottom: 20px;
+}
+
+.management-section h2 {
+  font-size: 1.5rem;
+  color: #3e4a89;
+  text-align: center;
+}
+
+.count-row {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+
+.count-box {
+  width: 100px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.count-box.total {
+  background-color: #3b5998;
+}
+
+.count-box.active {
+  background-color: #4caf50;
+}
+
+.count-box.inactive {
+  background-color: #e74c3c;
+}
+
+/* Footer styling */
+.footer {
+  background-color: #f1f1f1;
+  padding: 10px 0;
+  text-align: center;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  box-sizing: border-box;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+}
+
+.footer-links a {
+  color: #333;
+  text-decoration: none;
+  margin: 0 15px;
+  font-size: 0.9rem;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
