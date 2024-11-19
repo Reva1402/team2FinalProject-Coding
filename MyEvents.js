@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { firestore, auth } from './firebaseConfig';
 import { useNavigate } from 'react-router-dom';
-import { collection, query, where, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { collection, query, where, getDocs, deleteDoc, doc , getDoc} from 'firebase/firestore';
 import { signOut } from 'firebase/auth';
 
 
@@ -10,6 +10,11 @@ const MyEvents = () => {
     const user = auth.currentUser;
     const [events, setEvents] = useState([]);
     const [error, setError] = useState('');
+    const [userName, setUserName] = useState('');
+    const [users, setUsers] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filteredEvents, setFilteredEvents] = useState([]);
+    const [filteredUsers, setFilteredUsers] = useState([]);
 
     useEffect(() => {
         if (!user) {
@@ -36,6 +41,44 @@ const MyEvents = () => {
 
         fetchUserEvents();
     }, [user, navigate]);
+
+    const fetchUsers = async () => {
+        const usersRef = collection(firestore, 'users');
+        const userSnapshot = await getDocs(usersRef);
+        const userList = userSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setUsers(userList);
+    };
+
+    fetchUsers();
+
+    const fetchUserData = async (userId) => {
+        try {
+            const userDoc = await getDoc(doc(firestore, 'users', userId));
+            if (userDoc.exists()) {
+                setUserName(userDoc.data().firstName || "User");
+            } else {
+                setUserName("User");
+            }
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+            setUserName("User");
+        }
+    };
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged(currentUser => {
+            if (currentUser) {
+                fetchUserData(currentUser.uid); 
+            } else {
+                setUserName("Guest");
+            }
+        });
+        
+        return () => unsubscribe();
+        
+    }, []);
+    
+    
 
     const handleLogout = async () => {
         try {
@@ -74,56 +117,89 @@ const MyEvents = () => {
         }
     };
 
+    
 
     return (
         <div className="my-events">
-            <nav className="navbar">
-                <div className="navbar-brand" onClick={() => navigate('/userhomepage')}>Hi, {user?.displayName || 'User'}</div>
-                <ul className="nav-links">
-                <li className="nav-item" onClick={() => navigate('/UserProfile')}>Profile</li>
-                    <li className="nav-item" onClick={() => navigate('/createevent')}>Post An Event</li>
-                    <li className="nav-item" onClick={() => navigate('/myevents')}>My Events</li>
-                    <li className="nav-item" onClick={() => navigate('/notifications')}>Notifications</li>
-                    <li className="nav-item" onClick={() => navigate('/followers')}>Followers</li>
-                </ul>
-                <button className="logout-btn" onClick={handleLogout}>Logout</button>
-            </nav>
-
-            <h2>Your Events</h2>
-            {error && <p className="error">{error}</p>}
-
-            <div className="events-list">
-                {events.length === 0 ? (
-                    <p><h4>You have not created any events yet.</h4>
-                        <button onClick={() => navigate('/createevent')}>Create an Event</button></p>
-
-
-                ) : (
-                    events.map((event) => (
-                        <div key={event.id} className="event-card">
-                            <h3>{event.eventName}</h3>
-                            <p>{event.eventDescription}</p>
-                            <p><strong>Date:</strong> {event.eventDate}</p>
-                            <p><strong>Location:</strong> {event.eventLocation}</p>
-                            <p><strong>Ticket Price:</strong> ${event.ticketPrice}</p>
-                            <button onClick={() => handleViewEvent(event.id)}>View</button>
-                            <button onClick={() => handleEditEvent(event.id)}>Edit</button>
-                            <button onClick={() => handleDeleteEvent(event.id)}>Delete</button>
-                        </div>
-                    ))
-                )}
-
+          <nav className="navbar">
+            <div className="navbar-brand" onClick={() => navigate('/userhomepage')}>
+              Hi, {userName || 'User'}
             </div>
-            <footer className="footer">
-                <ul className="footer-links">
-                    <li onClick={() => navigate('/about')}>About</li>
-                    <li onClick={() => navigate('/privacypolicy')}>Privacy Policy</li>
-                    <li onClick={() => navigate('/termsandconditions')}>Terms and Conditions</li>
-                    <li onClick={() => navigate('/contactus')}>Contact Us</li>
-                </ul>
-            </footer>
+      
+          
+      
+            <ul className="nav-links">
+              {userName !== 'Guest' && (
+                <>
+                  <li onClick={() => navigate('/UserProfile')}>Profile</li>
+                  <li onClick={() => navigate('/createevent')}>Post An Event</li>
+                  <li onClick={() => navigate('/MyEvents')}>My Events</li>
+                  <li onClick={() => navigate('/notifications')}>Notifications</li>
+                  <li onClick={() => navigate('/followers')}>Followers</li>
+                </>
+              )}
+            </ul>
+      
+            {userName !== 'Guest' && (
+              <button className="logout-btn" onClick={handleLogout}>Logout</button>
+            )}
+          </nav>
+
+          <h2>Your Events</h2>
+          {error && <p className="error">{error}</p>}
+      
+          <div className="events-list">
+            {events.length === 0 ? (
+              <p>
+                <h4>You have not created any events yet.</h4>
+                <button onClick={() => navigate('/createevent')}>Create an Event</button>
+              </p>
+            ) : (
+              events.map((event) => (
+                <div key={event.id} className="event-card">
+                  <h3>{event?.name}</h3>
+                  <p>{event?.description}</p>
+                 
+                  {/* 
+                  <p><strong>Date:</strong> {event?.date}</p>
+                  <p><strong>Time:</strong> {event?.time}</p>
+                  <p><strong>Location:</strong> {event?.location}</p>
+                  <p><strong>Ticket Price:</strong> ${event.ticketPrice}</p>
+                  */}
+                  
+                  {event.images && event.images.length > 0 && (
+                    <div className="event-images">
+                      {event.images.map((image, index) => (
+                        <img
+                          key={index}
+                          src={image}
+                          alt={`Event ${event.name} - Image ${index + 1}`}
+                          className="event-image"
+                        />
+                      ))}
+                    </div>
+                  )}
+      
+                  <button onClick={() => handleViewEvent(event.id)}>View</button>
+                  <button onClick={() => handleEditEvent(event.id)}>Edit</button>
+                  <button onClick={() => handleDeleteEvent(event.id)}>Delete</button>
+                </div>
+              ))
+            )}
+          </div>
+      
+         
+          <footer className="footer">
+            <ul className="footer-links">
+              <li onClick={() => navigate('/about')}>About</li>
+              <li onClick={() => navigate('/privacypolicy')}>Privacy Policy</li>
+              <li onClick={() => navigate('/termsandconditions')}>Terms and Conditions</li>
+              <li onClick={() => navigate('/contactus')}>Contact Us</li>
+            </ul>
+          </footer>
         </div>
-    );
+      );
+      
 };
 
 export default MyEvents;
