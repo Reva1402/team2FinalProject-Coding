@@ -3,15 +3,18 @@ import { firestore, auth } from "./firebaseConfig";
 import { Link, useNavigate } from "react-router-dom";
 import { collection, onSnapshot } from "firebase/firestore";
 import { signOut } from "firebase/auth";
+
 import "./Styling.css";
 
 const ModeratorDashboard = () => {
   const [userCounts, setUserCounts] = useState({ total: 0, active: 0, inactive: 0 });
   const [moderatorCounts, setModeratorCounts] = useState({ total: 0, active: 0, inactive: 0 });
   const [eventCounts, setEventCounts] = useState({ total: 0, active: 0, inactive: 0 });
-  const [searchQuery, setSearchQuery] = useState(""); // State for search query
+  const [commentCounts, setCommentCounts] = useState({ total: 0, spam: 0, harassment: 0 });
+  const [searchQuery, setSearchQuery] = useState(""); 
   const navigate = useNavigate();
 
+  
   useEffect(() => {
     const userListener = onSnapshot(collection(firestore, "user"), snapshot => {
       const total = snapshot.size;
@@ -34,12 +37,21 @@ const ModeratorDashboard = () => {
       setEventCounts({ total, active, inactive });
     });
 
+    const commentListener = onSnapshot(collection(firestore, "reports"), snapshot => {
+      const total = snapshot.size;
+      const spam = snapshot.docs.filter(doc => doc.data().reason === "spam").length;
+      const harassment = snapshot.docs.filter(doc => doc.data().reason === "harassment").length;
+      setCommentCounts({ total, spam, harassment });
+    });
+
     return () => {
       userListener();
       moderatorListener();
       eventListener();
+      commentListener();
     };
   }, []);
+
 
   const handleLogout = async () => {
     try {
@@ -50,50 +62,50 @@ const ModeratorDashboard = () => {
     }
   };
 
-  // Handle the change in search query
-  const handleSearchChange = (e) => {
+   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value.toLowerCase());
   };
 
-  // Function to filter sections based on search query
+  
   const filteredSections = () => {
     const query = searchQuery.trim().toLowerCase();
     const sections = [];
-    
-    if (query === "" || "user".includes(query)) {
+
+   
+    if (query === "" || query.includes("user")) {
       sections.push(
-        <div className="management-section" key="user">
-          <h2><Link to="/ModeratorUserManagement">User Account</Link></h2>
+        <div className="management-section" key="reported-users">
+          <h2><Link to="/ModeratorUserManagement">Reported Users</Link></h2>
           <div className="count-row">
-            <div className="count-box total">Warnings: {userCounts.total}</div>
-            <div className="count-box active">Remove: {userCounts.active}</div>
-            <div className="count-box inactive">Suspension: {userCounts.inactive}</div>
+            <div className="count-box total">Total Reports: {userCounts.total}</div>
+            <div className="count-box active">Active: {userCounts.active}</div>
+            <div className="count-box inactive">Inactive: {userCounts.inactive}</div>
           </div>
         </div>
       );
     }
 
-    if (query === "" || "moderator".includes(query)) {
+    if (query === "" || query.includes("event")) {
       sections.push(
-        <div className="management-section" key="moderators">
-          <h2>Reported Events</h2>
+        <div className="management-section" key="reported-events">
+          <h2><Link to="/ModeratorEventManagement">Reported Events</Link></h2>
           <div className="count-row">
-            <div className="count-box total">Warnings: {moderatorCounts.total}</div>
-            <div className="count-box active">Remove: {moderatorCounts.active}</div>
-            <div className="count-box inactive">suspension: {moderatorCounts.inactive}</div>
+            <div className="count-box total">Total Reports: {eventCounts.total}</div>
+            <div className="count-box active">Active: {eventCounts.active}</div>
+            <div className="count-box inactive">Inactive: {eventCounts.inactive}</div>
           </div>
         </div>
       );
     }
 
-    if (query === "" || "event".includes(query)) {
+    if (query === "" || query.includes("comment")) {
       sections.push(
-        <div className="management-section" key="events">
-          <h2>Reported Comments</h2>
+        <div className="management-section" key="reported-comments">
+          <h2><Link to="/ModeratorCommentManagement">Reported Comments</Link></h2>
           <div className="count-row">
-            <div className="count-box total">Warnings: {eventCounts.total}</div>
-            <div className="count-box active">Remove: {eventCounts.active}</div>
-            <div className="count-box inactive">suspension: {eventCounts.inactive}</div>
+            <div className="count-box total">Total Reports: {commentCounts.total}</div>
+            <div className="count-box spam">Spam: {commentCounts.spam}</div>
+            <div className="count-box harassment">Harassment: {commentCounts.harassment}</div>
           </div>
         </div>
       );
@@ -104,32 +116,29 @@ const ModeratorDashboard = () => {
 
   return (
     <div className="admin-dashboard">
-      <header className="navbar">
-        <h1>Moderator One</h1>
-        <div className="navbar-right">
-          <input
-            type="text"
-            placeholder="Search..."
-            className="search-bar"
-            onChange={handleSearchChange}
-            value={searchQuery}
-          />
-          <Link to="/profile" className="profile-link">Profile</Link>
-          <button className="logout-btn" onClick={handleLogout}>Log Out</button>
-        </div>
-      </header>
+      <nav className="moderator-navbar">
+        <h2>Welcome, Moderator</h2>
+        <input
+          type="text"
+          placeholder="Search sections..."
+          value={searchQuery}
+          onChange={handleSearchChange}
+        />
+        <button onClick={() => navigate('/ModeratorProfile')}>Profile</button>
+        <button onClick={handleLogout}>Logout</button>
+      </nav>
 
       <div className="content">
         <aside className="sidebar">
           <Link to="/moderatordashboard">Dashboard</Link>
+          <Link to="/ModeratorHomePage">Feed</Link>
           <Link to="/ModeratorUserManagement">User Management</Link>
-          <Link to="/suspended-resources">Event Management</Link>
-          <Link to="/content-management">Comment Management</Link>
-         
+          <Link to="/ModeratorEventManagement">Event Management</Link>
+          <Link to="/ModeratorCommentManagement">Comment Management</Link>
         </aside>
 
         <div className="dashboard-content">
-          {filteredSections()} {/* Render filtered sections */}
+          {filteredSections()}
         </div>
       </div>
 
