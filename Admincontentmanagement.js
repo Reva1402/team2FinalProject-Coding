@@ -2,25 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth, firestore } from './firebaseConfig';
-import { collection, doc, getDocs, getDoc, updateDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, updateDoc, deleteDoc, getDoc, onSnapshot } from 'firebase/firestore';
 import './Admincontentmanagement.css';
-import {
-    getModerators,
-    viewModerator,
-    editModerator,
-    demoteModerator,
-    suspendModerator,
-    deleteModerator,
-} from './ModeratorService'; 
-import './ModeratorManagement.css'; 
+import './ModeratorManagement.css';
 
 const Admincontentmanagement = () => {
     const navigate = useNavigate();
     const [events, setEvents] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const [userName, setUserName] = useState('');
-    const [activeView, setActiveView] = useState('users');
-    const [moderators, setModerators] = useState([]);
+    const [userName, setUserName] = useState(''); 
+    const [activeView, setActiveView] = useState('content-management');
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(async (currentUser) => {
@@ -31,7 +22,6 @@ const Admincontentmanagement = () => {
 
             try {
                 const userDoc = await getDoc(doc(firestore, 'users', currentUser.uid));
-                // Will add logic where we check if the user is a moderator
                 if (!userDoc.exists()) {
                     navigate('/moderatorlogin');
                     return;
@@ -40,36 +30,31 @@ const Admincontentmanagement = () => {
             } catch (error) {
                 console.error("Error verifying moderator status:", error);
                 navigate('/moderatorlogin');
-                return;
             }
 
-            // Fetch events
+           
             fetchEvents();
         });
 
         return () => unsubscribe();
     }, [navigate]);
 
-
-
-    const fetchEvents = async () => {
-        try {
-            const eventsRef = collection(firestore, 'events');
-            const eventSnapshot = await getDocs(eventsRef);
-            const eventList = eventSnapshot.docs.map(doc => ({
+    const fetchEvents = () => {
+        
+        const eventsRef = collection(firestore, 'events');
+        onSnapshot(eventsRef, (snapshot) => {
+            const eventList = snapshot.docs.map(doc => ({
                 id: doc.id,
                 ...doc.data()
             }));
             setEvents(eventList);
-        } catch (error) {
-            console.error("Error fetching events:", error);
-        }
+        });
     };
 
     const handleLogout = async () => {
         try {
             await signOut(auth);
-            navigate('/moderatorlogin');
+            navigate('/login');
         } catch (error) {
             console.error('Error logging out:', error);
         }
@@ -83,64 +68,69 @@ const Admincontentmanagement = () => {
         );
     };
 
-    // ModeratorManagement
-    const fetchModerators = async () => {
-        const data = await getModerators();
-        setModerators(data);
+    const suspendEvent = async (id) => {
+        try {
+           
+            const eventRef = doc(firestore, 'events', id);
+            
+           
+            const eventDoc = await getDoc(eventRef);
+            
+           
+            if (eventDoc.exists()) {
+                await updateDoc(eventRef, {
+                    status: 'suspended'  
+                });
+                alert('Event suspended successfully');
+            } else {
+                console.log("Event not found!");
+            }
+        } catch (error) {
+            console.error('Error suspending event:', error);
+            alert('Failed to suspend event');
+        }
     };
 
-    useEffect(() => {
-        fetchModerators(); 
-    }, []);
-
-    
-    const handleSuspend = async (id) => {
-        await suspendModerator(id);
-        fetchModerators(); 
+    const activateEvent = async (id) => {
+        try {
+           
+            const eventRef = doc(firestore, 'events', id);
+            
+         
+            const eventDoc = await getDoc(eventRef);
+            
+          
+            if (eventDoc.exists()) {
+                await updateDoc(eventRef, {
+                    status: 'active'  
+                });
+                alert('Event activated successfully');
+            } else {
+                console.log("Event not found!");
+            }
+        } catch (error) {
+            console.error('Error activating event:', error);
+            alert('Failed to activate event');
+        }
     };
 
-    const handleDelete = async (id) => {
-        await deleteModerator(id);
-        fetchModerators(); 
+    const deleteEvent = async (id) => {
+       
+        const isConfirmed = window.confirm('Are you sure you want to delete this event?');
+        if (!isConfirmed) return;
+
+        try {
+            await deleteDoc(doc(firestore, 'events', id));
+            alert('Event deleted successfully');
+        } catch (error) {
+            console.error('Error deleting event:', error);
+            alert('Failed to delete event');
+        }
     };
 
-    const suspendEvent = async (id) =>{
-        const updatedList = events.filter((event) => event.id !== id);
-        setEvents(updatedList);
-    }
-
-    const renderEventManagementTable = () => {
-        return (
-            <div className="event-management-table">
-                <h2>Events</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Event Name</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filterEvents().map(event => (
-                            <tr key={event.id}>
-                                <td>{event.name}</td>
-                                <td className="action-buttons">
-                                    <button className="view-btn">View</button>
-                                    <button className="warning-btn">Warning</button>
-                                    <button className="suspend-btn">Suspend</button>
-                                    <button className="remove-btn">Remove</button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-        );
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value.toLowerCase());
     };
-
-    const renderUsermanagement = () =>{
-        navigate("/usermanagement");
-    }
 
     const renderContentManagement = () => {
         return (
@@ -158,9 +148,13 @@ const Admincontentmanagement = () => {
                             <tr key={event.id}>
                                 <td>{event.name}</td>
                                 <td className="action-buttons">
-                                    <button className="view-btn" onClick={()=>navigate(`/event/${event.id}`)}>View</button>
-                                    <button className="suspend-btn" onClick={()=>suspendEvent(`${event.id}`)}>Suspend</button>
-                                    <button className="remove-btn" onClick={()=>handleDelete(`${event.id}`)}>Delete</button>
+                                    <button className="view-btn" onClick={() => navigate(`/adminModeratorEventView/${event.id}`)}>View</button>
+                                    {event.status === 'active' ? (
+                                        <button className="suspend-btn" onClick={() => suspendEvent(event.id)}>Suspend</button>
+                                    ) : (
+                                        <button className="activate-btn" onClick={() => activateEvent(event.id)}>Activate</button>
+                                    )}
+                                    <button className="remove-btn" onClick={() => deleteEvent(event.id)}>Delete</button>
                                 </td>
                             </tr>
                         ))}
@@ -168,63 +162,67 @@ const Admincontentmanagement = () => {
                 </table>
             </div>
         );
-    }
-
-    const renderManagement = () =>{
-        navigate("/ModeratorManagement");
-    }
+    };
 
     const renderSuspendedResources = () => {
-        navigate("/");
-    }
-
-    const renderSecurityRules = () => {
-        navigate("/");
-    }
+        const suspendedEvents = events.filter(event => event.status === 'suspended');
+        return (
+            <div className="suspended-resources-table">
+                <h2>Suspended Events</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Event Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {suspendedEvents.map(event => (
+                            <tr key={event.id}>
+                                <td>{event.name}</td>
+                                <td className="action-buttons">
+                                    <button className="view-btn" onClick={() => navigate(`/event/${event.id}`)}>View</button>
+                                    <button className="activate-btn" onClick={() => activateEvent(event.id)}>Activate</button>
+                                    <button className="remove-btn" onClick={() => deleteEvent(event.id)}>Delete</button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        );
+    };
 
     return (
         <div className="moderator-page">
-            <nav className="moderator-navbar">
-                <div className="nav-left">
-                    <h1>Welcome {userName}</h1>
-                </div>
-                <div className="nav-right">
-                    <input
-                        type="text"
-                        placeholder="Search"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="search-input"
-                    />
-                    <button className="profile-btn" onClick={() => navigate('/AdminProfile')}>
-                            Profile
-                    </button>
-                    <button className="logout-btn" onClick={() => navigate('/login')}>
-                        Log Out
-                    </button>
-                </div>
-            </nav>
+            <header className="navbar">
+            <h1 onClick={() => navigate('/AdminDashboard')}>Welcome Admin</h1>
+            <div className="navbar-right">
+          <Link to="/AdminProfile" className="profile-link" style={{ color: "white" }}>Profile</Link>
+          <button className="logout-btn" onClick={handleLogout}>Log Out</button>
+        </div>
+            </header>
 
             <div className="moderator-content">
-                <aside className="sidebar">
-                    <ul>
-                        <li onClick={() => setActiveView('usermanagement')}>User Management</li>
-                        <li onClick={() => setActiveView('moderator-management')}>Moderator Management</li>
-                        <li onClick={() => setActiveView('suspended-resources')}>Suspended Resource</li>
-                        <li onClick={() => setActiveView('content-management')}>Content Management</li>
-                        <li onClick={() => setActiveView('security-rules')}>Security Rules</li>
-                    </ul>
-                </aside>
+                <div className="sidebar">
+                <Link to="/AdminDashboard">Dashboard</Link>
+                    <Link to="/users">User Management</Link>
+                    <Link to="/ModeratorManagement" className="active">
+                        Moderator Management
+                    </Link>
+                    <Link to="/suspendedresources">Suspended Resources</Link>
+                    <Link to="/Admincontentmanagement">Content Management</Link>
+                    <Link to="/Adminsupport">Support Management</Link>
+                    <h4>
+    <a href="https://console.firebase.google.com/u/0/project/finalproject-e37f8/firestore/databases/-default-/rules" target="_blank" rel="noopener noreferrer">
+      Security Rules
+    </a>
+  </h4>
+                </div>
 
                 <main className="main-content">
-                    {activeView === 'usermanagement' && renderUsermanagement()}
-                    {activeView === 'moderator-management' && renderManagement()}
-                    {activeView === 'suspended-resources' && renderSuspendedResources()}
                     {activeView === 'content-management' && renderContentManagement()}
-                    {activeView === 'security-rules' && renderSecurityRules()}
-    
-                    
-
+                    {activeView === 'suspended-resources' && renderSuspendedResources()}
                 </main>
             </div>
 
@@ -238,4 +236,4 @@ const Admincontentmanagement = () => {
     );
 };
 
-export default Admincontentmanagement; 
+export default Admincontentmanagement;

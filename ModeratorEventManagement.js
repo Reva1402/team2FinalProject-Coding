@@ -1,75 +1,162 @@
 import React, { useState, useEffect } from 'react';
-import { firestore } from './firebaseConfig';
-import { collection, getDocs } from 'firebase/firestore';
-import { Link } from 'react-router-dom';
+import { firestore, auth } from './firebaseConfig';
+import { collection, getDocs, updateDoc, doc, onSnapshot } from 'firebase/firestore';
+import { Link, useNavigate } from 'react-router-dom';
+import { signOut } from 'firebase/auth';
+import './ModeratorEventManagement.css';
 
 const ModeratorEventManagement = () => {
     const [reportedEvents, setReportedEvents] = useState([]);
-    const [reportedEventCreators, setReportedEventCreators] = useState([]);
+    const [filteredEvents, setFilteredEvents] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [userNames, setUserNames] = useState({});  
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchReportedEvents();
+        const unsubscribe = listenForStatusUpdates();
+        return () => unsubscribe();
     }, []);
 
+ 
     const fetchReportedEvents = async () => {
         try {
             const reportsRef = collection(firestore, 'reports');
             const snapshot = await getDocs(reportsRef);
             const eventsList = snapshot.docs
                 .map(doc => doc.data())
-                .filter(report => report.eventCreator) // Filter for event reports only
+                .filter(report => report.eventCreator) 
                 .map(report => ({
-                    eventId: report.eventId,
+                    eventId: report.eventId,  
                     eventName: report.eventName,
-                    eventCreator: report.eventCreator,
+                    eventCreator: report.eventCreator, 
+                    status: report.status || 'active' 
                 }));
 
-            const eventCreators = eventsList.map(event => event.eventCreator); // Get the event creators (user IDs)
-
             setReportedEvents(eventsList);
-            setReportedEventCreators([...new Set(eventCreators)]); // Remove duplicates
+            setFilteredEvents(eventsList);
+            
+           
+            const userIds = eventsList.map(event => event.eventCreator);
+            const userRef = collection(firestore, 'users');
+            const userSnapshots = await getDocs(userRef);
+            const users = userSnapshots.docs.reduce((acc, doc) => {
+                const userData = doc.data();
+                acc[doc.id] = userData.firstName; 
+                return acc;
+            }, {});
+
+            setUserNames(users); 
         } catch (error) {
             console.error('Error fetching reported events:', error);
         }
     };
 
-    const suspendEvent = async (id) => {
-        // Implement suspend event logic here
-        console.log(`Suspend event with id: ${id}`);
+ 
+    const listenForStatusUpdates = () => {
+        const eventsRef = collection(firestore, 'events');
+        return onSnapshot(eventsRef, (snapshot) => {
+            const updatedEvents = snapshot.docs.map(doc => ({
+                eventId: doc.id,
+                ...doc.data(),
+            }));
+
+            setReportedEvents(prevEvents =>
+                prevEvents.map(event => {
+                    const updatedEvent = updatedEvents.find(updated => updated.eventId === event.eventId);
+                    return updatedEvent ? { ...event, status: updatedEvent.status } : event;
+                })
+            );
+            setFilteredEvents(prevEvents =>
+                prevEvents.map(event => {
+                    const updatedEvent = updatedEvents.find(updated => updated.eventId === event.eventId);
+                    return updatedEvent ? { ...event, status: updatedEvent.status } : event;
+                })
+            );
+        });
     };
 
-    const deleteEvent = async (id) => {
-        // Implement delete event logic here
-        console.log(`Delete event with id: ${id}`);
+    const suspendEvent = async (eventId) => {
+        try {
+            await updateDoc(doc(firestore, 'events', eventId), { status: 'suspended' });
+            alert('Event suspended successfully!');
+        } catch (error) {
+            console.error('Error suspending event:', error);
+            alert('Failed to suspend the event.');
+        }
+    };
+
+    const activateEvent = async (eventId) => {
+        try {
+            await updateDoc(doc(firestore, 'events', eventId), { status: 'active' });
+            alert('Event activated successfully!');
+        } catch (error) {
+            console.error('Error activating event:', error);
+            alert('Failed to activate the event.');
+        }
+    };
+
+    const handleSearch = async () => {
+        if (!searchQuery.trim()) {
+            alert('Please enter a search term');
+            return;
+        }
+      
+    };
+
+    const viewEvent = (eventId) => {
+        navigate(`/adminModeratorEventView/${eventId}`);
     };
 
     return (
         <div className="moderator-management-container">
             <h2>Reported Events</h2>
+            <nav className="moderator-navbar">
+                <h2>Welcome, Moderator</h2>
+                <input
+                    type="text"
+                    placeholder="Search here..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <button className="search-button" onClick={handleSearch}>Search</button>
+                <button onClick={() => navigate('/ModeratorProfile')}>Profile</button>
+                <button onClick={() => signOut(auth).then(() => navigate('/login'))}>Logout</button>
+            </nav>
+
             <div>
                 <aside className="sidebar">
                     <Link to="/moderatordashboard">Dashboard</Link>
+                    <Link to="/ModeratorHomePage">Feed</Link>
                     <Link to="/ModeratorUserManagement">User Management</Link>
                     <Link to="/ModeratorEventManagement">Event Management</Link>
                     <Link to="/ModeratorCommentManagement">Comment Management</Link>
                 </aside>
             </div>
+
             <table className="moderator-table">
                 <thead>
                     <tr>
                         <th>Event Name</th>
-                        <th>Event Creator (User ID)</th>
+                        <th>Event Creator</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {reportedEvents.map(event => (
-                        <tr key={event.eventId}>
+                    {filteredEvents.map((event, index) => (
+                        <tr key={index}>
                             <td>{event.eventName}</td>
-                            <td>{event.eventCreator}</td>
+                            <td>{userNames[event.eventCreator]}</td> 
+                            <td>{event.status}</td>
                             <td className="action-buttons">
-                                <button onClick={() => suspendEvent(event.eventId)}>Suspend</button>
-                                <button onClick={() => deleteEvent(event.eventId)}>Delete</button>
+                             
+                                <button className="view-button" onClick={() => viewEvent(event.eventId)}>View</button>
+                                {event.status === 'suspended' ? (
+                                    <button onClick={() => activateEvent(event.eventId)}>Activate</button>
+                                ) : (
+                                    <button onClick={() => suspendEvent(event.eventId)}>Suspend</button>
+                                )}
                             </td>
                         </tr>
                     ))}
