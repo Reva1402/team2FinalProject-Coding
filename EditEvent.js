@@ -111,7 +111,7 @@ const EditEvent = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(''); // Reset error message on submit
+        setError(''); 
 
         try {
             if (user) {
