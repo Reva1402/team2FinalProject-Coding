@@ -1,0 +1,80 @@
+/* Unique wrapper for the Moderator User Management section */
+.moderator-user-management .moderator-management-container {
+  width: 100%;
+  margin-top: 100px;
+  text-align: center;
+  margin-left: 300px;
+  margin-bottom: 90px;
+}
+
+.moderator-user-management h2 {
+  text-align: left;
+  
+}
+
+/* Action buttons */
+.moderator-user-management .moderator-table button {
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+  font-size: 14px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.moderator-user-management .moderator-table .action-buttons .view-button {
+  background-color: #909491;
+  color: black;
+
+}
+.moderator-user-management .moderator-table .action-buttons .suspend-button {
+  background-color: #eb2020;
+  color: black;
+}
+
+/* Activate button (green for activation) */
+.moderator-user-management .moderator-table .action-buttons .activate-button {
+  background-color: #28a745; /* Green */
+  color: white;
+}
+
+.moderator-user-management .moderator-table button.activate-button:hover {
+  background-color: #218838; /* Darker green */
+  transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+
+/* Warning button (yellow) */
+.moderator-user-management .moderator-table button.warning-button {
+  background-color: #ffc107; /* Yellow */
+  color: rgb(12, 12, 12);
+}
+
+.moderator-user-management .moderator-table button.warning-button:hover {
+  background-color: #e0a800; /* Darker yellow */
+  transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+/* Disable buttons (for example, when suspended) */
+.moderator-user-management .moderator-table button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Sidebar styles */
+.moderator-user-management .sidebar {
+  height: 60vh;
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+.moderator-management-container .profile-button {
+  margin-left: 20px;
+  background-color: rgb(197, 197, 206);
+  margin-left: 50px;
+} 
+
+.moderator-management-container .moderator-management-container .profile-button {
+  margin-left: 50px;
+}
