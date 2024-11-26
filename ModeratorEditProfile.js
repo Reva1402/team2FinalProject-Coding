@@ -5,7 +5,6 @@ import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { signOut } from 'firebase/auth';
 import './ModeratorUserManagement.css'; 
 import './ModeratorEditProfile.css';
-
 const ModeratorEditProfile = () => {
   const navigate = useNavigate();
   const [userProfile, setUserProfile] = useState(null);
