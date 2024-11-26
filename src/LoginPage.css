@@ -1,195 +1,224 @@
-
-body {
-  font-family: 'Arial', sans-serif;
+.loginpage-body {
+  background: linear-gradient(rgba(249, 249, 249, 0.4), rgba(249, 249, 249, 0.3)), 
+              url('./images/bgimage.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   margin: 0;
-  padding: 0;
-  background-color: #f0f4f8;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+ 
+}
+
+
+.loginpage-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
-}
-
-
-.login-container {
   width: 100%;
-  max-width: 400px;
-  background-color: #fff;
-  padding: 30px 40px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  
 }
 
-
-.form-wrapper {
-  margin-bottom: 20px;
-}
-
-
-h1.text-center {
-  text-align: center;
-  font-size: 24px;
-  color: #333;
-  margin-bottom: 20px;
-}
-
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-group label {
-  font-size: 14px;
-  font-weight: 600;
-  color: #555;
-}
-
-.form-group input {
-  width: 100%;
-  padding: 12px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.3s ease;
-}
-
-.form-group input:focus {
-  border-color: #007bff;
-}
-
-
-.button-group {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-button.btn {
-  font-size: 16px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button.login-btn {
-  background-color: #007bff;
-  color: white;
-}
-
-button.login-btn:hover {
-  background-color: #0056b3;
-}
-
-button.btn-link {
-  background: none;
-  color: #007bff;
-  font-size: 14px;
-  cursor: pointer;
-  border: none;
-  padding: 0;
-  text-decoration: underline;
-}
-
-
-.modal-overlay {
+.loginpage-navbar {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(95, 76, 76, 0.5);
+  right: 0;
+  background-color: #a5aaad;
+  color: black;
+  padding: 10px 60px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  z-index: 10;
+  border-bottom: 1px solid #000000;
 }
 
-.modal-overlay.open {
-  visibility: visible;
-  opacity: 1;
+.loginpage-navbar-brand {
+  font-size: 36px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 60px;
 }
 
-.modal-content {
-  background-color: #fff;
-  padding: 30px 40px;
-  width: 100%;
-  max-width: 400px;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  position: relative;
+.loginpage-nav-links {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+  margin-right: 60px;
 }
 
-
-.modal-close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 20px;
-  color: #333;
-  background-color: transparent;
-  border: none;
+.loginpage-nav-item {
+  color: black;
+  font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
   transition: color 0.3s ease;
 }
 
-.modal-close:hover {
+.loginpage-nav-item:hover {
   color: #007bff;
 }
 
-
-.modal-content h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 22px;
-  color: #333;
+.loginpage-logout-btn {
+  color: black;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: underline;
+  transition: background-color 0.3s ease;
 }
 
-.input-group {
-  margin-bottom: 20px;
-}
 
-.input-group input {
-  width: 100%;
-  padding: 12px;
-  font-size: 14px;
+
+.loginpage-form-wrapper {
+  width: 500px;
+  padding: 40px;
+  background-color: rgba(255, 255, 255, 0.873);
+  border-radius: 10px;
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
+  border-radius: 30px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  text-align: center;
+}
+
+.loginpage-text-center {
+  text-align: center;
+  font-size: 28px;
+  color: #333333;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.loginpage-form {
+  width: 100%;
+}
+
+.loginpage-form-group {
+  margin-bottom: 20px;
+}
+
+.loginpage-label {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: #333333;
+}
+
+.loginpage-form-control {
+  width: 100%;
+  padding: 15px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.loginpage-form-control:focus {
+  border-color: #007bff;
   outline: none;
 }
 
-.input-group input:focus {
-  border-color: #007bff;
+.loginpage-button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
-.reset-btn {
-  width: 100%;
-  background-color: #f30404;
-  color: white;
-  padding: 12px;
+.loginpage-btn {
+  padding: 15px;
   font-size: 16px;
+  border-radius: 6px;
   border: none;
-  border-radius: 5px;
+  text-align: center;
+}
+
+.loginpage-btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.loginpage-btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.loginpage-btn-link {
+  background: none;
+  color: rgb(63, 196, 241);
+  border: none;
+  padding: 0;
+  font-size: 16px;
   cursor: pointer;
 }
 
-.reset-btn:hover {
-  background-color: #f3f3f3;
+.loginpage-btn-link:hover {
+  text-decoration: underline;
 }
 
+.loginpage-reset-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 20px;
+  text-align: center;
+}
 
-@media (max-width: 768px) {
-  .login-container {
-    width: 90%;
-    padding: 20px;
-  }
+.loginpage-reset-form {
+  width: 100%;
+}
 
-  .modal-content {
-    width: 90%;
-  }
+.loginpage-input-group {
+  margin-bottom: 20px;
+}
+
+.loginpage-reset-btn {
+  width: 100%;
+  padding: 15px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.loginpage-reset-btn:hover {
+  background-color: #0056b3;
+}
+
+.loginpage-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #a5aaad;
+  color: black;
+  padding: 10px 20px;
+  text-align: center;
+  border-top: 1px solid #000000;
+}
+
+.loginpage-footer-links {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.loginpage-footer-link {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  color: black;
+  transition: color 0.3s ease;
+}
+
+.loginpage-footer-link:hover {
+  color: #007bff;
 }
