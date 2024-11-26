@@ -1,0 +1,260 @@
+
+.edit-event .navbar {
+    width: 100%;
+    background-color: #a5aaad;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+  
+  .edit-event .navbar h1 {
+    font-size: 1.8rem;
+    margin: 0;
+    color: white;
+  }
+  
+  .edit-event .navbar-right {
+    display: flex;
+    align-items: center;
+    color: white;
+  }
+  
+  .edit-event .navbar-brand {
+      font-size: 1.6rem;
+      font-weight: bold;
+      cursor: pointer;
+      color: #fff;
+    }
+    
+    .edit-event .nav-links {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+    }
+    
+    .edit-event .nav-item {
+      cursor: pointer;
+      color: #ddd;
+      transition: color 0.3s;
+    }
+    
+    .edit-event .nav-item:hover {
+      color: #fff;
+    }
+    
+    .edit-event .logout-btn {
+      background-color: #e63946;
+      border: none;
+      color: white;
+      padding: 8px 15px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      margin-right: 25px;
+    }
+    
+    .edit-event .logout-btn:hover {
+      background-color: #d62828;
+    }
+    
+  
+  .edit-event {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    max-width: 600px;
+    text-align: center;
+    width: 100%;
+  }
+
+.edit-event h2 {
+    text-align: center;
+    color: #333;
+    align-items: center;
+    margin-left: 320px; 
+    margin-bottom: -20px; 
+    margin-top: 50px; 
+    width: 100%;
+}
+
+.edit-event .error {
+    color: #ff4c4c;
+    text-align: center;
+    font-weight: bold;
+}
+
+
+.edit-event-sidebar {
+    width: 200px;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    position: fixed; 
+    left: 0; 
+    top: 80px; 
+    margin: 20px; 
+  }
+  
+  .edit-event-sidebar .btn-link {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 10px;
+    text-align: center;
+    padding: 10px 15px;
+    background-color: #e7f1ff; 
+    color: #0056b3;
+    border: 1px solid #d0e2ff;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.3s ease;
+  }
+  
+  .edit-event-sidebar .btn-link:hover {
+    background-color: #cfe4ff; 
+    color: #004080;
+  }
+  
+  
+  
+  
+  .edit-event .footer,
+  .edit-event .footer-links {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color:#a5aaad; 
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 2;
+      gap: 20px; 
+      font-size: 14px; 
+      
+  }
+  
+  .edit-event .footer-links {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+  
+  }
+  
+  .edit-event .footer-links li {
+      cursor: pointer;
+      transition: color 0.3s ease;
+      color: black;
+      font-weight: bold;
+      margin-left: 5%;
+      margin-right: 5%;
+  }
+  
+  .edit-event .footer-links li:hover {
+      color: #007bff; 
+  }
+  
+  .edit-event .footer-links a {
+      text-decoration: none;
+      color: inherit;
+  }
+  
+  .edit-event .footer-links a:hover {
+      color: #007bff;
+  }
+
+
+  .update-event-form {
+width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-left: 300px;
+    margin-top: 50px;
+    margin-bottom: 20px;
+  }
+  
+  .update-event-form h2 {
+    font-size: 24px;
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .update-event-form div {
+    margin-bottom: 15px;
+  }
+  
+  .update-event-form label {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+  }
+  
+  .update-event-form input,
+  .update-event-form textarea,
+  .update-event-form button {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .update-event-form input:focus,
+  .update-event-form textarea:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  .update-event-form textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+  
+  .update-event-form input[type="file"] {
+    border: none;
+    padding: 5px 0;
+  }
+  
+  .update-event-form button {
+    background-color: #007bff;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+  }
+  
+  .update-event-form button:hover {
+    background-color: #0056b3;
+  }
+  
+  .update-event-form .error {
+    color: #ff4d4f;
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
