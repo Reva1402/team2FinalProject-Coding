@@ -1,74 +1,175 @@
 
-.add-moderator {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
+.add-moderator-container {
     background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-.form-title {
+
+.add-moderator-navbar {
+    width: 100%;
+    background-color: #a5aaad; 
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.add-moderator-header {
+    font-size: 1.8rem;
+    color: black;
+    margin: 0;
+    cursor: pointer;
+}
+
+.add-moderator-navbar-right {
+    margin-right: 30px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.add-moderator-profile-link {
+    text-decoration: none;
+    color: black;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.add-moderator-profile-link:hover {
+    color: #007bff;
+}
+
+.add-moderator-logout-btn {
+    background-color: #e63946;
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.add-moderator-logout-btn:hover {
+    background-color: #d62828;
+}
+
+
+.add-moderator-form-title {
     text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
+    margin-top: 80px; 
+    font-size: 1.5rem;
+    color: #333333;
 }
 
+.add-moderator-form {
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+    max-width: 600px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-.form-label {
+.add-moderator-form-label {
     display: block;
-    font-size: 16px;
-    color: #555;
-    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555555;
 }
 
+.add-moderator-form-label input,
+.add-moderator-form-label select {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    transition: border-color 0.3s ease;
+}
 
-.form-input,
-.form-select {
+.add-moderator-form-label input:focus,
+.add-moderator-form-label select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.add-moderator-submit-button {
+    display: block;
     width: 100%;
     padding: 10px;
     font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-bottom: 15px;
-    background-color: #fff;
-    box-sizing: border-box;
-}
-
-
-.submit-button {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    color: #fff;
     background-color: #007bff;
+    color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease;
 }
 
-.submit-button:hover {
+.add-moderator-submit-button:hover {
     background-color: #0056b3;
 }
 
 
-.footer {
-    background-color: #333;
-    color: #ffffff;
-    text-align: center;
-    padding: 10px;
+.add-moderator-footer {
+    background-color: #a5aaad; 
+    color: rgb(20, 18, 18);
+    padding: 10px 20px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
 }
 
-.footer p {
-    margin: 5px 0;
-    color: #ffffff;
-    cursor: pointer;
+.add-moderator-footer-links {
+    list-style: none;
+    display: flex;
+    justify-content: space-between; 
+    width: 100%; 
+    margin: 0;
+    padding: 0;
+}
+
+.add-moderator-footer-link {
+    color: black;
+    font-weight: bold;
     text-decoration: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    text-align: center;
 }
 
-.footer p:hover {
-    text-decoration: underline;
+.add-moderator-footer-link:hover {
+    color: #007bff;
+}
+
+
+@media (max-width: 768px) {
+    .add-moderator-form {
+        width: 90%;
+    }
+
+    .add-moderator-footer-links {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
 }
