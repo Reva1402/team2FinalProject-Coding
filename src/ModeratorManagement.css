@@ -1,116 +1,246 @@
 
-.moderator-management-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
     background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-.moderator-management-title {
-    font-size: 24px;
-    color: #333;
-    margin-bottom: 20px;
-}
-
-
-.moderator-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
-
-.moderator-table th, .moderator-table td {
-    padding: 12px;
-    border: 1px solid #ddd;
-    text-align: center;
-}
-
-.moderator-table th {
-    background-color: #555;
-    color: white;
-}
-
-.moderator-table td {
-    background-color: #f2f2f2;
     color: #333;
 }
 
 
-.action-buttons {
+.adminmodddreattnavbar {
     display: flex;
-    justify-content: center;
-    gap: 5px;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #6c757d;
+    padding: 15px 20px;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.adminmodddreattnavbar h1 {
+    font-size: 24px;
+    cursor: pointer;
+    margin: 0;
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.profile-link {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.profile-link:hover {
+    color: #ffc107;
+}
+
+.logout-btn {
+    background-color: #ff4b5c;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+    background-color: #c2185b;
 }
 
 
-.action-buttons button {
-    padding: 8px 12px;
+.adminmoddrrrrsidebar {
+    width: 250px;
+    background-color: white;
+    color: #333;
+    height: auto;
+    padding: 20px;
+    position: fixed;
+    top: 80px;
+    left: 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.adminmoddrrrrsidebar a {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+#deletebtn{
+    background-color: #860f1b;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#suspendbtn{
+    background-color: #dfc846;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#demotebtn{
+    background-color: #7e7a7a;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#activatebtn{
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+
+
+.addminnmoderator-management-container {
+    margin-left: 300px;
+    padding: 20px;
+}
+
+.adminnmoddmoderator-management-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.btn {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
     font-size: 14px;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
-    color: white;
-    transition: background-color 0.3s, opacity 0.3s;
-}
-
-
-.view-button {
-    background-color: #5bc0de; 
-}
-
-.edit-button {
-    background-color: #f0ad4e; 
-}
-
-.demote-button {
-    background-color: #5cb85c; 
-}
-
-.suspend-button {
-    background-color: #d9534f;
-}
-
-.delete-button {
-    background-color: #292b2c; 
-}
-
-
-.view-button:hover {
-    background-color: #31b0d5;
-}
-
-.edit-button:hover {
-    background-color: #ec971f;
-}
-
-.demote-button:hover {
-    background-color: #4cae4c;
-}
-
-.suspend-button:hover {
-    background-color: #c9302c;
-}
-
-.delete-button:hover {
-    background-color: #1d1f1f;
-}
-
-.action-buttons button:hover {
-    opacity: 0.85;
-}
-
-
-.add-moderator-link {
-    display: inline-block;
-    color: #007bff;
+    transition: background-color 0.3s ease;
     text-decoration: none;
-    font-weight: bold;
+    text-align: center;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+
+.adminnnssmoderator-table {
+    width: 100%;
+    border-collapse: collapse;
     margin-top: 20px;
 }
 
-.add-moderator-link:hover {
-    text-decoration: underline;
+.adminnnssmoderator-table th,
+.adminnnssmoderator-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.adminnnssmoderator-table th {
+    background-color: #343a40;
+    color: white;
+    font-size: 16px;
+}
+
+.adminnnssmoderator-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.adminnnssmoderator button {
+    background-color: #ff9800;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-right: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.adminnnssmoderator button:hover {
+    background-color: #fb8c00;
+}
+
+
+.addmmiinnmmooddfooter, .addminnnmoddfooter-links  {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #a5aaad;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2;
+    gap: 20px;
+    font-size: 14px;
+}
+
+.addminnnmoddfooter-links  {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.addminnnmoddfooter-links  li {
+    cursor: pointer;
+    transition: color 0.3s ease;
+    color: black;
+    font-weight: bold;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.addminnnmoddfooter-links  li:hover {
+    color: #007bff;
+}
+
+.addminnnmoddfooter-links  a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.addminnnmoddfooter-links  a:hover {
+    color: #007bff;
 }
