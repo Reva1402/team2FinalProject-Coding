@@ -1,6 +1,6 @@
 import React from 'react';
 import './LoginPage.css';
-import './Model.css';
+// import './Model.css';
 
 const Model = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
