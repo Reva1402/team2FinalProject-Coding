@@ -1,0 +1,312 @@
+
+.moderator-management-container .profile-container {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  
+  max-width: 800px;
+  margin: 40px auto;
+    
+  }
+  
+
+  .moderator-management-container .profile-wrapper {
+    display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  }
+  
+
+  .moderator-management-container .profile-header {
+    font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+  }
+  
+  .moderator-management-container .profile-header h1 {
+    margin: 0;
+    color: #0f0f0f;
+  }
+  
+
+  .moderator-management-container .profile-details {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+  
+ 
+  .moderator-management-container .profile-details p {
+    margin: 0;
+    width: 100%;
+    color: #0f0f0f;
+    text-align: left;
+  }
+  
+  
+  .moderator-management-container .profile-picture {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 20px;
+  }
+  
+  .moderator-management-container .profile-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+  }
+
+  .moderator-management-container .profile-info {
+    flex: 1;
+    text-align: left;
+    padding-left: 20px;
+  }
+
+  .moderator-management-container .profile-info p {
+    margin: 8px 0;
+  font-size: 16px;
+  color: #555;
+  text-align: left;
+  }
+  
+  .moderator-management-container .profile-info strong
+  {
+    color: #333;
+  }
+
+
+  .moderator-management-container .edit-profile-btn {
+    background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: background-color 0.3s ease;
+  width: 50%;
+  }
+  
+
+  .moderator-management-container .edit-profile-btn:hover {
+    background-color: #0056b3;
+  }
+  
+
+  .moderator-management-container  .delete-profile-btn {
+    background-color: #dc3545;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 50%;
+  margin-top: 10px;
+  }
+  
+
+  .moderator-management-container .delete-profile-btn:hover {
+    background-color: #c82333;
+  }
+  
+
+  .moderator-management-container .edit-button.save {
+    background-color: #28a745;
+  }
+  
+
+  .moderator-management-container .edit-button:hover {
+    opacity: 0.9;
+  }
+  
+
+  @media (max-width: 768px) {
+    .moderator-management-container .profile-container {
+      width: 80%;
+      padding: 15px;
+    }
+  
+    .moderator-management-container .profile-wrapper {
+      margin-top: -100px;
+    }
+  
+    .moderator-management-container .profile-details {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .moderator-management-container .profile-picture {
+      padding-right: 0;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+  
+    .moderator-management-container .profile-img {
+      width: 120px;
+      height: 120px; 
+    }
+  
+    .moderator-management-container .profile-info p {
+      font-size: 14px; 
+    }
+  
+   
+    .moderator-management-container .edit-profile-btn, 
+    .moderator-management-container .delete-profile-btn {
+      width: 100%;
+      padding: 12px 0; 
+      font-size: 16px;
+    }
+  }
+  
+  
+  @media (max-width: 480px) {
+    .profile-container {
+      width: 90%;
+      padding: 10px;
+    }
+  
+    .profile-wrapper {
+      margin-top: -50px;
+    }
+  
+    .profile-img {
+      width: 100px;
+      height: 100px;
+    }
+  
+    .profile-details {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .profile-info p {
+      font-size: 14px;
+    }
+  
+    
+    .edit-profile-btn, 
+    .delete-profile-btn {
+      width: 100%;
+      padding: 15px;
+      font-size: 14px;
+    }
+  }
+  
+  
+  @media (max-width: 320px) {
+    .profile-container {
+      width: 100%;
+      padding: 10px;
+    }
+  
+    .profile-img {
+      width: 80px;
+      height: 80px;
+    }
+  }  
+  
+  
+  @media (max-width: 480px) {
+    .moderator-management-container .profile-container {
+      width: 90%;
+      padding: 10px;
+    }
+  
+    .moderator-management-container .profile-wrapper {
+      margin-top: -50px;
+    }
+  
+    .moderator-management-container .profile-img {
+      width: 100px;
+      height: 100px;
+    }
+  
+    .moderator-management-container .profile-details {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .moderator-management-container .profile-info p {
+      font-size: 14px;
+    }
+  
+    
+    .moderator-management-container .edit-profile-btn, 
+    .moderator-management-container .delete-profile-btn {
+      width: 100%;
+      padding: 15px;
+      font-size: 14px;
+    }
+  }
+
+  
+  @media (max-width: 320px) {
+    .moderator-management-container .profile-container {
+      width: 100%;
+      padding: 10px;
+    }
+  
+    .moderator-management-container .profile-img {
+      width: 80px;
+      height: 80px;
+    }
+  }
+  
+  
+  @media (max-width: 480px) {
+    .moderator-management-container .profile-container {
+      width: 90%;
+      padding: 10px;
+    }
+  
+    .moderator-management-container .profile-wrapper {
+      margin-top: -50px;
+    }
+  
+    .moderator-management-container .profile-img {
+      width: 100px;
+      height: 100px;
+    }
+  
+    .moderator-management-container  .profile-details {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .moderator-management-container .profile-info p {   
+      font-size: 14px;
+    }
+  
+    
+    .moderator-management-container.edit-profile-btn, 
+    .moderator-management-container.delete-profile-btn {
+      width: 100%;
+      padding: 15px;
+      font-size: 14px;
+    }
+  }
+  
+  
+  @media (max-width: 320px) {
+    .moderator-management-container.profile-container {
+      width: 100%;
+      padding: 10px;
+    }
+  
+    .moderator-management-container .profile-img {
+      width: 80px;
+      height: 80px;
+    }
+  }
+
+  

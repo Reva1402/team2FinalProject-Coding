@@ -1,0 +1,194 @@
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+
+.suspendednavbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #a5aaad;
+    padding: 10px 20px;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.suspendednavbar h1 {
+    font-size: 20px;
+    cursor: pointer;
+    margin: 0;
+}
+
+.navbarsuspendedright {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.profilesuspendedlink {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    transition: color 0.3s;
+}
+
+.profilesuspendedlink:hover {
+    color: #ffc107;
+}
+
+.logoutsuspendedbtn {
+    background-color: #ff4b5c;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.logoutsuspendedbtn:hover {
+    background-color: #e63946;
+}
+
+    .usersuspendedmanagementsidebar {
+        width: 250px;
+        background-color: white;
+        color: #333;
+        height: auto;
+        padding: 20px;
+        position: fixed;
+        top: 80px; 
+        left: 20px; 
+        border: 1px solid #ddd;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .usersuspendedmanagementsidebar a {
+    text-decoration: none;
+    color: blue;
+    font-size: 16px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    background-color: #f9f9f9; 
+    border: 1px solid #e0e0e0;
+    transition: all 0.3s ease;
+    text-align: center; 
+}
+.usermanagementsidebarsupport a:hover,
+.usermanagementsidebarsupport a.active {
+    background-color: #4caf50;
+    color: white;
+    border: 1px solid #4caf50;
+}
+.adminsuspendedresources {
+    margin-left: 300px;
+    padding: 20px;
+    margin-top: 80px;
+    margin-bottom: 80px;
+    flex-grow: 1;
+    background-color: #ecf0f1;
+    min-height: calc(100vh - 140px);
+}
+
+.adminsuspendedresources h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #000000;
+    text-align: center;
+    margin-top: 20px;
+}
+.adminsuspendedresources table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 50px;
+}
+
+.adminsuspendedresources th,
+.adminsuspendedresources td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.adminsuspendedresources th {
+    background-color: #343a40;
+    color: white;
+    font-size: 16px;
+}
+
+.adminsuspendedresources tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+.adminsuspendedresources button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.adminsuspendedresources button:hover {
+    background-color: #43a047;
+}
+
+.suspendedFooter,
+  .suspendedfooterlinks {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color:#a5aaad; 
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 2;
+      gap: 20px; 
+      font-size: 14px; 
+      
+  }
+  
+  .suspendedfooterlinks {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+  
+  }
+  
+  .suspendedfooterlinks li {
+      cursor: pointer;
+      transition: color 0.3s ease;
+      color: black;
+      font-weight: bold;
+      margin-left: 5%;
+      margin-right: 5%;
+  }
+  
+  .suspendedfooterlinks li:hover {
+      color: #007bff; 
+  }
+  
+  .suspendedfooterlinks a {
+      text-decoration: none;
+      color: inherit;
+  }
+  
+  .suspendedfooterlinks a:hover {
+      color: #007bff;
+  }

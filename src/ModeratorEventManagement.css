@@ -1,0 +1,176 @@
+.moderator-section {
+  width: 80%;
+  margin-left: 280px;
+  margin-top: 150px;
+  padding: 20px;
+  background-color: #fff;
+  font-family: Arial, sans-serif;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.moderator-section .moderator-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+
+.moderator-section .moderator-table button.view-button {
+  background-color: #373e46;
+  color: white;
+  width: 50%;
+}
+
+.moderator-section .moderator-table button.view-button:hover {
+  background-color: #3e4247; 
+}
+
+.moderator-section .moderator-table button.suspend-button {
+  background-color: #dc3545; 
+  color: white;
+  width: 50%;
+}
+
+.moderator-section .moderator-table button.suspend-button:hover {
+  background-color: #c82333; 
+}
+
+
+.moderator-section .moderator-table button.activate-button {
+  background-color: #28a745; 
+  color: white;
+  width: 50%;
+}
+
+.moderator-section .moderator-table button.activate-button:hover {
+  background-color: #218838; 
+}
+
+
+.moderator-section .moderator-table button.suspend-button:disabled,
+.moderator-section .moderator-table button.activate-button:disabled {
+  background-color: #6c757d; 
+  color: white;
+  cursor: not-allowed;
+}
+
+
+.moderator-section .moderator-table button.suspended {
+  background-color: #6c757d; 
+  color: white;
+  cursor: not-allowed;
+}
+
+.moderator-section .moderator-table button.suspended:hover {
+  background-color: #6c757d; 
+}
+
+
+.moderator-section .sidebar {
+  width: 220px;
+  background-color: #f5f5f5;
+  margin-top: 10px;
+  height: 55%;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.moderator-section .moderator-navbar {
+  display: flex;
+  justify-content: space-between;
+  background-color:#a5aaad;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.moderator-section .moderator-navbar h2 {
+  margin: 0;
+}
+
+.moderator-section .moderator-navbar .profile-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-left: 1200px;
+}
+
+.moderator-section .moderator-navbar .logout-button {
+  padding: 10px 20px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+
+@media (max-width: 768px) {
+  .moderator-section {
+    width: 100%; 
+    margin-left: 0;
+    margin-top: 20px;
+    padding: 10px; 
+  }
+
+  .moderator-section .moderator-table button.view-button,
+  .moderator-section .moderator-table button.suspend-button,
+  .moderator-section .moderator-table button.activate-button {
+    width: 100%; 
+    margin-bottom: 10px;
+  }
+
+ 
+  .moderator-section .sidebar {
+    width: 100%; 
+    height: auto; 
+    margin-top: 20px; 
+  }
+
+  .moderator-section .moderator-navbar {
+    flex-direction: column; 
+    align-items: flex-start; 
+    margin-bottom: 10px; 
+  }
+
+  .moderator-section .moderator-navbar .profile-button {
+    margin-left: 0; 
+    margin-bottom: 10px; 
+  }
+
+  .moderator-section .moderator-navbar .logout-button {
+    margin-left: 0;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .moderator-section .moderator-table button.view-button,
+  .moderator-section .moderator-table button.suspend-button,
+  .moderator-section .moderator-table button.activate-button {
+    width: 100%; 
+    font-size: 14px; 
+  }
+
+  .moderator-section .sidebar {
+    width: 100%; 
+    height: auto;
+  }
+
+  .moderator-section .moderator-navbar {
+    flex-direction: column; 
+    align-items: stretch; 
+  }
+
+  .moderator-section .moderator-navbar .profile-button,
+  .moderator-section .moderator-navbar .logout-button {
+    width: 100%; 
+    margin-bottom: 10px; 
+  }
+}

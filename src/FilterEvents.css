@@ -1,0 +1,244 @@
+
+.filterseventspage {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+.filtereventsnavbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #a5aaad;
+    padding: 10px 20px;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.filtereventsnavbar-brand {
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+
+.filterevents-action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+    margin-right: 10px; 
+}
+
+
+
+
+
+.filtereventslogout-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.filtereventslogout-btn:hover {
+    background-color: #c82333;
+}
+
+.filtereventslogout-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.filtereventslogout-btn:hover {
+    background-color: #c82333;
+}
+
+
+.filtereventssidebar {
+    width: 200px;
+    background-color: white;
+    color: #333;
+    height: auto;
+    padding: 20px;
+    position: fixed;
+    top: 80px; 
+    left: 20px; 
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+}
+
+.filtereventssidebar .btn-link {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    color: #007bff;
+    text-align: center; 
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filtereventssidebar .btn-link:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+
+h2 {
+    margin-left: 220px;
+    margin-top: 80px;
+    font-size: 24px;
+    color: #343a40;
+}
+
+
+.filterssss {
+    margin: 20px 120px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    background-color: white;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-left: 300px;
+}
+
+.filterssss label {
+    font-weight: bold;
+    color: #495057;
+}
+
+.filterssss input {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+
+.filterevents-list {
+    margin: 20px 120px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    margin-left: 300px;
+}
+
+.filterevents-list h3 {
+    font-size: 20px;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.filterevents-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.filterevents-list li {
+    padding: 10px 15px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.filterevents-list li:hover {
+    background-color: #f8f9fa;
+}
+
+.filterevents-list li strong {
+    font-size: 16px;
+    color: #343a40;
+}
+
+
+
+.filtereventsfooter-links {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+}
+
+.filtereventsfooter-links li {
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.filtereventsfooter-links li:hover {
+    color: #ffc107;
+}
+.filtereventsfooter,
+  .filtereventsfooter-links {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color:#a5aaad; 
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 2;
+      gap: 20px; 
+      font-size: 14px; 
+      
+  }
+  
+  .filtereventsfooter-links {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+  
+  }
+  
+  .filtereventsfooter-links li {
+      cursor: pointer;
+      transition: color 0.3s ease;
+      color: black;
+      font-weight: bold;
+      margin-left: 5%;
+      margin-right: 5%;
+  }
+  
+  .filtereventsfooter-links li:hover {
+      color: #007bff; 
+  }
+  
+  .filtereventsfooter-links a {
+      text-decoration: none;
+      color: inherit;
+  }
+  
+  .filtereventsfooter-links a:hover {
+      color: #007bff;
+  }

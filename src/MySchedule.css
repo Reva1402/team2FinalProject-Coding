@@ -1,0 +1,211 @@
+
+.schedule-page .navbar {
+    width: 100%;
+    background-color: #a5aaad;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+  
+  .schedule-page  .navbar h1 {
+    font-size: 1.8rem;
+    margin: 0;
+    color: white;
+  }
+  
+  .schedule-page  .navbar-right {
+    display: flex;
+    align-items: center;
+    color: white;
+  }
+  
+  .schedule-page  .navbar-brand {
+      font-size: 1.6rem;
+      font-weight: bold;
+      cursor: pointer;
+      color: #fff;
+    }
+    
+    .schedule-page  .nav-links {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+    }
+    
+    .schedule-page  .nav-item {
+      cursor: pointer;
+      color: #ddd;
+      transition: color 0.3s;
+    }
+    
+    .schedule-page  .nav-item:hover {
+      color: #fff;
+    }
+    
+    .schedule-page  .logout-btn {
+      background-color: #e63946;
+      border: none;
+      color: white;
+      padding: 8px 15px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      margin-right: 25px;
+    }
+    
+    .schedule-page  .logout-btn:hover {
+      background-color: #d62828;
+    }
+    
+.schedule-page {
+    font-family: 'Arial', sans-serif;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f9f9f9;
+    min-height: 100vh;
+  }
+  
+  .schedule-page h2 {
+    margin-top: 20px;
+    font-size: 2rem;
+    color: #333;
+    margin-top: 100px;
+  }
+  
+  .schedule-page h3 {
+    font-size: 1.5rem;
+    color: #0072ff;
+    margin-bottom: 10px;
+  }
+  
+  .schedule-page .events-section {
+    width: 90%;
+    max-width: 800px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    margin-left: 100px;
+  }
+  
+  .schedule-page .events-section ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .schedule-page .events-section li {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fefefe;
+  }
+  
+  .schedule-page .events-section li strong {
+    font-size: 1.1rem;
+    color: #333;
+  }
+  
+  .schedule-page .events-section p {
+    margin: 5px 0;
+    color: #555;
+  }
+  
+  
+.schedule-page-sidebar {
+    width: 200px;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    position: fixed; 
+    left: 0; 
+    top: 80px; 
+    margin: 20px;
+  }
+  
+  .schedule-page-sidebar .btn-link {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 10px;
+    text-align: center;
+    padding: 10px 15px;
+    background-color: #e7f1ff; 
+    color: #0056b3;
+    border: 1px solid #d0e2ff;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.3s ease;
+  }
+  
+  .schedule-page-sidebar .btn-link:hover {
+    background-color: #cfe4ff; 
+    color: #004080;
+  }
+  
+
+.schedule-page .footer,
+.schedule-page .footer-links {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color:#a5aaad; 
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2;
+    gap: 20px; 
+    font-size: 14px; 
+    
+}
+
+.schedule-page .footer-links {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+}
+
+.schedule-page .footer-links li {
+    cursor: pointer;
+    transition: color 0.3s ease;
+    color: black;
+    font-weight: bold;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.schedule-page .footer-links li:hover {
+    color: #007bff; 
+}
+
+.schedule-page .footer-links a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.schedule-page .footer-links a:hover {
+    color: #007bff;
+}
+  
+
+
+  

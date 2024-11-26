@@ -1,0 +1,203 @@
+.moderator-navbar {
+  position: fixed; 
+  top: 0; 
+  left: 0;
+  right: 0;
+  background-color: #333; 
+  color: white;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000; 
+}
+
+.moderator-page {
+  padding-top: 60px; 
+}
+
+.moderator-navbar input {
+  padding: 8px;
+  margin-right: 10px;
+}
+
+.moderator-navbar button {
+  padding: 8px 16px;
+  background-color: #f1f1f1;
+  border: none;
+  cursor: pointer;
+}
+
+.moderator-navbar button:hover {
+  background-color: #ddd;
+}
+
+
+.sidebar {
+  position: fixed;
+  top: 80px; 
+  left: 0;
+  width: 200px;
+  background-color: #f4f4f4;
+  height: calc(100vh - 80px); 
+  padding-top: 20px;
+  box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar a {
+  display: block;
+  padding: 15px;
+  text-decoration: none;
+  color: #333;
+  margin: 5px 0;
+}
+
+.sidebar a:hover {
+  background-color: #ddd;
+}
+
+
+.event-feed {
+  display: flex;
+  flex-direction: column; 
+  margin-left: 220px; 
+  padding: 20px;
+  margin-top: 80px; 
+}
+
+
+.event-card {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px; 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column; 
+}
+
+.event-images img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 8px; 
+}
+
+
+.event-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.event-description {
+  font-size: 1rem;
+  margin-top: 10px;
+}
+
+
+.comments-section {
+  margin-top: 20px;
+  padding-top: 10px;
+  border-top: 1px solid #ddd; 
+}
+
+.comment {
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.comment-author {
+  font-weight: bold;
+}
+
+
+
+.moderator-management-container .event-feed button.like-buttonn {
+  cursor: pointer;
+  display: inline-block;
+  width: 20%;
+  background-color: #5cb85c;
+}
+
+.moderator-management-container .event-feed button.unlike-buttonn {
+  cursor: pointer;
+  width: 20%;
+  margin-top: 10px;
+  background-color:  #d9534f;
+}
+
+.comment-buttonn {
+  background-color: #28a745; 
+  color: white; 
+  border: none; 
+  padding: 10px 20px; 
+  font-size: 16px; 
+  border-radius: 5px; 
+  cursor: pointer; 
+  transition: background-color 0.3s ease; 
+}
+
+.comment-buttonn:hover {
+  background-color: #218838; 
+}
+
+.comment-buttonn:disabled {
+  background-color: #6c757d; 
+  cursor: not-allowed; 
+}
+
+
+.comment-text {
+  margin-top: 5px;
+  font-size: 0.9rem;
+}
+
+.moderator-management-container .moderator-content .event-feed {
+  width: 100%;
+  margin-left: 0;
+  margin-top: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .moderator-navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+  .moderator-navbar input {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .moderator-navbar button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+    margin-top: 10px;
+  }
+
+  .event-feed {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+
+  .event-card {
+    margin-bottom: 10px;
+  }
+
+  .moderator-management-container .moderator-content .event-feed {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 0;
+  }
+}

@@ -1,0 +1,242 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+}
+
+.admincontentmoderatorpage {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.admincontentnavbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #a5aaad;
+    padding: 10px 20px;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.admincontentnavbar h1 {
+    margin: 0;
+    cursor: pointer;
+}
+
+.admincontentnavbarright {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.admincontentprofilelink {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    transition: color 0.3s;
+}
+
+.admincontentprofilelink:hover {
+    color: #ffc107;
+}
+
+.admincontentlogoutbtn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.admincontentlogoutbtn:hover {
+    background-color: #c0392b;
+}
+.admincontentsidebar {
+    width: 250px;
+    background-color: white;
+    color: #333;
+    height: auto;
+    padding: 20px;
+    position: fixed;
+    top: 80px; 
+    left: 20px; 
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    border-radius: 8px; 
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+.admincontentsidebar a {
+    text-decoration: none;
+    color: blue;
+    font-size: 16px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    background-color: #f9f9f9; 
+    border: 1px solid #e0e0e0;
+    transition: all 0.3s ease;
+    text-align: center; 
+}
+
+.admincontentsidebar a:hover,
+.admincontentsidebar a.active {
+    
+    color: blue;
+    border: 1px solid #4caf50;
+}
+
+
+
+.admincontentmaincontent {
+    margin-left: 300px; 
+    padding: 20px;
+    margin-top: 80px;
+    margin-bottom: 80px;
+    flex-grow: 1;
+    background-color: #ecf0f1;
+    min-height: calc(100vh - 140px);
+    display: flex;
+    justify-content: center; 
+    align-items: flex-start; 
+}
+
+.adminsuspendedresourcestable {
+    width: 80%; 
+    max-width: 900px; 
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+}
+
+.adminsuspendedresourcestable table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.adminsuspendedresourcestable h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.adminsuspendedresourcestable thead {
+    background-color: #2c3e50;
+    color: white;
+}
+
+.adminsuspendedresourcestable th, td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.adminsuspendedresourcestable tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.admincontentactionbuttons button {
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.adminview-btn {
+    background-color: #3498db;
+    color: white;
+}
+
+.adminview-btn:hover {
+    background-color: #2980b9;
+}
+
+.adminsuspend-btn {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.adminsuspend-btn:hover {
+    background-color: #c0392b;
+}
+
+.adminactivate-btn {
+    background-color: #27ae60;
+    color: white;
+}
+
+.adminactivate-btn:hover {
+    background-color: #2ecc71;
+}
+
+.adminremove-btn {
+    background-color: #f1c40f;
+    color: black;
+}
+
+.adminremove-btn:hover {
+    background-color: #f39c12;
+}
+
+
+
+.admincontentfooter,
+  .admincontentfooterlinks {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color:#a5aaad; 
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 2;
+      gap: 20px; 
+      font-size: 14px; 
+      
+  }
+  
+  .admincontentfooterlinks {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+  
+  }
+  
+  .admincontentfooterlinks li {
+      cursor: pointer;
+      transition: color 0.3s ease;
+      color: black;
+      font-weight: bold;
+      margin-left: 5%;
+      margin-right: 5%;
+  }
+  
+  .admincontentfooterlinks li:hover {
+      color: #007bff; 
+  }
+  
+  .admincontentfooterlinks a {
+      text-decoration: none;
+      color: inherit;
+  }
+  
+  .admincontentfooterlinks a:hover {
+      color: #007bff;
+  }
+ 

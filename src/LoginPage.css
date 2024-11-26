@@ -1,0 +1,224 @@
+.loginpage-body {
+  background: linear-gradient(rgba(249, 249, 249, 0.4), rgba(249, 249, 249, 0.3)), 
+              url('./images/bgimage.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+ 
+}
+
+
+.loginpage-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  
+}
+
+.loginpage-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #a5aaad;
+  color: black;
+  padding: 10px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+  border-bottom: 1px solid #000000;
+}
+
+.loginpage-navbar-brand {
+  font-size: 36px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 60px;
+}
+
+.loginpage-nav-links {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+  margin-right: 60px;
+}
+
+.loginpage-nav-item {
+  color: black;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.loginpage-nav-item:hover {
+  color: #007bff;
+}
+
+.loginpage-logout-btn {
+  color: black;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: underline;
+  transition: background-color 0.3s ease;
+}
+
+
+
+.loginpage-form-wrapper {
+  width: 500px;
+  padding: 40px;
+  background-color: rgba(255, 255, 255, 0.873);
+  border-radius: 10px;
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
+  border-radius: 30px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+.loginpage-text-center {
+  text-align: center;
+  font-size: 28px;
+  color: #333333;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.loginpage-form {
+  width: 100%;
+}
+
+.loginpage-form-group {
+  margin-bottom: 20px;
+}
+
+.loginpage-label {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: #333333;
+}
+
+.loginpage-form-control {
+  width: 100%;
+  padding: 15px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.loginpage-form-control:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.loginpage-button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.loginpage-btn {
+  padding: 15px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: none;
+  text-align: center;
+}
+
+.loginpage-btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.loginpage-btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.loginpage-btn-link {
+  background: none;
+  color: rgb(63, 196, 241);
+  border: none;
+  padding: 0;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.loginpage-btn-link:hover {
+  text-decoration: underline;
+}
+
+.loginpage-reset-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.loginpage-reset-form {
+  width: 100%;
+}
+
+.loginpage-input-group {
+  margin-bottom: 20px;
+}
+
+.loginpage-reset-btn {
+  width: 100%;
+  padding: 15px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.loginpage-reset-btn:hover {
+  background-color: #0056b3;
+}
+
+.loginpage-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #a5aaad;
+  color: black;
+  padding: 10px 20px;
+  text-align: center;
+  border-top: 1px solid #000000;
+}
+
+.loginpage-footer-links {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.loginpage-footer-link {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  color: black;
+  transition: color 0.3s ease;
+}
+
+.loginpage-footer-link:hover {
+  color: #007bff;
+}

@@ -1,0 +1,258 @@
+
+  
+   .evnavbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #a5aaad;
+    padding: 10px 20px;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.evnavbar .evnavbar-brand {
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.pro, .logout {
+    margin: 0 10px; 
+    padding: 8px 15px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.pro {
+    margin-left: 10px;
+    padding: 8px 15px;
+    background-color: #2365f3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+    
+
+.pro:hover {
+    background-color: #1a4db3;
+}
+
+.logout {
+    background-color: #f12b11;
+}
+
+.logout:hover {
+    background-color: #d4170e;
+}
+.pro, .logout {
+    display: inline-block;
+  }
+  
+  
+  .evsidebar {
+    width: 200px;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin: 20px;
+    position: sticky;
+    top: 80px; 
+  }
+  
+  .evsidebar .btn-link {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 10px;
+    text-align: center;
+    padding: 10px 15px;
+    background-color: #e7f1ff; 
+    color: #0056b3;
+    border: 1px solid #d0e2ff;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.3s ease;
+  }
+  
+  .evsidebar .btn-link:hover {
+    background-color: #cfe4ff; 
+    color: #004080;
+  }
+  
+ 
+  
+  .evFooter,
+  .evfooterslinks {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color:#a5aaad; 
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 2;
+      gap: 20px; 
+      font-size: 14px; 
+      
+  }
+  
+  .evfooterslinks {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+  
+  }
+  
+  .evfooterslinks li {
+      cursor: pointer;
+      transition: color 0.3s ease;
+      color: black;
+      font-weight: bold;
+      margin-left: 5%;
+      margin-right: 5%;
+  }
+  
+  .evfooterslinks li:hover {
+      color: #007bff; 
+  }
+  
+  .evfooterslinks a {
+      text-decoration: none;
+      color: inherit;
+  }
+  
+  .evfooterslinks a:hover {
+      color: #007bff;
+  }
+  
+
+ 
+
+   
+  .my-events p {
+    text-align: center;
+  } 
+
+  .my-events .eventfeedContent {
+    margin-left: 270px;
+    padding: 20px;
+  }
+  
+   .my-events .eveventcard {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin: 15px 0;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 50%;
+    align-items: horizontal;
+    margin-left: 30%;
+    margin-top: -350px;
+  }
+
+  .my-events  h2 {
+    text-align: center;
+  }
+
+  
+  .eveventcard p {
+    margin-bottom: 10px;
+  }
+  
+  .myevent-event-image {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-left: 35%;
+    margin-bottom: 5%;
+  }
+  
+.myevent-bttn{
+    color: #68b5f1;
+    border: none;
+    cursor: pointer;  
+    
+}
+
+
+  
+.event-buttons-container {
+  display: flex;
+  gap: 5px; 
+  margin-top: 20px; 
+}
+
+.event-buttons-container button {
+  padding: 10px 15px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 100px; 
+  height: 40px; 
+  box-sizing: border-box; 
+  margin-left: 150px; 
+}
+
+.event-buttons-container button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.event-buttons-container .view-button {
+  background-color: #007bff;
+  color: #ffffff;
+}
+
+.event-buttons-container .view-button:hover {
+  background-color: #0056b3;
+}
+
+
+.event-buttons-container .edit-button {
+  background-color: #28a745;
+  color: #ffffff;
+}
+
+.event-buttons-container .edit-button:hover {
+  background-color: #1e7e34;
+}
+
+
+.event-buttons-container .delete-button {
+  background-color: #dc3545;
+  color: #ffffff;
+}
+
+.event-buttons-container .delete-button:hover {
+  background-color: #c82333;
+}
+
+  
+  
+  
+  
+  
+  
+ 

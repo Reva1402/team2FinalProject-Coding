@@ -1,0 +1,204 @@
+
+.event-attendance-page .navbar {
+  width: 100%;
+  background-color: #a5aaad;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.event-attendance-page .navbar h1 {
+  font-size: 1.8rem;
+  margin: 0;
+  color: white;
+}
+
+
+.event-attendance-page .navbar-right {
+  display: flex;
+  align-items: center;
+  color: white;
+}
+
+.event-attendance-page .navbar-brand {
+    font-size: 1.6rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: #fff;
+  }
+  
+  .event-attendance-page .nav-links {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+  }
+  
+  .event-attendance-page .nav-item {
+    cursor: pointer;
+    color: #ddd;
+    transition: color 0.3s;
+  }
+  
+  .event-attendance-page .nav-item:hover {
+    color: #fff;
+  }
+  
+  .event-attendance-page .logout-btn {
+    background-color: #e63946;
+    border: none;
+    color: white;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin-right: 25px;
+  }
+  
+  .event-attendance-page .logout-btn:hover {
+    background-color: #d62828;
+  }
+
+.event-attendance-page {
+  padding: 20px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  color: #333;
+  background-color: #f9f9f9;
+}
+
+
+.event-attendance-page-sidebar {
+  width: 200px;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin: 20px;
+  position: sticky;
+  top: 80px; 
+}
+
+.event-attendance-page-sidebar .btn-link {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 10px;
+  text-align: center;
+  padding: 10px 15px;
+  background-color: #e7f1ff; 
+  color: #0056b3;
+  border: 1px solid #d0e2ff;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.event-attendance-page-sidebar .btn-link:hover {
+  background-color: #cfe4ff; 
+  color: #004080;
+}
+
+
+.event-attendance-page .event-image-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.event-attendance-page .carousel-btn {
+  background: none;
+  border: none;
+  font-size: 2em;
+  cursor: pointer;
+  padding: 10px;
+  color: #333;
+}
+
+
+
+.event-attendance-page .event-image {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: -40%;
+  margin-left: 5%;
+  margin-bottom: -5%;
+  align-items: center;
+}
+
+.event-attendance-page h3 {
+  margin-top: -10%;
+  }
+.event-attendance-page .attendance-question {
+  margin-top: 20px;
+  font-size: 1.2em;
+}
+
+.event-attendance-page .attendance-question label {
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.event-attendance-page .attendance-question input[type="radio"] {
+  margin-right: 5px;
+}
+
+
+
+.event-attendance-page .footer,
+.event-attendance-page .footer-links {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color:#a5aaad; 
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2;
+    gap: 20px; 
+    font-size: 14px; 
+    
+}
+
+.event-attendance-page .footer-links {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+}
+
+.event-attendance-page .footer-links li {
+    cursor: pointer;
+    transition: color 0.3s ease;
+    color: black;
+    font-weight: bold;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.event-attendance-page .footer-links li:hover {
+    color: #007bff; 
+}
+
+.event-attendance-page .footer-links a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.event-attendance-page .footer-links a:hover {
+    color: #007bff;
+}

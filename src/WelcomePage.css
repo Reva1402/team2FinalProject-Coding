@@ -1,0 +1,356 @@
+.header .logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+
+.header-links a {
+    color: white;
+    margin-left: 20px;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.header-links a:hover {
+    text-decoration: underline;
+}
+
+
+.signup-container {
+    position: absolute;
+    top: 10%;             
+    right: 5%;        
+    height: 100vh;       
+    width: 500px;    
+    justify-content: right;
+    align-items: center;
+    max-width: 80%;
+    
+    border-radius: 60px;
+}
+
+.welcome-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #a5aaad;
+    color: black;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+    border: #000000 1px solid;
+}
+
+.welcome-navbar h1{
+    font-size: 36px;
+    font-weight: bold;
+    color: black;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin-left: 60px;
+}
+
+.btnLink {
+    color: #000000;  
+    background: none;  
+    text-decoration: underline;  
+    font-size: 16px;
+    border: none;  
+    cursor: pointer;  
+    font-weight: bold;  
+    margin-right: 60px;
+}
+
+.navlinks {
+    display: flex;
+    gap: 20px;
+    list-style: none;  
+    padding: 0;  
+    margin: 0;  
+    margin-right: 60px;
+}
+
+.bg-image {
+    position: absolute;
+    top: 12%;          
+    left: 7%;           
+    right: 15%;        
+    height: 85vh;       
+    width: auto;       
+    max-width:45%;   
+    background-image: url('./images/bgimage.jpg');
+    background-size: cover;
+    background-position: center;  
+    background-repeat: no-repeat; 
+    z-index: -1;
+    border-radius: 20px;  
+    border-top-left-radius: 20px;
+    opacity: 0.4;
+    border: #333333 1px solid;
+}
+
+.bgText{
+    position: absolute;
+    top: 15%;          
+    left: 7%;           
+    right: 15%;              
+    width: auto;       
+    max-width:45%;   
+    line-height: 60px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #000000;
+    padding: 30px;
+    z-index: -1;
+}
+
+.form-wrapper {
+    background-color: none;
+    padding: 10px 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 600px;
+}
+
+
+h1.text-center {
+    text-align: center;
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+
+.form-group {
+    margin-bottom: 5px; 
+
+}
+
+
+.form-group label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 1px; 
+    display: block;
+    padding: 3px;
+}
+
+.form-group input {
+    font-size: 12px;
+    font-weight: 150;
+    color: #555;
+    margin-bottom: 1px; 
+    display: block;
+    padding: 3px;
+    line-height: 1;
+}
+
+
+.form-control {
+    width: 100%;
+    padding: 3px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+
+.gender-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2px;
+}
+
+.gender-group input[type="radio"] {
+    margin-right: 5px;
+}
+
+.gender-group label {
+    font-size: 14px;
+    color: #555;
+}
+
+
+select.form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+
+input[type="file"] {
+    width: 100%;
+    padding: 3px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+
+.button-group-signup {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+
+.signup-btn-custom {
+    background-color: #007bff;
+    color: white;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 60%;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.signup-btn-custom:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+
+.btn-custom {
+    background-color: #f1f1f1;
+    color: #007bff;
+    padding: 14px 20px;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    width: 100%;
+}
+
+.btn-custom:hover {
+    background-color: #007bff;
+    color: #fff;
+    transform: scale(1.05);
+}
+
+
+.signup-btn-custom {
+    margin-bottom: 10px;
+}
+
+
+.already-have-account {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.already-have-account a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.already-have-account a:hover {
+    text-decoration: underline;
+}
+
+.WelcomeFooter,
+.footerlinks {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color:#a5aaad; 
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2;
+    gap: 20px; 
+    font-size: 14px; 
+    
+}
+
+.footerlinks {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+}
+
+.footerlinks li {
+    cursor: pointer;
+    transition: color 0.3s ease;
+    color: black;
+    font-weight: bold;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.footerlinks li:hover {
+    color: #007bff; 
+}
+
+.footerlinks a {
+    text-decoration: none;
+    color: inherit; 
+}
+
+.footerlinks a:hover {
+    color: #007bff;
+}
+
+.accountBtn{
+    color: rgb(26, 134, 206);
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 14px;
+}
+
+
+
+
+
+
+
+@media (max-width: 768px) {
+    .signup-container {
+        padding: 0 5%;
+    }
+
+    .form-wrapper {
+        padding: 25px;
+    }
+
+    .signup-btn-custom,
+    .btn-custom {
+        width: 100%;
+    }
+
+    h1.text-center {
+        font-size: 22px;
+    }
+
+    .gender-group {
+        flex-direction: column;
+    }
+}
