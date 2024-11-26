@@ -1,0 +1,227 @@
+
+.create-event .navbar {
+  width: 100%;
+  background-color: #a5aaad;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.create-event .navbar h1 {
+  font-size: 1.8rem;
+  margin: 0;
+  color: white;
+}
+
+.create-event .navbar-right {
+  display: flex;
+  align-items: center;
+  color: white;
+}
+
+.create-event .navbar-brand {
+    font-size: 1.6rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: #fff;
+  }
+  
+  .create-event .nav-links {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+  }
+  
+  .create-event .nav-item {
+    cursor: pointer;
+    color: #ddd;
+    transition: color 0.3s;
+  }
+  
+  .create-event .nav-item:hover {
+    color: #fff;
+  }
+  
+  .create-event .logout-btn {
+    background-color: #e63946;
+    border: none;
+    color: white;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin-right: 25px;
+  }
+  
+  .create-event .logout-btn:hover {
+    background-color: #d62828;
+  }
+  
+
+.create-event-sidebar {
+  width: 200px;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin: 20px;
+  position: sticky;
+  top: 80px; 
+}
+
+.create-event-sidebar .btn-link {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 10px;
+  text-align: center;
+  padding: 10px 15px;
+  background-color: #e7f1ff; 
+  color: #0056b3;
+  border: 1px solid #d0e2ff;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.create-event-sidebar .btn-link:hover {
+  background-color: #cfe4ff; 
+  color: #004080;
+}
+
+
+.create-event-container {
+  max-width: 800px;
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  margin-left: 500px;
+  margin-top: -300px;
+
+}
+
+.create-event-container h2 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Form Styles */
+.create-event-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.create-event-container label {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #555;
+}
+
+.create-event-container input,
+.create-event-container textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.create-event-container input:focus,
+.create-event-container textarea:focus {
+  border-color: #0072ff;
+  outline: none;
+}
+
+.create-event-container button[type="submit"] {
+  padding: 8px 16px; 
+  background: linear-gradient(90deg, #0072ff, #00c6ff);
+  color: white;
+  border: none;
+  border-radius: 4px; 
+  font-size: 0.9rem; 
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.create-event-container button[type="submit"]:hover {
+  background: linear-gradient(90deg, #005bb5, #0072ff);
+}
+
+
+.create-event-popup {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #28a745;
+  color: white;
+  padding: 15px 25px;
+  border-radius: 5px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  font-size: 1.1rem;
+  z-index: 100;
+}
+
+
+.create-event .footer,
+.create-event .footer-links {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color:#a5aaad; 
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2;
+    gap: 20px; 
+    font-size: 14px; 
+    
+}
+
+.create-event .footer-links {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+}
+
+.create-event .footer-links li {
+    cursor: pointer;
+    transition: color 0.3s ease;
+    color: black;
+    font-weight: bold;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.create-event .footer-links li:hover {
+    color: #007bff; 
+}
+
+.create-event .footer-links a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.create-event .footer-links a:hover {
+    color: #007bff;
+}
