@@ -1,28 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { firestore } from "./firebaseConfig"; 
-import { collection, onSnapshot, updateDoc, deleteDoc, addDoc, doc } from "firebase/firestore"; 
-import "./UserManagement.css"; 
+import { firestore } from "./firebaseConfig";
+import { collection, onSnapshot, updateDoc, deleteDoc, addDoc, doc, getDoc } from "firebase/firestore";
 import { Link, useNavigate } from "react-router-dom";
-import { auth } from "./firebaseConfig"; 
+import { auth } from "./firebaseConfig";
 import { signOut } from "firebase/auth";
+import './AdminUseerManagement.css';
+
 
 const UserManagement = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
-  const [editingUser, setEditingUser] = useState(null);
-  const [viewingUser, setViewingUser] = useState(null); 
   const [formData, setFormData] = useState({ username: "", email: "" });
-  
-  
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const adminEmail = "madhavjariwala55@gmail.com";  
+
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(firestore, "users"), (snapshot) => {
       const usersData = [];
       snapshot.forEach((doc) => usersData.push({ id: doc.id, ...doc.data() }));
       setUsers(usersData);
     });
-
     return () => unsubscribe();
   }, []);
+
   const handleLogout = async () => {
     try {
       await signOut(auth); 
@@ -32,141 +33,180 @@ const UserManagement = () => {
     }
   };
 
-  
-  const viewUser = (user) => {
-    setViewingUser(user); 
+  const checkIfAdmin = () => {
+    const currentUser = auth.currentUser;
+    return currentUser && currentUser.email === adminEmail;
   };
 
-  const editUser = (user) => {
-    setEditingUser(user);
-    setFormData({ username: user.username, email: user.email });
+  const changeUserRoleToModerator = async (userId) => {
+    try {
+      const isConfirmed = window.confirm('Are you sure you want to change this user\'s role to moderator?');
+      if (isConfirmed) {
+        const user = auth.currentUser;
+        const userDocRef = doc(firestore, "users", user.uid);
+        const userDoc = await getDoc(userDocRef);
+        const userData = userDoc.data();
+        if (userData.role !== "admin") {
+          alert("You are not authorized to change user roles.");
+          return;
+        }
+
+        const targetUserDocRef = doc(firestore, "users", userId);
+        await updateDoc(targetUserDocRef, { role: 'moderator' });
+        alert("User role changed to moderator successfully!");
+      }
+    } catch (err) {
+      console.error("Error changing role:", err);
+      console.log("Changing role of user:",userId);
+      alert(`Failed to change user role. Error: ${err.message}`);
+    }
   };
 
   const suspendUser = async (userId) => {
-    await updateDoc(doc(firestore, "users", userId), { status: "suspended" });
-    alert("User suspended successfully!"); 
+    if (!checkIfAdmin()) {
+      alert("You are not authorized to suspend users.");
+      return;
+    }
+
+    try {
+      await updateDoc(doc(firestore, "users", userId), { status: "suspended" });
+      alert("User suspended successfully!");
+    } catch (error) {
+      console.error("Error suspending user:", error);
+      alert("Failed to suspend the user. Please try again.");
+    }
+  };
+
+  const activateUser = async (userId) => {
+    if (!checkIfAdmin()) {
+      alert("You are not authorized to activate users.");
+      return;
+    }
+
+    try {
+      await updateDoc(doc(firestore, "users", userId), { status: "active" });
+      alert("User activated successfully!");
+    } catch (error) {
+      console.error("Error activating user:", error);
+      alert("Failed to activate the user. Please try again.");
+    }
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value.toLowerCase());
+  };
+
+  const viewUser = (userId) => {
+    navigate(`/AdminModeratorUserProfile/${userId}`);
   };
 
   const deleteUser = async (userId) => {
-    await deleteDoc(doc(firestore, "users", userId));
-    alert("User deleted successfully!"); 
+    try {
+      const isAdmin = await checkIfAdmin();
+      if (!isAdmin) {
+        alert("You are not authorized to delete users.");
+        return;
+      }
+
+      const userDocRef = doc(firestore, "users", userId);
+      const userDoc = await getDoc(userDocRef);
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        if (userData.role === "admin") {
+          alert("You cannot delete an admin user.");
+          return;
+        }
+      }
+
+      const isConfirmed = window.confirm("Are you sure you want to delete this user?");
+      if (!isConfirmed) return;
+      await deleteDoc(userDocRef);
+      alert("User deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      alert("Failed to delete the user. Please try again.");
+    }
   };
 
-  const addUser = async () => {
-    const username = prompt("Enter username:");
-    const email = prompt("Enter email:");
-    await addDoc(collection(firestore, "users"), {
-      username,
-      email,
-      status: "active",
-    });
-    alert("User added successfully!"); 
-  };
+ 
 
-  const handleEditChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const saveUser = async (userId) => {
-    await updateDoc(doc(firestore, "users", userId), {
-      username: formData.username,
-      email: formData.email,
-    });
-    setEditingUser(null); 
-    alert("User updated successfully!"); 
-  };
+  const filteredUsers = users.filter(user => {
+    const username = user.username || "";
+    const email = user.email || "";
+    const query = searchQuery.toLowerCase().trim();
+    return (
+      user.role !== "moderator" &&  
+      (username.toLowerCase().includes(query) ||
+      email.toLowerCase().includes(query))
+    );
+  });
 
   return (
-    <div className="admin-dashboard">
-      
-    <header className="navbar">
-      <h1> Welcome to the Admin Portal </h1>
-      <nav>
-        <Link to="/profile">Profile</Link>
-        <button className="logout-btn" onClick={handleLogout}>Log Out</button>
-      </nav>
-    </header>
-    
-    <div className="user-management">
-      <h2>User Management</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Username</th>
-            <th>User Email</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <tr key={user.id}>
-              <td>{user.username}</td>
-              <td>{user.email}</td>
-              <td>
-                <button onClick={() => viewUser(user)}>View</button>
-                <button onClick={() => editUser(user)}>Edit</button>
-                <button onClick={() => suspendUser(user.id)}>Suspend</button>
-                <button onClick={() => deleteUser(user.id)}>Delete</button>
-              </td>
+    <div className="adminsdashboard">
+      <header className="navbaradmins">
+        <h1 onClick={() => navigate("/adminDashboard")}>Admin One</h1>
+        <div className="navbaradminsright">
+          <Link to="/AdminProfile" className="adminprofilelink" style={{ color: "white" }}>Profile</Link>
+          <button className="logoutadmins" onClick={handleLogout}>Log Out</button>
+        </div>
+      </header>
+
+      <div className="adminmanagementsidebar">
+      <Link to="/AdminDashboard">Dashboard</Link>
+        <Link to="/users">User Management</Link>
+        <Link to="/ModeratorManagement">Moderator Management</Link>
+        <Link to="/suspendedresources">Suspended Resources</Link>
+        <Link to="/Admincontentmanagement">Content Management</Link>
+        <Link to="/Adminsupport">Support Management</Link>
+        <h4>
+    <a href="https://console.firebase.google.com/u/0/project/finalproject-e37f8/firestore/databases/-default-/rules" target="_blank" rel="noopener noreferrer">
+      Security Rules
+    </a>
+  </h4>
+      </div>
+
+      <div className="adminusersmanagement">
+        <button className="adminusers btn-link" onClick={() => navigate ("/AddUser")} >Add User</button>
+
+        <table className="adminuser-table">
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Status</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-
-      
-      {editingUser && (
-        <div className="edit-user-modal">
-          <h3>Edit User</h3>
-          <form onSubmit={(e) => { e.preventDefault(); saveUser(editingUser.id); }}>
-            <div>
-              <label>Username:</label>
-              <input
-                type="text"
-                name="username"
-                value={formData.username}
-                onChange={handleEditChange}
-                required
-              />
-            </div>
-            <div>
-              <label>Email:</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleEditChange}
-                required
-              />
-            </div>
-            <button type="submit">Save Changes</button>
-            <button type="button" onClick={() => setEditingUser(null)}>Cancel</button>
-          </form>
-        </div>
-      )}
-
-    
-      {viewingUser && (
-        <div className="view-user-modal">
-          <h3>User Details</h3>
-          <p><strong>Username:</strong> {viewingUser.username}</p>
-          <p><strong>Email:</strong> {viewingUser.email}</p>
-          <p><strong>Status:</strong> {viewingUser.status}</p>
-          <button onClick={() => setViewingUser(null)}>Close</button>
-        </div>
-      )}
-
-      <p onClick={addUser} className="add-user-link">Add a user</p>
+          </thead>
+          <tbody>
+            {filteredUsers.map(user => (
+              <tr key={user.id}>
+                <td>{user.firstName}</td>
+                <td>{user.email}</td>
+                <td>{user.status}</td>
+                <td>
+                  <button onClick={() => viewUser(user.id)}>View</button>
+                  <button onClick={() => changeUserRoleToModerator(user.id)}>Change Role to Moderator</button>
+                  {user.status !== "suspended" ? (
+                    <button onClick={() => suspendUser(user.id)}>Suspend</button>
+                  ) : (
+                    <button onClick={() => activateUser(user.id)}>Activate User</button>
+                  )}
+                  <button onClick={() => deleteUser(user.id)}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <footer className="adminFooter">
+                    <ul className="adminFooterlinks">
+                        <li onClick={() => navigate('/about')}>About</li>
+                        <li onClick={() => navigate('/privacypolicy')}>Privacy Policy</li>
+                        <li onClick={() => navigate('/termsandconditions')}>Terms and Conditions</li>
+                        <li onClick={() => navigate('/contactus')}>Contact Us</li>
+                    </ul>
+                </footer>
     </div>
-
-    
-    <footer className="footer">
-    <p>About</p>
-    <p>Privacy Policy</p>
-    <p>Terms and Conditions</p>
-    <p>Contact Us</p>
-  </footer>
-</div>
   );
 };
 

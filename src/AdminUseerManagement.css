@@ -1,0 +1,208 @@
+
+body, html {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.navbaradmins {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #a5aaad;
+    padding: 10px 20px;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbaradmins h1 {
+    margin: 0;
+    cursor: pointer;
+}
+
+.navbaradminsright {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.adminprofilelink {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    transition: color 0.3s;
+}
+
+.adminprofilelink:hover {
+    color: #ffc107;
+}
+
+.logoutadmins {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.logoutadmins:hover {
+    background-color: #c82333;
+}
+.adminmanagementsidebar {
+    width: 210px;
+    background-color: white;
+    color: #333;
+    height: auto;
+    padding: 20px;
+    position: fixed;
+    top: 80px;
+    left: 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.adminmanagementsidebar a {
+    text-decoration: none;
+    color: blue;
+    font-size: 16px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    transition: all 0.3s ease;
+    text-align: center; 
+}
+
+.adminmanagementsidebar a:hover {
+    background-color: #6c757d;
+    color: white;
+}
+.adminusersmanagement .adminusers {
+    margin-left: 280px; 
+    margin-top: 80px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.adminusersmanagement .adminusers:hover {
+    background-color: #0056b3;
+}
+
+.adminuser-table {
+    margin-left: 288px; 
+    margin-top: 44px;
+    width: calc(100% - 300px); 
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.adminuser-table th, .adminuser-table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #dee2e6;
+}
+
+.adminuser-table th {
+    background-color: #343a40;
+    color: white;
+}
+
+.adminuser-table td button {
+    margin: 0 5px;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s;
+}
+
+.adminuser-table td button:hover {
+    opacity: 0.8;
+}
+
+.adminuser-table td button:nth-child(1) {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.adminuser-table td button:nth-child(2) {
+    background-color: #28a745;
+    color: white;
+}
+
+.adminuser-table td button:nth-child(3) {
+    background-color: #ffc107;
+    color: white;
+}
+
+.adminuser-table td button:nth-child(4) {
+    background-color: #dc3545;
+    color: white;
+}
+
+.adminFooter, .adminFooterlinks {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #a5aaad;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2;
+    gap: 20px;
+    font-size: 14px;
+}
+
+.adminFooterlinks {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.adminFooterlinks li {
+    cursor: pointer;
+    transition: color 0.3s ease;
+    color: black;
+    font-weight: bold;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.adminFooterlinks li:hover {
+    color: #007bff;
+}
+
+.adminFooterlinks a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.adminFooterlinks a:hover {
+    color: #007bff;
+}
