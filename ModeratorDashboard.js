@@ -1,57 +1,63 @@
 import React, { useEffect, useState } from "react";
 import { firestore, auth } from "./firebaseConfig";
 import { Link, useNavigate } from "react-router-dom";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, doc, getDoc } from "firebase/firestore";
 import { signOut } from "firebase/auth";
+import "./ModeratorDashboard.css";
 
-import "./Styling.css";
 
 const ModeratorDashboard = () => {
-  const [userCounts, setUserCounts] = useState({ total: 0, active: 0, inactive: 0 });
-  const [moderatorCounts, setModeratorCounts] = useState({ total: 0, active: 0, inactive: 0 });
-  const [eventCounts, setEventCounts] = useState({ total: 0, active: 0, inactive: 0 });
-  const [commentCounts, setCommentCounts] = useState({ total: 0, spam: 0, harassment: 0 });
-  const [searchQuery, setSearchQuery] = useState(""); 
+  const [reportedUsers, setReportedUsers] = useState([]);
+  const [reportedEvents, setReportedEvents] = useState([]);
+  const [reportedComments, setReportedComments] = useState({ total: 0, spam: 0, harassment: 0 });
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
-  
   useEffect(() => {
-    const userListener = onSnapshot(collection(firestore, "user"), snapshot => {
-      const total = snapshot.size;
-      const active = snapshot.docs.filter(doc => doc.data().status === "active").length;
-      const inactive = total - active;
-      setUserCounts({ total, active, inactive });
-    });
+    
+    const reportsListener = onSnapshot(collection(firestore, "reports"), async (snapshot) => {
+      const reports = snapshot.docs.map(doc => doc.data());
+      
+      
+      const userReports = [];
+      const eventReports = [];
+      const commentReports = { total: 0, spam: 0, harassment: 0 };
 
-    const moderatorListener = onSnapshot(collection(firestore, "moderators"), snapshot => {
-      const total = snapshot.size;
-      const active = snapshot.docs.filter(doc => doc.data().status === "active").length;
-      const inactive = total - active;
-      setModeratorCounts({ total, active, inactive });
-    });
+      for (const report of reports) {
+        const { eventId, reporterId, reason } = report;
+        
+        
+        const userDoc = await getDoc(doc(firestore, "users", reporterId));
+        if (userDoc.exists()) {
+          userReports.push(report);
+        }
 
-    const eventListener = onSnapshot(collection(firestore, "events"), snapshot => {
-      const total = snapshot.size;
-      const active = snapshot.docs.filter(doc => doc.data().status === "active").length;
-      const inactive = total - active;
-      setEventCounts({ total, active, inactive });
-    });
+        
+        const eventDoc = await getDoc(doc(firestore, "events", eventId));
+        if (eventDoc.exists()) {
+          eventReports.push(report);
+        }
 
-    const commentListener = onSnapshot(collection(firestore, "reports"), snapshot => {
-      const total = snapshot.size;
-      const spam = snapshot.docs.filter(doc => doc.data().reason === "spam").length;
-      const harassment = snapshot.docs.filter(doc => doc.data().reason === "harassment").length;
-      setCommentCounts({ total, spam, harassment });
+        
+        if (reason === "spam" || reason === "harassment") {
+          commentReports.total += 1;
+          if (reason === "spam") {
+            commentReports.spam += 1;
+          } else if (reason === "harassment") {
+            commentReports.harassment += 1;
+          }
+        }
+      }
+
+      setReportedUsers(userReports);
+      setReportedEvents(eventReports);
+      setReportedComments(commentReports);
     });
 
     return () => {
-      userListener();
-      moderatorListener();
-      eventListener();
-      commentListener();
+      reportsListener();
     };
   }, []);
-
 
   const handleLogout = async () => {
     try {
@@ -62,24 +68,21 @@ const ModeratorDashboard = () => {
     }
   };
 
-   const handleSearchChange = (e) => {
+  const handleSearchChange = (e) => {
     setSearchQuery(e.target.value.toLowerCase());
   };
 
-  
   const filteredSections = () => {
     const query = searchQuery.trim().toLowerCase();
     const sections = [];
 
-   
     if (query === "" || query.includes("user")) {
       sections.push(
-        <div className="management-section" key="reported-users">
+        <div className="modmanagementsection" key="reported-users">
           <h2><Link to="/ModeratorUserManagement">Reported Users</Link></h2>
-          <div className="count-row">
-            <div className="count-box total">Total Reports: {userCounts.total}</div>
-            <div className="count-box active">Active: {userCounts.active}</div>
-            <div className="count-box inactive">Inactive: {userCounts.inactive}</div>
+          <div className="modddddasssscount-row">
+            <div className="modddasscount-box total">Total Reports: {reportedUsers.length}</div>
+            
           </div>
         </div>
       );
@@ -87,12 +90,11 @@ const ModeratorDashboard = () => {
 
     if (query === "" || query.includes("event")) {
       sections.push(
-        <div className="management-section" key="reported-events">
+        <div className="modddasshmanagementsection" key="reported-events">
           <h2><Link to="/ModeratorEventManagement">Reported Events</Link></h2>
-          <div className="count-row">
-            <div className="count-box total">Total Reports: {eventCounts.total}</div>
-            <div className="count-box active">Active: {eventCounts.active}</div>
-            <div className="count-box inactive">Inactive: {eventCounts.inactive}</div>
+          <div className="modddddasssscount-row">
+            <div className="modddasscount-box total">Total Reports: {reportedEvents.length}</div>
+            
           </div>
         </div>
       );
@@ -100,12 +102,12 @@ const ModeratorDashboard = () => {
 
     if (query === "" || query.includes("comment")) {
       sections.push(
-        <div className="management-section" key="reported-comments">
+        <div className="modddassmanagement-section" key="reported-comments">
           <h2><Link to="/ModeratorCommentManagement">Reported Comments</Link></h2>
-          <div className="count-row">
-            <div className="count-box total">Total Reports: {commentCounts.total}</div>
-            <div className="count-box spam">Spam: {commentCounts.spam}</div>
-            <div className="count-box harassment">Harassment: {commentCounts.harassment}</div>
+          <div className="modddddasssscount-row">
+            <div className="moddasscount-box total">Total Reports: {reportedComments.total}</div>
+            <div className="moddasscount-box spam">Spam: {reportedComments.spam}</div>
+            <div className="moddasscount-box harassment">Harass: {reportedComments.harassment}</div>
           </div>
         </div>
       );
@@ -115,40 +117,37 @@ const ModeratorDashboard = () => {
   };
 
   return (
-    <div className="admin-dashboard">
+    <div className="moderatordass-management-container">
       <nav className="moderator-navbar">
-        <h2>Welcome, Moderator</h2>
-        <input
-          type="text"
-          placeholder="Search sections..."
-          value={searchQuery}
-          onChange={handleSearchChange}
-        />
-        <button onClick={() => navigate('/ModeratorProfile')}>Profile</button>
-        <button onClick={handleLogout}>Logout</button>
-      </nav>
+                <h2>Welcome, Moderator</h2>
+                
+                <button className="profile-button" onClick={() => navigate('/ModeratorProfile')}>Profile</button>
+                <button className="logout-button" onClick={() => signOut(auth).then(() => navigate('/login'))}>Logout</button>
+            </nav>
 
-      <div className="content">
-        <aside className="sidebar">
-          <Link to="/moderatordashboard">Dashboard</Link>
-          <Link to="/ModeratorHomePage">Feed</Link>
-          <Link to="/ModeratorUserManagement">User Management</Link>
-          <Link to="/ModeratorEventManagement">Event Management</Link>
-          <Link to="/ModeratorCommentManagement">Comment Management</Link>
-        </aside>
+            <div>
+                <aside className="sidebar">
+                    <Link to="/moderatordashboard">Dashboard</Link>
+                    <Link to="/ModeratorHomePage">Feed</Link>
+                    <Link to="/ModeratorUserManagement">User Management</Link>
+                    <Link to="/ModeratorEventManagement">Event Management</Link>
+                    <Link to="/ModeratorCommentManagement">Comment Management</Link>
+                </aside>
+            </div>
 
-        <div className="dashboard-content">
+        <div className="modddassdashboard-content">
           {filteredSections()}
         </div>
-      </div>
+      
 
-      <footer className="footer">
-        <div className="footer-links">
-          <Link to="/about">About</Link>
-          <Link to="/privacy-policy">Privacy Policy</Link>
-          <Link to="/terms-and-conditions">Terms and Conditions</Link>
-          <Link to="/contact-us">Contact Us</Link>
-        </div>
+   
+      <footer className="modeartordassssfooter">
+        <ul className="modeartordassssfooterlinks">
+          <li onClick={() => navigate('/about')}>About</li>
+          <li onClick={() => navigate('/privacypolicy')}>Privacy Policy</li>
+          <li onClick={() => navigate('/termsandconditions')}>Terms and Conditions</li>
+          <li onClick={() => navigate('/contactus')}>Contact Us</li>
+        </ul>
       </footer>
     </div>
   );
