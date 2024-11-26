@@ -1,0 +1,233 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    width: 100%;
+  } 
+   
+  .adddasgnavbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #a5aaad;
+    padding: 10px 20px;
+    color: white;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    width: 98%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  
+  .adddasgnavbar h1 {
+    margin: 0;
+    cursor: pointer;
+  }
+  
+  .admindashboard-navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .admindashboard-profile-link {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    transition: color 0.3s;margin-right: 15px;
+    font-size: 16px;
+    text-decoration: none;
+  }
+  
+  .admindash-logout-btn {
+    background-color: #e74c3c;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .admindash-logout-btn:hover {
+    background-color: #c0392b;
+  }
+  .admindash-content {
+    margin-left: 270px; 
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+#firebaselink{
+  padding: 10px;
+  color: blue;
+  font-weight: 500;
+  font-size: 16px;
+  max-width: 100px;
+}
+  .admindash-sidebar {
+    width: 220px;
+    background-color: white;
+    color: #333;
+    height: auto;
+    padding: 20px;
+    position: fixed;
+    top: 80px; 
+    left: 20px; 
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    border-radius: 8px; 
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .admindash-sidebar a {
+    text-decoration: none;
+    color: blue;
+    font-size: 16px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    background-color: #f9f9f9; 
+    border: 1px solid #e0e0e0;
+    transition: all 0.3s ease;
+    text-align: center; 
+  }
+  
+  .admindash-sidebar a:hover {
+    text-decoration: underline;
+  }
+  
+  .admindash-sidebar h4 a {
+    color: #1abc9c;
+    font-size: 14px;
+  }
+  
+  .admindash-sidebar h4 a:hover {
+    color: #16a085;
+  }
+  .adminadd-dashboard-content {
+    flex: 1;
+    padding: 20px;
+    background-color: #ecf0f1;
+  }
+  
+  .addashhh-management-section,
+  .adddminashmanagementsection,
+  .addminnndashmanagementsection {
+    background-color: #ffffff;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .addashhh-management-section h2 a,
+  .adddminashmanagementsection h2 a,
+  .addminnndashmanagementsection h2 a {
+    text-decoration: none;
+    color: #2980b9;
+    margin-right: 40%;
+    text-align: center;
+  }
+  
+  .addashhh-management-section h2 a:hover,
+  .adddminashmanagementsection h2 a:hover,
+  .addminnndashmanagementsection h2 a:hover {
+    color: #3498db;
+  }
+  
+  .admindashcount-row {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+  }
+  
+  .addmin-dash-count-box {
+    background-color: #bdc3c7;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-align: center;
+    flex: 1;
+  }
+  
+  .addmin-dash-count-box.total {
+    background-color: #3498db;
+    color: white;
+  }
+  
+  .addmin-dash-count-box.active {
+    background-color: #2ecc71;
+    color: white;
+  }
+  
+  .addmin-dash-count-box.inactive {
+    background-color: #e74c3c;
+    color: white;
+  }
+  
+  .admindashfooter,
+  .admindashfooter-links {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color:#a5aaad; 
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 2;
+      gap: 20px; 
+      font-size: 14px; 
+      
+  }
+  
+  .admindashfooter-links {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+  
+  }
+  
+  .admindashfooter-links li {
+      cursor: pointer;
+      transition: color 0.3s ease;
+      color: black;
+      font-weight: bold;
+      margin-left: 5%;
+      margin-right: 5%;
+  }
+  
+  .admindashfooter-links li:hover {
+      color: #007bff; 
+  }
+  
+  .admindashfooter-links a {
+      text-decoration: none;
+      color: inherit;
+  }
+  
+  .admindashfooter-links a:hover {
+      color: #007bff;
+  }
+  .search-bar-container {
+    margin-bottom: 20px;
+  }
+  
+  .search-bar {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #bdc3c7;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
