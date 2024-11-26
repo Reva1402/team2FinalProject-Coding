@@ -1,192 +1,135 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { auth, firestore } from './firebaseConfig';
-import { doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { useNavigate, Link } from 'react-router-dom';
+import { firestore, auth } from './firebaseConfig';
+import { doc, onSnapshot, getDoc, deleteDoc , } from 'firebase/firestore';
+import { signOut } from 'firebase/auth';
 import './ModeratorProfile.css';
+import './ModeratorUserManagement.css';
 
 const ModeratorProfile = () => {
-    const navigate = useNavigate();
-    const [profile, setProfile] = useState({
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        role: 'moderator',
-        joinDate: '',
-        actionsThisMonth: 0
-    });
-    const [isEditing, setIsEditing] = useState(false);
-    const [editedProfile, setEditedProfile] = useState({});
+  const [moderatorProfile, setModeratorProfile] = useState(null);
+  const navigate = useNavigate();
+  const user = auth.currentUser;
+  const [error, setError] = useState('');
+  const [moderatorName, setModeratorName] = useState('');
+  const [userName , setUserName] = useState('');
 
-    useEffect(() => {
-        const fetchProfile = async () => {
-            const user = auth.currentUser;
-            if (!user) {
-                navigate('/moderatorlogin');
-                return;
-            }
-
-            try {
-                const userDoc = await getDoc(doc(firestore, 'users', user.uid));
-                if (userDoc.exists()) {
-                    setProfile({
-                        ...userDoc.data(),
-                        email: user.email
-                    });
-                    setEditedProfile({
-                        ...userDoc.data(),
-                        email: user.email
-                    });
-                }
-            } catch (error) {
-                console.error("Error fetching profile:", error);
-            }
-        };
-
-        fetchProfile();
-    }, [navigate]);
-
-    const handleEditToggle = () => {
-        setIsEditing(!isEditing);
-        if (!isEditing) {
-            setEditedProfile({...profile});
+  useEffect(() => {
+    if (user) {
+      const userRef = doc(firestore, 'users', user.uid);
+      setUserName(user.firstName);
+      
+      const unsubscribe = onSnapshot(userRef, (docSnap) => {
+        if (docSnap.exists()) {
+          setModeratorProfile(docSnap.data());
+        } else {
+          console.log('No such user document!');
+          setError('Moderator profile not found.');
         }
-    };
+      });
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setEditedProfile(prev => ({
-            ...prev,
-            [name]: value
-        }));
-    };
+      return () => unsubscribe();
+    }
+  }, [user]);
 
-    const handleSave = async () => {
-        try {
-            const user = auth.currentUser;
-            await updateDoc(doc(firestore, 'users', user.uid), {
-                firstName: editedProfile.firstName,
-                lastName: editedProfile.lastName,
-                phone: editedProfile.phone
-            });
-            setProfile(editedProfile);
-            setIsEditing(false);
-        } catch (error) {
-            console.error("Error updating profile:", error);
-        }
-    };
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      setModeratorProfile(null); 
+      navigate('/login');
+    } catch (error) {
+      console.error('Error logging out:', error);
+      alert('Failed to log out. Please try again.');
+    }
+  };
 
-    const handleDelete = async () => {
-        const isConfirmed = window.confirm(
-            "Are you sure you want to delete your moderator profile? This action cannot be undone."
-        );
+  const handleEditProfile = () => {
+    navigate('/moderatoreditprofile');
+  };
 
-        if (isConfirmed) {
-            try {
-                const user = auth.currentUser;
+  const handleDeleteProfile = async () => {
+    try {
+      const isConfirmed = window.confirm('Are you sure you want to delete your profile? This action cannot be undone.');
+      if (isConfirmed && user) {
+        const userRef = doc(firestore, 'users', user.uid);
+        await deleteDoc(userRef);
+        alert('Profile deleted successfully!');
+        await signOut(auth); 
+        navigate('/'); 
+      }
+    } catch (err) {
+      console.error('Error deleting profile:', err);
+      setError('Failed to delete profile. Please try again later.');
+    }
+  };
+
+  return (
+    <div>
+      <div className="moderator-management-container">
+        <nav className="moderator-navbar">
+                <h2>Welcome, Moderator</h2>
                 
-                // Delete user document from Firestore
-                await deleteDoc(doc(firestore, 'users', user.uid));
-                
-                // Delete user authentication account
-                await user.delete();
-                
-                // Navigate to login page
-                navigate('/login');
-            } catch (error) {
-                console.error("Error deleting profile:", error);
-                alert("Failed to delete profile. Please try again.");
-            }
-        }
-    };
+                <button className="profile-button" onClick={() => navigate('/ModeratorProfile')}>Profile</button>
+                <button className="logout-button" onClick={() => signOut(auth).then(() => navigate('/login'))}>Logout</button>
+            </nav>
 
-    return (
-        <div className="moderator-profile">
-            <div className="profile-header">
-                <h1>Moderator Profile</h1>
-                <div className="profile-actions">
-                    <button 
-                        className={`edit-button ${isEditing ? 'save' : ''}`}
-                        onClick={isEditing ? handleSave : handleEditToggle}
-                    >
-                        {isEditing ? 'Save Changes' : 'Edit Profile'}
-                    </button>
-                    <button 
-                        className="delete-button"
-                        onClick={handleDelete}
-                    >
-                        Delete Profile
-                    </button>
-                </div>
+        
+           
+                <aside className="sidebar">
+                    <Link to="/moderatordashboard">Dashboard</Link>
+                    <Link to="/ModeratorHomePage">Feed</Link>
+                    <Link to="/ModeratorUserManagement">User Management</Link>
+                    <Link to="/ModeratorEventManagement">Event Management</Link>
+                    <Link to="/ModeratorCommentManagement">Comment Management</Link>
+                </aside>
+
+      <div className="profile-container">
+        {moderatorProfile ? (
+          <div className="profile-wrapper">
+            <h1 className="profile-header">Moderator Profile</h1>
+            <div className="profile-details">
+              <div className="profile-picture">
+                <img
+                  src={moderatorProfile.profilePicture || 'default-profile.png'}
+                  alt="Profile"
+                  className="profile-img"
+                />
+              </div>
+              <div className="profile-info">
+                <p><strong>First Name:</strong> {moderatorProfile.firstName}</p>
+                <p><strong>Last Name:</strong> {moderatorProfile.lastName}</p>
+                <p><strong>Email:</strong> {moderatorProfile.email}</p>
+                <p><strong>Phone Number:</strong> {moderatorProfile.phoneNumber}</p>
+                <p><strong>Role:</strong> {moderatorProfile.role}</p>
+                <p><strong>Join Date:</strong> {moderatorProfile.joinDate}</p>
+                <p><strong>Actions This Month:</strong> {moderatorProfile.actionsThisMonth}</p>
+              </div>
             </div>
+            <button className="edit-profile-btn" onClick={handleEditProfile}>
+              Edit Profile
+            </button>
+            <button className="delete-profile-btn" onClick={handleDeleteProfile}>
+              Delete Profile
+            </button>
+          </div>
+        ) : (
+          <p>Loading profile...</p>
+        )}
+        {error && <p className="error">{error}</p>}
+      </div>
 
-            <div className="profile-content">
-                <div className="profile-section personal-info">
-                    <h2>Personal Information</h2>
-                    <div className="info-grid">
-                        <div className="info-item">
-                            <label>First Name</label>
-                            {isEditing ? (
-                                <input
-                                    name="firstName"
-                                    value={editedProfile.firstName || ''}
-                                    onChange={handleInputChange}
-                                />
-                            ) : (
-                                <p>{profile.firstName}</p>
-                            )}
-                        </div>
-                        <div className="info-item">
-                            <label>Last Name</label>
-                            {isEditing ? (
-                                <input
-                                    name="lastName"
-                                    value={editedProfile.lastName || ''}
-                                    onChange={handleInputChange}
-                                />
-                            ) : (
-                                <p>{profile.lastName}</p>
-                            )}
-                        </div>
-                        <div className="info-item">
-                            <label>Email</label>
-                            <p>{profile.email}</p>
-                        </div>
-                        <div className="info-item">
-                            <label>Phone</label>
-                            {isEditing ? (
-                                <input
-                                    name="phone"
-                                    value={editedProfile.phone || ''}
-                                    onChange={handleInputChange}
-                                />
-                            ) : (
-                                <p>{profile.phone}</p>
-                            )}
-                        </div>
-                    </div>
-                </div>
-
-                <div className="profile-section moderation-stats">
-                    <h2>Moderation Statistics</h2>
-                    <div className="stats-grid">
-                        <div className="stat-item">
-                            <label>Role</label>
-                            <p>{profile.role}</p>
-                        </div>
-                        <div className="stat-item">
-                            <label>Join Date</label>
-                            <p>{profile.joinDate}</p>
-                        </div>
-                        <div className="stat-item">
-                            <label>Actions This Month</label>
-                            <p>{profile.actionsThisMonth}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
+      
+      <footer className="loginpage-footer">
+        <ul className="loginpage-footer-links">
+          <li className="loginpage-footer-link" onClick={() => navigate('/about')}>About</li>
+          <li className="loginpage-footer-link" onClick={() => navigate('/privacypolicy')}>Privacy Policy</li>
+          <li className="loginpage-footer-link" onClick={() => navigate('/termsandconditions')}>Terms and Conditions</li>
+          <li className="loginpage-footer-link" onClick={() => navigate('/contactus')}>Contact Us</li>
+        </ul>
+      </footer>
+    </div>
+    </div>
+  );
 };
 
-export default ModeratorProfile; 
+export default ModeratorProfile;
