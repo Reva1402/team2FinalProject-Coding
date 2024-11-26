@@ -1,0 +1,237 @@
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+.adminsupportnavbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #a5aaad;
+    padding: 10px 20px;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+.adminsupportnavbar h1 {
+    font-size: 20px;
+    cursor: pointer;
+    margin: 0;
+}
+
+.navbarsupportright {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+
+.profilesupportlink {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    transition: color 0.3s;
+}
+
+.profilesupportlink:hover {
+    color: #ffc107;
+}
+
+.logoutsupportbtn {
+    background-color: #ff4b5c;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.logoutsupportbtn:hover {
+    background-color: #e63946;
+}
+
+
+.usermanagementsidebarsupport {
+    width: 250px;
+    background-color: white;
+    color: #333;
+    height: auto;
+    padding: 20px;
+    position: fixed;
+    top: 80px; 
+    left: 20px; 
+    border: 1px solid #ddd; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    border-radius: 8px; 
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+.usermanagementsidebarsupport a {
+    text-decoration: none;
+    color: #4d40d8;
+    font-size: 16px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    background-color: #f9f9f9; 
+    border: 1px solid #e0e0e0;
+    transition: all 0.3s ease;
+    text-align: center; 
+}
+
+.usermanagementsidebarsupport a:hover,
+.usermanagementsidebarsupport a.active {
+    background-color: #4caf50;
+    color: white;
+    border: 1px solid #4caf50;
+}
+
+
+.usersupportmanagement {
+    margin-left: 300px;
+    padding: 20px;
+}
+
+
+
+.usersupportmanagement {
+    margin-left: 350px;
+    padding: 20px;
+}
+
+.usersupportmanagement h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+.usersupporttable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.usersupporttable th,
+.usersupporttable td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.usersupporttable th {
+    background-color: #4caf50;
+    color: white;
+    font-size: 16px;
+}
+
+.usersupporttable tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+
+.resolve-button {
+    background-color: #ff9800;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.resolve-button:hover {
+    background-color: #fb8c00;
+}
+
+.resolved {
+    background-color: #27ae60;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: not-allowed;
+}
+
+.resolved-status {
+    color: #4caf50;
+    font-weight: bold;
+}
+
+.pending-status {
+    color: #ff9800;
+    font-weight: bold;
+}
+
+button {
+    background-color: #ff4b5c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-left: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #c2185b;
+}
+
+
+
+
+.supportfooter,
+  .footersupportlinks {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color:#a5aaad; 
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 2;
+      gap: 20px; 
+      font-size: 14px; 
+      
+  }
+  
+  .adminFooterlinks {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+  
+  }
+  
+  .adminFooterlinks li {
+      cursor: pointer;
+      transition: color 0.3s ease;
+      color: black;
+      font-weight: bold;
+      margin-left: 5%;
+      margin-right: 5%;
+  }
+  
+  .adminFooterlinks li:hover {
+      color: #007bff; 
+  }
+  
+  .adminFooterlinks a {
+      text-decoration: none;
+      color: inherit;
+  }
+  
+  .adminFooterlinks a:hover {
+      color: #007bff;
+  }
+ 
