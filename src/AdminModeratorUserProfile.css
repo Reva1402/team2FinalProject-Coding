@@ -1,0 +1,172 @@
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f6f8;
+    color: #333;
+    box-sizing: border-box;
+  }
+  
+  .AdminModeratorssUserProfile {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  
+  .asminmodnavbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #a5aaad;
+    padding: 10px 20px;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .asminmodnavbar h2 {
+    margin: 0;
+    cursor: pointer;
+  }
+  
+  .asminmodnavbar button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .asminmodnavbar button:hover {
+    background-color: #c0392b;
+  }
+  
+  .adminmoddprofile-container {
+    flex: 1;
+    max-width: 1200px;
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .adminprofile-wrapper {
+    text-align: center;
+  }
+  
+  .adminmoddprofile-header {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #2980b9;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  .adminnmodprofile-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .adminmoddprofile-picture {
+    margin-bottom: 20px;
+  }
+  
+  .adminmodprofile-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 2px solid #2980b9;
+    object-fit: cover;
+  }
+  
+  .addminmodprofile-info {
+    text-align: left;
+    max-width: 600px;
+    width: 100%;
+  }
+  
+  .addminmodprofile-info p {
+    margin: 8px 0;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  .addminmodprofile-info strong {
+    color: #2c3e50;
+  }
+  
+  
+  .adminmoddfooter, .adminmodfooter-links  {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #a5aaad;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2;
+    gap: 20px;
+    font-size: 14px;
+}
+
+.adminmodfooter-links  {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.adminmodfooter-links  li {
+    cursor: pointer;
+    transition: color 0.3s ease;
+    color: black;
+    font-weight: bold;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.adminmodfooter-links  li:hover {
+    color: #007bff;
+}
+
+.adminmodfooter-links  a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.adminmodfooter-links  a:hover {
+    color: #007bff;
+}
+
+  
+  
+  @media (max-width: 768px) {
+    .adminnmodprofile-details {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .addminmodprofile-info {
+      text-align: center;
+    }
+  
+    .adminmodfooter-links {
+      flex-direction: column;
+      gap: 15px;
+    }
+  }
+  
