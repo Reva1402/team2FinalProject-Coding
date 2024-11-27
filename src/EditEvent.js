@@ -198,7 +198,7 @@ const EditEvent = () => {
   <div>
     <label>Event Location:</label>
     <LoadScript
-      googleMapsApiKey="YOUR_GOOGLE_MAPS_API_KEY"
+      googleMapsApiKey="AIzaSyAipP-PPc3YltY3nAZbGLFBuK-c2TrWXgY"
       libraries={['places']}
       onLoad={handleGoogleMapsLoad}
     >
